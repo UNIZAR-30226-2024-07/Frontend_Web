@@ -6,6 +6,16 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  const handleClick = async () => {
+    const response = await fetch('http://localhost:8080/api/avatar/avatarById/65ea25df0b5bd47a75ff5da8', {
+        method: 'GET',
+    })
+    const json = await response.json()
+    if (response.ok) {
+      console.log(json)
+    }
+}
+
   return (
     <>
       <div>
@@ -28,6 +38,8 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+
+      <button className='button' onClick={handleClick}>ObtenerAvatar</button>
     </>
   )
 }
