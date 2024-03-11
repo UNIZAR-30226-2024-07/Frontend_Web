@@ -13,7 +13,7 @@ body {
 .nav-container {
   background-color: #5C2324;
   position: fixed;
-  top: 0;
+  top: 1;
   height: 10%;
   width: 100%;
   z-index: 1000;
