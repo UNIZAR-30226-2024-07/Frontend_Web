@@ -1,9 +1,16 @@
+import Nav from "../Components/Nav";
+import CuestionarioInicioSesion from "../Components/CuestionarioInicioSesion";
+
+
+
 const InicioSesion = () => {
     return (
-        <div>
-            <h1>COMPONENTE DE SESION </h1>
-        </div>
-    )
-}
+        <>
+            <Nav esRegistro={false}/>
+            <CuestionarioInicioSesion/>
+
+        </>
+    );
+} 
 
 export default InicioSesion

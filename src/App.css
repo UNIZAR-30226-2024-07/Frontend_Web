@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-image: url('/Frontend_Web/fondomonedas.png');
+  background-image: url('public/fondomonedas.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: bottom;
@@ -11,7 +11,7 @@ body {
 }
 
 .nav-container {
-  background-color: #5C2324;
+  background-color: brown;
   position: fixed;
   top: 0;
   height: 10%;
@@ -23,18 +23,37 @@ body {
 }
 
 .nav-image {
-  width: 15%;
-  height: 20%;
-  margin-top: 3%;
-  margin-left: 10%;
+  width: 80%;
+  height: 80%;
+  margin-top: 7%;
+  margin-left: 20%;
 }
-
 
 .nav-right {
   display: flex;
   align-items: center;
   gap: 10px; /* Ajusta el valor según sea necesario */
   margin-right: 3%;
+}
+
+.nav-button {
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 0;
+  padding: 10px 20px; /* Ajusta el tamaño del padding según sea necesario */
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 20px;
+}
+
+.nav-button a {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  background-color: darkgray; /* Cambia el color al pasar el mouse si lo deseas */
 }
 
 .titulo-principal {
@@ -46,6 +65,99 @@ body {
   color: black;
 }
 
+.questionnaire-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: brown; /* Cambia el color de fondo a marrón */
+  color: black; /* Cambia el color del texto a negro */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 40%; /* Permite que el contenedor se expanda horizontalmente según su contenido */
+  height: 60%; /* Permite que el contenedor se expanda verticalmente según su contenido */
+  display: flex; /* Usa el modelo de caja flexible */
+  flex-direction: column; /* Apila los elementos verticalmente */
+  align-items: center; /* Centra verticalmente los elementos */
+  justify-content: center; /* Centra verticalmente los elementos en el eje principal */
+}
+
+.questionnaire-container h2 {
+  color: black; /* Cambia el color del texto del h2 a negro */
+  font-size: 44px; /* Aumenta el tamaño del texto del h2 */
+}
+
+.questionnaire-container p {
+  font-size: 20px; /* Ajusta el tamaño del texto de los párrafos */
+}
+
+.questionnaire-container input {
+  font-size: 20px; /* Ajusta el tamaño del texto de los inputs */
+}
+
+.submit-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 15px 30px; /* Ajusta el tamaño del padding según sea necesario */
+  cursor: pointer;
+  font-size: 18px; /* Ajusta el tamaño del texto según sea necesario */
+  margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+  margin-bottom: 20px; /* Añade un margen inferior para separar el botón de los demás elementos */
+}
+
+.submit-button:hover {
+  background-color: darkblue;
+}
+.questionnaire-register {
+  text-align: center; /* Alinea el contenido al centro */
+}
+
+.questionnaire-register p {
+  margin-bottom: 10px; /* Añade un margen inferior al párrafo para separarlo del botón */
+}
+
+.questionnaire-button-link {
+  color: white;
+  text-decoration: none;
+}
+
+.questionnaire-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px; /* Ajusta el padding según sea necesario */
+  cursor: pointer;
+  font-size: 16px; /* Ajusta el tamaño del texto según sea necesario */
+}
+
+.questionnaire-button:hover {
+  color: darkblue; /* Cambia el color del texto al pasar el ratón */
+}
+
+.prompt-text {
+  color: black;
+}
 
 
+.question-container {
+  margin-bottom: 20px;
+}
 
+.question-text {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 10%; 
+
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

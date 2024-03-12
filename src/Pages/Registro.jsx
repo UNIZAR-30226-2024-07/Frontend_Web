@@ -1,6 +1,7 @@
+import Nav from "../Components/Nav";
 const Registro = () => {
     return (
-        <button>Registro</button>
+        <Nav esRegistro={false}/>
     );
 } 
 

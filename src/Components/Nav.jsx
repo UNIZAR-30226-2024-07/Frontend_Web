@@ -1,30 +1,31 @@
 import '../App.css';
 import {NavLink} from 'react-router-dom';
-import PropTypes from 'prop-types'
 import root from '../constants'
 
-const Nav = ({ esRegistro }) => {
+export default function Nav({ esRegistro }) {
     return (
         <nav className="nav-container">
             <div className="nav-left">
-                <img className='nav-image' src={root + "logo.png"} alt="logo de la web" />
+                <NavLink to={root}>
+                    <img className='nav-image' src="public/logoprincipal.png" alt="logo de la web" />
+                </NavLink>
             </div>
             <div className="nav-right">
                 {esRegistro ? (
-                        <NavLink to={root + "registro"}>
-                             Registro
-                        </NavLink>
-                ) : (
-                    <p>Este es el menú normal</p>
-                )}
+                        <>
+                        <button className='nav-button'>
+                            <NavLink to={root + 'registro'}>
+                                Registrarse
+                            </NavLink>
+                            </button>
+                            <button className='nav-button'>
+                            <NavLink to={root + 'inicioSesion'}>
+                                Iniciar Sesion
+                            </NavLink>
+                        </button>
+                    </>
+                ) : null }
             </div>
         </nav>
     );
 }
-
-Nav.propTypes = {
-    esRegistro: PropTypes.bool.isRequired // Definiendo PropTypes para esRegistro
-};
-
-export default Nav;
-
