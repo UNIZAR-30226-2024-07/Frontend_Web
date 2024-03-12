@@ -7,7 +7,7 @@ export default function Nav({ esRegistro }) {
         <nav className="nav-container">
             <div className="nav-left">
                 <NavLink to={root}>
-                    <img className='nav-image' src="public/logoprincipal.png" alt="logo de la web" />
+                    <img className='nav-image' src={root + "logoprincipal.png"} alt="logo de la web" />
                 </NavLink>
             </div>
             <div className="nav-right">

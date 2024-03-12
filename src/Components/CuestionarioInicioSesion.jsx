@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import PreguntasSesion from "./PreguntasSesion";
+import root from '../constants'
+
 
 import '../App.css';
 
@@ -39,7 +41,7 @@ function CuestionarioInicioSesion() {
             <div className="questionnaire-register">
                 <p>Si no tienes cuenta, pulsa aquí</p>
                 <button type="button" className="questionnaire-button">
-                <NavLink to='/registro' className="questionnaire-button-link" style={{color: 'white'}}>Regístrate</NavLink>
+                <NavLink to={root + 'registro'} className="questionnaire-button-link" style={{color: 'white'}}>Regístrate</NavLink>
                 </button>
             </div>
         </form>
