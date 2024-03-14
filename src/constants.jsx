@@ -1,4 +1,10 @@
-// Constante de la raiz del proyecto
-const root = '/Frontend_Web/';
+// Constantes 
+const constants = {
+    // Raiz del proyecto
+    root: '/Frontend_Web/',
 
-export default root;
+    // Api
+    dirApi: 'https://backend-uf65.onrender.com'
+}
+
+export default constants;

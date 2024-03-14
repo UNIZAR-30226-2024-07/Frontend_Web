@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import PreguntasSesion from "./PreguntasSesion";
-import root from '../constants'
-
+import constants from '../constants';
 
 import '../App.css';
+
 
 function CuestionarioInicioSesion() {
     // Estados para los campos de entrada
@@ -41,7 +41,7 @@ function CuestionarioInicioSesion() {
             <div className="questionnaire-register">
                 <p>Si no tienes cuenta, pulsa aquí</p>
                 <button type="button" className="questionnaire-button">
-                <NavLink to={root + 'registro'} className="questionnaire-button-link" style={{color: 'white'}}>Regístrate</NavLink>
+                <NavLink to={constants.root + 'registro'} className="questionnaire-button-link" style={{color: 'white'}}>Regístrate</NavLink>
                 </button>
             </div>
         </form>
