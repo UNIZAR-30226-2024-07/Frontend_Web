@@ -9,7 +9,7 @@ import '../App.css';
 
 function CuestionarioInicioSesion() {
 
-    const { signin } = useAuth();
+    const { signup } = useAuth();
 
     // Estados para los campos de entrada
     const [nombreCorreo, setNombreCorreo] = useState('');
@@ -24,9 +24,12 @@ function CuestionarioInicioSesion() {
         console.log('Contraseña:', contrasena);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        // Como ejemplo he enviado en todo lo mismo, HAY que crear los demás campos en el formulario
-        signin({
+        // Como ejemplo he enviado en todo lo mismo, HAY que crear los demás campo en el formulario
+        signup({
             nick: nombreCorreo,
+            name: nombreCorreo,
+            surname: nombreCorreo,
+            email: nombreCorreo,
             password: contrasena
         })
         ////////////////////////////////////////////////////////////////////////////////////////////

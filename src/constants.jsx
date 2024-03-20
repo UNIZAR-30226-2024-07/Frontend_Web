@@ -4,7 +4,11 @@ const constants = {
     root: '/Frontend_Web/',
 
     // Api
-    dirApi: 'https://backend-uf65.onrender.com'
+    dirApi: 'https://backend-uf65.onrender.com',
+    // dirApi: 'http://localhost:8080',
+
+    // uploadsFolder
+    uploadsFolder: 'images'
 }
 
 export default constants;
