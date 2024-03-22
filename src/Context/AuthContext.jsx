@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
 import { loginRequest, registerRequest, verifyTokenRequest } from "../api/auth";
-import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
@@ -23,6 +22,7 @@ export const AuthProvider = ({ children }) => {
       if (res.status === 200) {
         setUser(res.data.user);
         setIsAuthenticated(true);
+        localStorage.setItem("token", res.data.token);
       }
     } catch (error) {
       console.log(error.response.data);
@@ -34,29 +34,31 @@ export const AuthProvider = ({ children }) => {
       const res = await loginRequest(user);
       setUser(res.data.user);
       setIsAuthenticated(true);
+      localStorage.setItem("token", res.data.token);
     } catch (error) {
       console.log(error);
       // setErrors(error.response.data.message);
     }
   };
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const logout = () => {
-    Cookies.remove("token");
+    localStorage.removeItem("token")
     setUser(null);
     setIsAuthenticated(false);
   };
 
   useEffect(() => {
     const checkLogin = async () => {
-      const cookies = Cookies.get();
-      if (!cookies.token) {
+      const token = localStorage.getItem("token");
+      if (!token) {
         setIsAuthenticated(false);
         setLoading(false);
         return;
       }
 
       try {
-        const res = await verifyTokenRequest(cookies.token);
+        const res = await verifyTokenRequest(token);
         console.log(res);
         if (res.status !== 200)  return setIsAuthenticated(false);
         setIsAuthenticated(true);

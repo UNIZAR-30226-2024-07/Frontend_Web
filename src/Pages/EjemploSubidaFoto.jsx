@@ -25,22 +25,25 @@ const EjemploSubidaFoto = () => {
         fetchAvatars();
     }, []);
 
-    const [newAvatar, setNewAuthor] = useState(
+    const [newAvatar, setNewAvatar] = useState(
         {
             image: '',
             price: '',
-            imageFileName: '',
+            imageFileName: null,
             preview: ''
         }
     )
 
     const handleChange = (e) => {
-        setNewAuthor({...newAvatar, [e.target.name]: e.target.value})
+        setNewAvatar({...newAvatar, [e.target.name]: e.target.value})
     }
     
     const handlePhoto = (e) => {
-        setNewAuthor({...newAvatar, 
-                      imageFileName: e.target.files[0],
+        console.log(e.target.files[0])
+        const file = e.target.files[0]
+        const fileCopy = new File([file], file.name, { type: file.type });
+        setNewAvatar({...newAvatar, 
+                      imageFileName: fileCopy,
                       preview: URL.createObjectURL(e.target.files[0])
                     })
     }
@@ -52,8 +55,18 @@ const EjemploSubidaFoto = () => {
         formData.append('price', newAvatar.price) 
         formData.append('image', newAvatar.image) 
 
+        console.log('Avatar: ', newAvatar)
+        console.log('Form Data:', formData)
+
         try {
-            const response = await axios.post('/avatar/add', formData)
+            const headers = {
+                'Content-Type': 'multipart/form-data'
+            };  
+            const token = localStorage.getItem("token");
+            if (token) {
+              headers["Authorization"] = token;
+            }
+            const response = await axios.post('/avatar/add', formData, { headers })
             if (response.status !== 200) {
                 console.log("Fallo al obtener Avatares: ", response.data);
                 throw new Error('Error al obtener avatares');
