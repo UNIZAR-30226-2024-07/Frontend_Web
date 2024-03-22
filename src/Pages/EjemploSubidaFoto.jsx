@@ -39,11 +39,8 @@ const EjemploSubidaFoto = () => {
     }
     
     const handlePhoto = (e) => {
-        console.log(e.target.files[0])
-        const file = e.target.files[0]
-        const fileCopy = new File([file], file.name, { type: file.type });
         setNewAvatar({...newAvatar, 
-                      imageFileName: fileCopy,
+                      imageFileName: e.target.files[0],
                       preview: URL.createObjectURL(e.target.files[0])
                     })
     }
@@ -54,9 +51,6 @@ const EjemploSubidaFoto = () => {
         formData.append('imageFileName', newAvatar.imageFileName) 
         formData.append('price', newAvatar.price) 
         formData.append('image', newAvatar.image) 
-
-        console.log('Avatar: ', newAvatar)
-        console.log('Form Data:', formData)
 
         try {
             const headers = {
