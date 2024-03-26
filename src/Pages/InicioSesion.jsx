@@ -12,7 +12,7 @@ const InicioSesion = () => {
     
       useEffect(() => {
         if (isAuthenticated) {
-          navigate(constants.root + 'ejemploSubidaFoto');  //Modificar por ruta a la primera pantalla después de registrar
+          navigate(constants.root + 'pruebaMatch');  //Modificar por ruta a la primera pantalla después de registrar
         }
       }, [isAuthenticated]);
 

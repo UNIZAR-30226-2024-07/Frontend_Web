@@ -7,6 +7,7 @@ import constants from '../constants'
 import InicioSesion from "../Pages/InicioSesion"
 
 import EjemploSubidaFoto from "../Pages/EjemploSubidaFoto"
+import PruebaMatch from "../Pages/PruebaMatch"
 
 
 const RouterPrincipal = () => {
@@ -17,6 +18,7 @@ const RouterPrincipal = () => {
                     <Route path={constants.root} element={<Home/>} ></Route>
                     <Route path={constants.root + 'registro'} element={<Registro/>}></Route>
                     <Route path={constants.root + 'inicioSesion'} element={<InicioSesion/>}></Route>
+                    <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
 
                     <Route element={<ProtectedRoute />}>
 
