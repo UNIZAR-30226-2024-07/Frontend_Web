@@ -1,7 +1,7 @@
 // Imports
 import axios from "../api/axios"
 import { useEffect, useState } from "react"
-import { dirApi } from "../constants"
+import constants from '../constants'
 import io from "socket.io-client"
 import { useAuth } from "../Context/AuthContext"
 
@@ -65,7 +65,7 @@ const PruebaMatch = () => {
     })
 
     useEffect(() => {
-        socket = io(dirApi)
+        socket = io(constants.dirApi)
 
         socket.on("starting public board", (boardId) => {
             console.log("Que empieza la partida")
