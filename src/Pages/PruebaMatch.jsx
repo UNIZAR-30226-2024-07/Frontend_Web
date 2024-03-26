@@ -1,20 +1,22 @@
+// Imports
 import axios from "../api/axios"
 import { useEffect, useState } from "react"
+import { dirApi } from "../constants"
 import io from "socket.io-client"
 import { useAuth } from "../Context/AuthContext"
 
-const endPoint = "http://localhost:8080"
+// Variable que se usará para la gestión de la conexión
 let socket
 
 const PruebaMatch = () => {
-    const [namePriv, setNamePriv] = useState("")
-    const [passwdPriv, setPasswdPriv] = useState("")
-    const [bankLevel, setBankLevel] = useState("")
-    const [numPlayers, setNumPlayers] = useState("")
-    const [bet, setBet] = useState("")
+    const [namePriv, setNamePriv] = useState("") // Nombre de la mesa privada
+    const [passwdPriv, setPasswdPriv] = useState("") // Contraseña de la mesa privada
+    const [bankLevel, setBankLevel] = useState("") // Nombre del nivel de la banca de la partida privada
+    const [numPlayers, setNumPlayers] = useState("") // Número de jugadores de la partida privada
+    const [bet, setBet] = useState("") // Apuesta fija de la partida privada
 
-    const [tituloVisible, setTituloVisible] = useState(false)
-    const [partidasPublicas, setPartidasPublicas] = useState([])
+    const [tituloVisible, setTituloVisible] = useState(false) // Variable "tonta" para ver cuando se ha conseguido una partida
+    const [partidasPublicas, setPartidasPublicas] = useState([]) // Lista de partidas públicas
     const { user } = useAuth()
 
     const partidaPublica = (partida) => {
@@ -34,7 +36,14 @@ const PruebaMatch = () => {
         }
     }
 
-    const crearPriv = async () => {
+    // const getTorneos = async () => {
+    //     try {
+    //         const response = await axios.get()
+    //     }
+    // }
+
+    const crearPriv = async (event) => {
+        event.preventDefault(); // Evitar que el formulario se envíe
         socket.emit("create private board", { body: { name: namePriv,
                                                       password: passwdPriv,
                                                       bankLevel: bankLevel,
@@ -43,7 +52,8 @@ const PruebaMatch = () => {
                                                       userId: user._id}})
     }
 
-    const joinPrivada = async () => {
+    const joinPrivada = async (event) => {
+        event.preventDefault(); // Evitar que el formulario se envíe
         socket.emit("enter private board", { body: { name: namePriv, 
                                                      password: passwdPriv,
                                                      userId: user._id}})
@@ -51,15 +61,11 @@ const PruebaMatch = () => {
 
     useEffect(() => {
         getPartidasPublicas()
+        // getTorneos()
     })
 
     useEffect(() => {
-        socket = io(endPoint)
-
-        socket.on("SC", () => {
-            console.log("SC recibido")
-            setTituloVisible(!tituloVisible)
-        })
+        socket = io(dirApi)
 
         socket.on("starting public board", (boardId) => {
             console.log("Que empieza la partida")
@@ -129,8 +135,8 @@ const PruebaMatch = () => {
                     onChange={(e) => setBet(e.target.value)}
                 />
                 
-                <button onClick={() => crearPriv()}>Crear Partida</button>
-                <button onClick={() => joinPrivada()}>Entrar Partida</button>
+                <button onClick={(e) => crearPriv(e)}>Crear Partida</button>
+                <button onClick={(e) => joinPrivada(e)}>Entrar Partida</button>
             </form>
         </div>
     )
