@@ -18,11 +18,11 @@ const RouterPrincipal = () => {
                     <Route path={constants.root} element={<Home/>} ></Route>
                     <Route path={constants.root + 'registro'} element={<Registro/>}></Route>
                     <Route path={constants.root + 'inicioSesion'} element={<InicioSesion/>}></Route>
-                    <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
 
                     <Route element={<ProtectedRoute />}>
 
                         <Route path={constants.root + 'ejemploSubidaFoto'} element={<EjemploSubidaFoto/>}></Route>
+                        <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
 
                     </Route>
 

@@ -53,14 +53,7 @@ const EjemploSubidaFoto = () => {
         formData.append('image', newAvatar.image) 
 
         try {
-            const headers = {
-                'Content-Type': 'multipart/form-data'
-            };  
-            const token = localStorage.getItem("token");
-            if (token) {
-              headers["Authorization"] = token;
-            }
-            const response = await axios.post('/avatar/add', formData, { headers })
+            const response = await axios.post('/avatar/add', formData)
             if (response.status !== 200) {
                 console.log("Fallo al obtener Avatares: ", response.data);
                 throw new Error('Error al obtener avatares');
