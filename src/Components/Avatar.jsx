@@ -53,7 +53,10 @@ const Avatar = ({ avatarId }) => {
         <p>Nombre de archivo: {avatarData.imageFileName}</p>
         
         {/* Obtener la imagen del avatar */}
-        <img src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatarData.imageFileName}/>
+        <img 
+          src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatarData.imageFileName}
+          width="200"
+          height="200"/>
         <button onClick={handleDelete}>Eliminar Avatar</button>
         {/* Aquí puedes agregar más información del avatar si lo deseas */}
         </div>
