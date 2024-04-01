@@ -1,11 +1,11 @@
 import {Route, BrowserRouter, Routes} from "react-router-dom"
 import { AuthProvider } from "../Context/AuthContext"
 import { ProtectedRoute } from "./ProtectedRoute"
-import Registro from '../Pages/Registro'
-import Home from '../Pages/Home'
+import { PageHome } from "../Pages/PageHome"
+import { PageRegister } from "../Pages/PageRegister"
+import { PageLogin } from "../Pages/PageLogin"
 import constants from '../constants'
-import InicioSesion from "../Pages/InicioSesion"
-
+import { PageDashboard } from "../Pages/PageDashboard"
 import EjemploSubidaFoto from "../Pages/EjemploSubidaFoto"
 import PruebaMatch from "../Pages/PruebaMatch"
 
@@ -15,12 +15,12 @@ const RouterPrincipal = () => {
         <AuthProvider>
             <BrowserRouter>
                 <Routes>
-                    <Route path={constants.root} element={<Home/>} ></Route>
-                    <Route path={constants.root + 'registro'} element={<Registro/>}></Route>
-                    <Route path={constants.root + 'inicioSesion'} element={<InicioSesion/>}></Route>
-
+                    <Route path={constants.root} element={<PageHome/>} ></Route>
+                    <Route path={constants.root + 'PageRegister'} element={<PageRegister/>}></Route>
+                    <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>
                     <Route element={<ProtectedRoute />}>
-
+                        
+                        <Route path={constants.root + 'PageDashboard'} element={<PageDashboard/>}></Route>
                         <Route path={constants.root + 'ejemploSubidaFoto'} element={<EjemploSubidaFoto/>}></Route>
                         <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
 

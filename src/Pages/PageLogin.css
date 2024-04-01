@@ -1,0 +1,60 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-image: url('public/Imagenes/FondoPrincipal.png'); /* Reemplaza 'ruta/de/la/imagen.jpg' con la ruta de tu imagen */
+    background-size: cover; /* La imagen se ajustará para cubrir todo el fondo */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100%;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ajusta esto según tus necesidades */
+}
+  
+.form-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #993f2b;
+    padding: 60px;
+    padding-right: 100px;
+    padding-left: 100px;
+}
+
+  
+.button-login {
+    font-size: 20px !important;
+    margin-top: 35px;
+    font-weight: bolder !important;
+}
+
+
+.paragraph-login {
+    font-size: 16px;
+    margin-top: 70px;
+    font-weight: bolder !important;
+    margin-left: 90px;
+}
+  
+
+.button-lr{
+    margin-left:90px;
+    margin-top:10px;
+    font-weight: bolder !important;
+    font-size: 16px !important;
+
+}
+
+.pulsa-aqui {
+    color: #3F497F;
+    text-decoration: underline;
+    font-size: 20px;
+  }
+  
+
+  .paragraph-login {
+    font-size: 20px; 
+  }

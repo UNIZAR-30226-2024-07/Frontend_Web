@@ -1,0 +1,29 @@
+.my-form-container {
+/* Aquí puedes establecer el ancho máximo, el ancho mínimo, la altura, etc. */
+width: 350px; /* Por ejemplo, establece un ancho de 300px */
+margin-bottom: 30px;
+  }
+  
+  
+.custom-input input {
+/* Estilos para el texto dentro del componente Input */
+    font-size: 15px; /* Tamaño de la fuente */
+    color: #333; /* Color del texto */
+    font-family: "Homer Simpson UI";
+    /* Puedes agregar más estilos según tus necesidades */
+}
+  
+
+input::placeholder {
+  font-family: 'Homer Simpson UI';
+}
+
+
+
+
+.form-input {
+  font-size: 18px;
+  color: white;
+  font-family: 'Homer Simpson UI';
+  font-weight: bold;
+}

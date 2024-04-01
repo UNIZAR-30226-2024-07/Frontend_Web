@@ -1,0 +1,12 @@
+.my-avatar-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+.avatar-description {
+  color: white;
+  font-size: 25px;
+
+}

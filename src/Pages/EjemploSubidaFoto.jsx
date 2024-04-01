@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import "../App.css"
-
 import axios from '../api/axios'
 import Avatar from "../Components/Avatar";
 
