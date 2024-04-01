@@ -1,0 +1,42 @@
+.custom-navbar {
+  background-color: #8b0000 !important;
+}
+
+.custom-navbar .button-nav {
+  font-size: 20px;
+  margin-top: 10px;
+  font-weight: bolder;
+}
+
+
+.navbar-start {
+  display: flex;
+  align-items: center;
+}
+
+.icon-container {
+  margin-left: 12% 
+}
+
+
+
+.nav-menu {
+  background-color: #fff; /* Color de fondo */
+  border: 1px solid #ccc; /* Borde */
+  border-radius: 8px; /* Bordes redondeados */
+  margin-left: 88%;
+}
+
+.nav-menu a {
+  font-size: 18px; /* Ajusta el tamaño del texto según tus preferencias */
+  transition: color 0.3s ease; /* Agrega una transición suave para el cambio de color */
+  display: block; /* Hace que los enlaces ocupen todo el espacio disponible */
+  padding: 10px; /* Añade espacio alrededor del texto para mejorar la experiencia de clic */
+  color: black;
+  margin-left:1%;
+  
+}
+
+.nav-menu a:hover {
+  color: #3F497F; /* Cambia el color de texto cuando se pasa el puntero */
+}
