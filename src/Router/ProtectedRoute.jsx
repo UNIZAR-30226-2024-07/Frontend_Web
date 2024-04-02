@@ -7,6 +7,6 @@ export const ProtectedRoute = () => {
   const { isAuthenticated, loading } = useAuth();
   
   if (loading) return <h1>Loading...</h1>;
-  if (!isAuthenticated && !loading) return <Navigate to={constants.root + 'inicioSesion'} replace />;
+  if (!isAuthenticated && !loading) return <Navigate to={constants.root + 'PageLogin'} replace />;
   return <Outlet />;
 };
