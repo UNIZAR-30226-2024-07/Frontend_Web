@@ -1,0 +1,57 @@
+.HomeAdmin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #820300;
+  }
+
+  .rectangle {
+    background-color: #539165;
+    position: fixed;
+    top: 0;
+    height: 10%;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .button-row {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+
+
+  
+  .button {
+    width: 250px; 
+    height: 250px;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 30px;
+    font-weight: bold;
+    background-color: #3F497F ;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 50px;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex; /* Usar flexbox */
+    align-items: center; /* Centrar verticalmente los elementos dentro del contenedor */
+    justify-content: center;
+  }
+
+
+  .corner-image {
+    width: 80px; /* Ancho deseado de la imagen */
+    position: absolute;
+    top: 10px; /* Ajusta la posición verticalmente según sea necesario */
+    left: 10px; /* Ajusta la posición horizontalmente según sea necesario */
+  }
+  

@@ -8,6 +8,8 @@ import constants from '../constants'
 import { PageDashboard } from "../Pages/PageDashboard"
 import EjemploSubidaFoto from "../Pages/EjemploSubidaFoto"
 import PruebaMatch from "../Pages/PruebaMatch"
+import CrearCuentaAdmin from "../Pages/CrearCuentaAdmin"
+import HomeAdmin from "../Pages/HomeAdmin"
 
 
 const RouterPrincipal = () => {
@@ -17,12 +19,15 @@ const RouterPrincipal = () => {
                 <Routes>
                     <Route path={constants.root} element={<PageHome/>} ></Route>
                     <Route path={constants.root + 'PageRegister'} element={<PageRegister/>}></Route>
-                    <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>
+                    <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>                    
+
                     <Route element={<ProtectedRoute />}>
                         
                         <Route path={constants.root + 'PageDashboard'} element={<PageDashboard/>}></Route>
                         <Route path={constants.root + 'ejemploSubidaFoto'} element={<EjemploSubidaFoto/>}></Route>
                         <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
+                        <Route path={constants.root + 'HomeAdmin'} element={<HomeAdmin/>}></Route>
+                        <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
 
                     </Route>
 
