@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '../api/axios'
 
-import '../CrearCuentaAdmin.css';
+import './CrearCuentaAdmin.css';
 import constants from '../constants';
 import { MyForm } from '../Components/MyForm';
 import { MyFormPasswd } from '../Components/MyFormPasswd';
@@ -95,7 +95,7 @@ const CrearCuentaAdmin = () => {
                     value={contrasena}
                     onChange={(e) => setContrasena(e.target.value)}
                 />
-                {/* <button type="submit" className="submit-button">Confirmar</button> */}
+
                 <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
                 
             </form>

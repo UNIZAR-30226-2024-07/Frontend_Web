@@ -1,4 +1,4 @@
-import '../HomeAdmin.css'; 
+import './HomeAdmin.css'; 
 import { Link } from 'react-router-dom';
 import constants from '../constants';
 
@@ -11,7 +11,7 @@ function HomeAdmin() {
       <div className="button-row">
         <Link to={constants.root + "CrearCuentaAdmin"} className="button" >CREAR CUENTA</Link>
         <Link to='/InicioSesion' className="button">AÑADIR PRODUCTOS</Link>
-        <Link to='/InicioSesion' className="button" >CREAR SALA</Link>
+        <Link to={constants.root + "CrearSala"} className="button">CREAR SALA</Link>
         <Link to='/InicioSesion' className="button" >CREAR TORNEO</Link>
       </div>
       <div className="button-row">

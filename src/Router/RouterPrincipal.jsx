@@ -10,6 +10,7 @@ import EjemploSubidaFoto from "../Pages/EjemploSubidaFoto"
 import PruebaMatch from "../Pages/PruebaMatch"
 import CrearCuentaAdmin from "../Pages/CrearCuentaAdmin"
 import HomeAdmin from "../Pages/HomeAdmin"
+import CrearSala from "../Pages/CrearSala"
 
 
 const RouterPrincipal = () => {
@@ -18,8 +19,8 @@ const RouterPrincipal = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path={constants.root} element={<PageHome/>} ></Route>
-                    <Route path={constants.root + 'PageRegister'} element={<PageRegister/>}></Route>
-                    <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>                    
+                    <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
+                    <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>                 
 
                     <Route element={<ProtectedRoute />}>
                         
@@ -28,6 +29,8 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
                         <Route path={constants.root + 'HomeAdmin'} element={<HomeAdmin/>}></Route>
                         <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
+                        <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
+
 
                     </Route>
 
