@@ -22,13 +22,19 @@ export function PageLogin() {
 
     try {
       // Llamar a la función signin con los datos del usuario
-      await signin({
+      const res = await signin({
         nick: nombreCorreo,
         password: contrasena
       });
+      if (res.data.user.role === "admin") {
+        // Redirigir al admin a la página de admin home después de iniciar sesión
+        navigate(constants.root + 'HomeAdmin');
+      } else {
+        // Redirigir al usuario a la página de dashboard después de iniciar sesión
+        navigate(constants.root + 'PageDashboard');
+      }
 
-      // Redirigir al usuario a la página de dashboard después de iniciar sesión
-      navigate(constants.root + 'PageDashboard');
+
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message);
     }

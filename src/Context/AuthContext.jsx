@@ -13,6 +13,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
 
@@ -23,9 +24,16 @@ export const AuthProvider = ({ children }) => {
         setUser(res.data.user);
         setIsAuthenticated(true);
         localStorage.setItem("token", res.data.token);
+        if (res.data.user.rol === "admin") {
+          setIsAdmin(true)
+        }
       }
+      return res
     } catch (error) {
-      console.log(error.response.data);
+      return {
+        status: "error",
+        message: error.response.data
+      }
     }
   };
 
@@ -35,9 +43,15 @@ export const AuthProvider = ({ children }) => {
       setUser(res.data.user);
       setIsAuthenticated(true);
       localStorage.setItem("token", res.data.token);
+      if (res.data.user.rol === "admin") {
+        setIsAdmin(true)
+      }
+      return res
     } catch (error) {
-      console.log(error);
-      // setErrors(error.response.data.message);
+      return {
+        status: "error",
+        message: error.response.data
+      }
     }
   };
 
@@ -45,7 +59,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token")
     setUser(null);
-    setIsAuthenticated(false);
+    setIsAuthenticated(false)
+    setIsAdmin(false)
   };
 
   useEffect(() => {
@@ -54,19 +69,31 @@ export const AuthProvider = ({ children }) => {
       if (!token) {
         setIsAuthenticated(false);
         setLoading(false);
+        setIsAdmin(false)
         return;
       }
 
       try {
         const res = await verifyTokenRequest(token);
-        console.log(res);
-        if (res.status !== 200)  return setIsAuthenticated(false);
+        if (res.status !== 200) {
+          setIsAuthenticated(false)
+          setIsAdmin(false)
+          return
+        }
         setIsAuthenticated(true);
         setUser(res.data.user);
         setLoading(false);
+        if (res.data.user.rol === "admin") {
+          setIsAdmin(true)
+        }
       } catch (error) {
         setIsAuthenticated(false);
         setLoading(false);
+        setIsAdmin(false)
+        return {
+          status: "error",
+          message: error.response.data
+        }
       }
     };
     checkLogin();
@@ -80,6 +107,7 @@ export const AuthProvider = ({ children }) => {
         signin,
         logout,
         isAuthenticated,
+        isAdmin,
         loading,
       }}
     >

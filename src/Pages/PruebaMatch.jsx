@@ -15,6 +15,16 @@ const PruebaMatch = () => {
     const [numPlayers, setNumPlayers] = useState("") // Número de jugadores de la partida privada
     const [bet, setBet] = useState("") // Apuesta fija de la partida privada
 
+    const [cardsFirst, setCardsFirst] = useState([]) // Cartas de primeras
+    const [totalFirst, setTotalFirst] = useState("") // Total de primeras
+    const [defeatFirst, setDefeatFirst] = useState(false) // Is defeat primeras
+    const [blackJackFirst, setBlackJackFirst] = useState(false) // Is blackJack de primeras
+    const [cardsSecond, setCardsSecond] = useState([]) // Cartas de segundas
+    const [totalSecond, setTotalSecond] = useState("") // Total de segundas
+    const [defeatSecond, setDefeatSecond] = useState(false) // Is defeat primeras
+    const [blackJackSecond, setBlackJackSecond] = useState(false) // Is blackJack de primeras
+    const [boardId, setBoardId] = useState("") // BoardId
+
     const [tituloVisible, setTituloVisible] = useState(false) // Variable "tonta" para ver cuando se ha conseguido una partida
     const [partidasPublicas, setPartidasPublicas] = useState([]) // Lista de partidas públicas
     const { user } = useAuth()
@@ -59,6 +69,95 @@ const PruebaMatch = () => {
                                                      userId: user._id}})
     }
 
+    const drawCard = async (event) => {
+        event.preventDefault()
+        try {
+            const response = await axios.put('/bank/drawCard', {
+                boardId: boardId,
+                typeBoardName: "public",
+                cardsOnTable: cardsFirst
+            })
+            if (response.status !== 200) {
+                console.log("Fallo: ", response);
+                throw new Error('Error', response);
+            }
+            // console.log('DrawCard: ', response.data);
+            setCardsFirst(response.data.cardsOnTable)
+            setDefeatFirst(response.data.defeat)
+            setBlackJackFirst(response.data.blackJack)
+            setTotalFirst(response.data.totalCards)
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    const split = async (event) => {
+        event.preventDefault()
+        try {
+            const response = await axios.put('/bank/split', {
+                boardId: boardId,
+                typeBoardName: "public",
+                cardsOnTable: cardsFirst
+            })
+            if (response.status !== 200) {
+                console.log("Fallo: ", response);
+                throw new Error('Error', response);
+            }
+            // console.log('Avatares:', response);
+            setCardsFirst(response.data.cardsOnTableFirst)
+            setDefeatFirst(response.data.defeatFirst)
+            setBlackJackFirst(response.data.blackJackFirst)
+            setTotalFirst(response.data.totalCardsFirst)
+
+            setCardsSecond(response.data.cardsOnTableSecond)
+            setDefeatSecond(response.data.defeatSecond)
+            setBlackJackSecond(response.data.blackJackSecond)
+            setTotalSecond(response.data.totalCardsSecond)
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    const double = async (event) => {
+        event.preventDefault()
+        try {
+            const response = await axios.put('/bank/double', {
+                boardId: boardId,
+                typeBoardName: "public",
+                cardsOnTable: cardsFirst
+            })
+            if (response.status !== 200) {
+                console.log("Fallo: ", response);
+                throw new Error('Error', response);
+            }
+            // console.log('Avatares:', response);
+            setCardsFirst(response.data.cardsOnTableFirst)
+            setDefeatFirst(response.data.defeatFirst)
+            setBlackJackFirst(response.data.blackJackFirst)
+            setTotalFirst(response.data.totalCardsFirst)
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    const stick = async (event) => {
+        event.preventDefault()
+        try {
+            const response = await axios.put('/bank/stick', {
+                boardId: boardId,
+                typeBoardName: "public",
+                cardsOnTable: cardsFirst
+            })
+            if (response.status !== 200) {
+                console.log("Fallo: ", response);
+                throw new Error('Error', response);
+            }
+            console.log('RESULTADO GUARDADO CORRECTAMENTE');
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
     useEffect(() => {
         getPartidasPublicas()
         // getTorneos()
@@ -70,15 +169,17 @@ const PruebaMatch = () => {
         socket.on("starting public board", (boardId) => {
             console.log("Que empieza la partida")
             setTituloVisible(!tituloVisible)
+            setBoardId(boardId)
             console.log(boardId)
         })
 
         socket.on("starting private board", (boardId) => {
             console.log("Partida Privada a punto de comenzar")
             setTituloVisible(!tituloVisible)
+            setBoardId(boardId)
             console.log(boardId)
         })
-    }, []) // Se ejecuta solo una vez cuando el componente se monta
+    }, [tituloVisible]) // Se ejecuta solo una vez cuando el componente se monta
 
     return (
         <div>
@@ -138,6 +239,40 @@ const PruebaMatch = () => {
                 <button onClick={(e) => crearPriv(e)}>Crear Partida</button>
                 <button onClick={(e) => joinPrivada(e)}>Entrar Partida</button>
             </form>
+
+            <div style={{ backgroundColor: 'white'}}>
+
+                <button onClick={(e) => drawCard(e)}>DrawCard</button>
+                <button onClick={(e) => split(e)}>Split</button>
+                <button onClick={(e) => double(e)}>Double</button>
+                <button onClick={(e) => stick(e)}>Stick</button>
+
+                <div style={{ backgroundColor: 'brown'}}>
+                    <p>Cards: First</p>
+                    <p>Total: {totalFirst}</p>
+                    {cardsFirst.map((carta) => (
+                        <div key={carta._id} style={{ backgroundColor: 'green'}}>
+                        <p>Valor: {carta.value}</p>
+                        <p>Carta: {carta.value} of {carta.suit}</p>
+                        </div>
+                    ))}
+                    <p>Is defeat: {defeatFirst}</p>
+                    <p>Is BlackJack: {blackJackFirst}</p>
+                </div>
+
+                <div style={{ backgroundColor: 'yellow'}}>
+                    <p>Cards: Second</p>
+                    <p>Total: {totalSecond}</p>
+                    {cardsSecond.map((carta) => (
+                        <div key={carta._id} style={{ backgroundColor: 'green'}}>
+                        <p>Valor: {carta.value}</p>
+                        <p>Carta: {carta.value} of {carta.suit}</p>
+                        </div>
+                    ))}
+                    <p>Is defeat: {defeatSecond}</p>
+                    <p>Is BlackJack: {blackJackSecond}</p>
+                </div>                
+            </div>
         </div>
     )
 }
