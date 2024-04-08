@@ -1,0 +1,70 @@
+.page-friend {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+}
+
+.request-page {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    width: 600px;
+    height: 80px;
+    margin: 0 auto;
+    position: fixed;
+    margin-top: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: sticky;
+}
+
+.find-friend {
+    font-size: 40px;
+    font-weight: bold;
+    color: black; /* Color de texto negro */
+    background-color: white; /* Fondo blanco */
+    border: none; /* Elimina el borde */
+    outline: none !important; /* Elimina el contorno al enfocar */
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 10px; /* Borde redondeado */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    padding-right: 50px; /* Agrega espacio a la derecha para acomodar el icono */
+}
+
+.glass {
+    margin-left: -40px; /* Ajusta el margen izquierdo para colocar el icono a la derecha del campo de búsqueda */
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.friend-list-item {
+    margin-top: 20px;
+}
+
+.friend {
+    margin-top: 3%;
+}
+
+.friend-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.friend-list-item {
+    margin-top: 20px;
+}
+
+.friend {
+    margin-top: 3%;
+}
+
+.friend-div {
+    display: flex;
+    justify-content: space-between;
+}

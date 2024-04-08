@@ -11,10 +11,10 @@ export function MyNav({ isLoggedIn, isDashboard }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-    "Amigos",
-    "Ranking",
-    "Skins",
-    "Log out"
+    { text: "Amigos", path: constants.root + "PageFriendList" },
+    { text: "Ranking", path: constants.root + "PageFriendList" },
+    { text: "Skins", path: constants.root + "PageFriendList" },
+    { text: "Log out", path: constants.root + "PageFriendList" }
   ];
 
   return (
@@ -53,8 +53,8 @@ export function MyNav({ isLoggedIn, isDashboard }) {
             </NavbarContent>
             <NavbarMenu className="nav-menu">
               {menuItems.map((item, index) => (
-                <NavbarMenuItem key={`${item}-${index}`}>
-                  <Link to="/" size="">{item}</Link>  
+                <NavbarMenuItem key={`${item.text}-${index}`}>
+                  <Link to={item.path} size="">{item.text}</Link>  
                 </NavbarMenuItem>
               ))}
             </NavbarMenu>

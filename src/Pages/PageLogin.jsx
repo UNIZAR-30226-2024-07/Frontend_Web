@@ -20,6 +20,8 @@ export function PageLogin() {
   const handleSubmit = async (event) => {
     event.preventDefault(); // Evitar que se recargue la página al enviar el formulario
 
+    console.log("Nombre Completo: " + nombreCorreo);
+
     try {
       // Llamar a la función signin con los datos del usuario
       const res = await signin({
@@ -60,15 +62,14 @@ export function PageLogin() {
             typeForm="nickname"
             placeholderForm="Enter your nickname"
             labelText="Nickname"
-            className="form-element"
             value={nombreCorreo}
-            onChange={(e) => setNombreCorreo(e.target.value)}
+            onChange={setNombreCorreo}
           />
           <MyFormPasswd
             placeholderForm="Introduce su contraseña"
             labelText="Contraseña"
             value={contrasena}
-            onChange={(e) => setContrasena(e.target.value)}
+            onChange={setContrasena}
           />
           <MyButton className="button-login" color="midnightblue" size="xl" type="submit">Iniciar sesión</MyButton>
           <p className="paragraph-login">Si no tienes cuenta, <Link to={constants.root + "PageRegister"} className="pulsa-aqui">pulsa aquí</Link></p>
@@ -78,4 +79,6 @@ export function PageLogin() {
     </>
   );
 }
+
+
 

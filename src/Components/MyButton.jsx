@@ -31,7 +31,6 @@ export const MyButton = extendVariants(Button, {
   },
   defaultVariants: { // <- modify/add default variants
     color: "grey",
-    size: "xl",
     variant: "solid" // Por defecto, el botón será de estilo de texto
   },
 });

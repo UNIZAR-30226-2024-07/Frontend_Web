@@ -1,0 +1,72 @@
+.page-friend {
+  min-height: 100vh;
+  background-color: #539165;
+  margin: 0;
+  padding: 0;
+}
+
+.info-square {
+  background-color: #3F497F;
+  color: white;
+  padding: 10px;
+  border-radius: 20px; 
+  display: inline-flex;
+  align-items: center;
+  width: 480px;
+  height: 80px;
+  margin: 0 auto; 
+  position: fixed;
+  margin-top:1%; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  position: sticky;
+}
+
+
+.emoji {
+    width: 90px;
+    height: 60px;
+    margin-right: 5px;
+    margin-left: 10px;
+  }
+  
+  .content {
+    font-size: 40px;
+    font-weight: bold;
+  }
+  
+
+.friend-list-item {
+    margin-top: 20px;
+}
+
+.friend {
+  margin-top:3%;
+}
+
+
+.friend-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons-container {
+  display: flex;
+  margin-right:10%;
+  margin-top:1%;
+}
+
+
+.button-friend {
+  background-color: #3F497F !important;
+  color: white !important;
+  width: 130px !important;
+  height:80px !important;
+  margin-right: 20px !important;
+  border-radius: 25px !important;
+}
+
+.button-friend .emote-friend {
+  width: 90px;
+  height: 60px;
+}
