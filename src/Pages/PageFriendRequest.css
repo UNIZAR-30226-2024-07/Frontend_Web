@@ -1,0 +1,16 @@
+.request-page {
+    background-color: #3F497F;
+    color: white;
+    padding: 10px;
+    border-radius: 20px; 
+    display: inline-flex;
+    align-items: center;
+    width: 600px;
+    height: 80px;
+    margin: 0 auto; 
+    position: fixed;
+    margin-top:1%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    position: sticky;
+}
