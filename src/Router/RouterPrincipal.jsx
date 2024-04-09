@@ -15,6 +15,10 @@ import CrearCuentaAdmin from "../Pages/CrearCuentaAdmin"
 import HomeAdmin from "../Pages/HomeAdmin"
 import CrearSala from "../Pages/CrearSala"
 import AjustesUser from "../Pages/AjustesUser"
+import { CambiarContrasena } from "../Pages/CambiarContrasena"
+import {CambiarUsuario} from "../Pages/CambiarUsuario"
+import EstadisticasUser from "../Pages/EstadisticasUser"
+
 
 const RouterPrincipal = () => {
     return (
@@ -26,7 +30,11 @@ const RouterPrincipal = () => {
                     <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
                     <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>  
                     <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
+                    <Route path={constants.root + 'CambiarUsuario'} element={<CambiarUsuario/>}></Route>  
+                    <Route path={constants.root + 'CambiarContrasena'} element={<CambiarContrasena/>}></Route>  
+                    <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
                     <Route path={constants.root + 'PageRegister'} element={<PageRegister/>}></Route>                   
+                    <Route path={constants.root + 'EstadisticasUser'} element={<EstadisticasUser/>}></Route>                   
 
                     <Route element={<ProtectedRoute />}>
                         

@@ -1,0 +1,40 @@
+.estadisticas-user{
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+}
+
+.container-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px; /* Ancho máximo del contenedor */
+    margin: auto; /* Centra horizontalmente */
+    padding: 20px; /* Espacio alrededor del contenido */
+    background-color: #993f2b; /* Color de fondo */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    text-align: center; /* Alineación del texto */
+    margin-top: 250px;
+
+}
+
+.stat-item {
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 20px; /* Añade espacio alrededor del contenido */
+    border-radius: 10px; /* Bordes redondeados */
+    background-color: white; /* Fondo blanco */
+}
+
+.stat-value {
+    font-size: 18px;
+    color: black;
+    background-color: #3F497F; /* Fondo azul */
+    padding: 8px 16px; /* Ajusta el espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    margin-top: -10px; /* Ajusta el margen superior */
+    margin-bottom: 20px; /* Ajusta el margen inferior */
+}
