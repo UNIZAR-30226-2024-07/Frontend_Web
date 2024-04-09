@@ -22,8 +22,6 @@ const RouterPrincipal = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path={constants.root} element={<PageHome/>} ></Route>
-                    <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
-                    <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
                     <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>  
                     <Route path={constants.root + 'PageRegister'} element={<PageRegister/>}></Route>                   
 
