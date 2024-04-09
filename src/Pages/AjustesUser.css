@@ -1,0 +1,16 @@
+.ajustes-user {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+}
+
+  
+.button-cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 250px;
+    gap: 20px; /* Agrega un espacio entre cada botón */
+}
