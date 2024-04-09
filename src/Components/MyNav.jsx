@@ -6,16 +6,26 @@ import './MyNav.css';
 import { FaShopify } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import constants from '../constants';
+import { useAuth } from "../Context/AuthContext";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 export function MyNav({ isLoggedIn, isDashboard }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { logout } = useAuth(); // Obtiene la función logout del contexto de autenticación
+  const navigate = useNavigate(); // Obtiene la función navigate de react-router-dom
 
   const menuItems = [
     { text: "Amigos", path: constants.root + "PageFriendList" },
-    { text: "Ranking", path: constants.root + "PageFriendList" },
+    { text: "Ranking", path: constants.root + "PageAllUsers" },
     { text: "Skins", path: constants.root + "PageFriendList" },
-    { text: "Log out", path: constants.root + "PageFriendList" }
+    { text: "Log out", onClick: handleLogout } // Asigna la función handleLogout al botón "Log out"
   ];
+
+  // Función para manejar el logout
+  function handleLogout() {
+    logout(); // Llama a la función logout del contexto de autenticación
+    navigate(constants.root); // Redirige a la página de inicio después de cerrar sesión
+  }
 
   return (
     <Navbar isBordered onMenuOpenChange={setIsMenuOpen} className="custom-navbar" maxWidth="2xl">
@@ -53,7 +63,7 @@ export function MyNav({ isLoggedIn, isDashboard }) {
             </NavbarContent>
             <NavbarMenu className="nav-menu">
               {menuItems.map((item, index) => (
-                <NavbarMenuItem key={`${item.text}-${index}`}>
+                <NavbarMenuItem key={`${item.text}-${index}`} onClick={item.onClick}>
                   <Link to={item.path} size="">{item.text}</Link>  
                 </NavbarMenuItem>
               ))}

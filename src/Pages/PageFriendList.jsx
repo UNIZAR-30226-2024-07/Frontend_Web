@@ -17,12 +17,12 @@ export function PageFriendList() {
             <span className="content">Lista de amigos</span>
           </div>
           <div className="buttons-container">
-          <Link to={constants.root + "PageLogin"}>
+          <Link to={constants.root + "PageFriendRequest"}>
             <Button className="button-friend">
                 <MdNotificationAdd className="emote-friend"/>
             </Button>
             </Link>       
-          <Link to={constants.root + "PageLogin"}>
+          <Link to={constants.root + 'PageFriendFind'}>
             <Button className="button-friend">
               <MdPersonAddAlt1 className="emote-friend"/>
             </Button>
