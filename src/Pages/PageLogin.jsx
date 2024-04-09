@@ -21,7 +21,7 @@ export function PageLogin() {
     event.preventDefault(); // Evitar que se recargue la página al enviar el formulario
 
     console.log("Nombre Completo: " + nombreCorreo);
-    console.log("Nombre Completo: " + contrasena);
+    console.log("Contraseña completa: " + contrasena);
 
     try {
       // Llamar a la función signin con los datos del usuario
@@ -64,7 +64,7 @@ export function PageLogin() {
             placeholderForm="Enter your nickname"
             labelText="Nickname"
             value={nombreCorreo}
-            onChange={setNombreCorreo}
+            onChange={(e) => setNombreCorreo(e.target.value)}
           />
           <MyFormPasswd
             placeholderForm="Introduce su contraseña"

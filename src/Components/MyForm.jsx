@@ -10,7 +10,7 @@ export function MyForm({ typeForm, placeholderForm, labelText, value, onChange }
         placeholder={placeholderForm}
         labelPlacement="outside"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
       />
     </div>
   );

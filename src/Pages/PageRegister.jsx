@@ -13,7 +13,8 @@ export function PageRegister() {
   const navigate = useNavigate();
 
   // Estados para los campos de entrada
-  const [nombreCompleto, setNombreCompleto] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [correoElectronico, setCorreoElectronico] = useState('');
   const [contrasena, setContrasena] = useState('');
@@ -28,14 +29,22 @@ export function PageRegister() {
       console.error('Las contraseñas no coinciden');
       return;
     }
+    console.log("Nombre Completo: " + nombre);
+    console.log("Apellido Completo" + apellido)
+    console.log("Usuario Completo: " + nombreUsuario);
+    console.log("Correo Completo: " + correoElectronico);
+    console.log("Contraseña Completo: " + contrasena);
+
 
     try {
       // Llamar a la función signup con los datos del usuario
       await signup({
-        nombre: nombreCompleto,
-        usuario: nombreUsuario,
-        correo: correoElectronico,
-        contrasena: contrasena
+
+        nick: nombreUsuario,
+        name: nombre,
+        surname: apellido,
+        email: correoElectronico,
+        password: contrasena
       });
 
       // Redirigir al usuario a la página de dashboard después de registrar
@@ -57,11 +66,19 @@ export function PageRegister() {
         <form className='form-login' onSubmit={handleSubmit}>
           <MyForm
             typeForm="nickname"
-            placeholderForm="Introduce su nombre y apellidos"
-            labelText="Nombre y Apellidos"
+            placeholderForm="Introduce su nombre"
+            labelText="Nombre"
             className="form-element"
-            value={nombreCompleto}
-            onChange={(e) => setNombreCompleto(e.target.value)}
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          />
+          <MyForm
+            typeForm="nickname"
+            placeholderForm="Introduce su apellido"
+            labelText="Apellido"
+            className="form-element"
+            value={apellido}
+            onChange={(e) => setApellido(e.target.value)}
           />
 
           <MyForm
