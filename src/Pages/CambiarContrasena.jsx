@@ -26,7 +26,7 @@ export function CambiarContrasena() {
 
     try {
       // Llamar a la función para cambiar la contraseña
-      const response = await axios.put(`/api/user/update`, {nuevaContrasena})
+      const response = await axios.put(`/user/update`, {nuevaContrasena})
       if (response.status !== 200) {
           console.log("Fallo al modificar la contraseña: ", response.data);
           throw new Error('Error al modificar la contraseña');

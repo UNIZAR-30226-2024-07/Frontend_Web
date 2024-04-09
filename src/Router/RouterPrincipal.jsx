@@ -26,13 +26,8 @@ const RouterPrincipal = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path={constants.root} element={<PageHome/>} ></Route>
-                    <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>  
-                    <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
-                    <Route path={constants.root + 'CambiarUsuario'} element={<CambiarUsuario/>}></Route>  
-                    <Route path={constants.root + 'CambiarContrasena'} element={<CambiarContrasena/>}></Route>  
-                    <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
+                    <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>                   
                     <Route path={constants.root + 'PageRegister'} element={<PageRegister/>}></Route>                   
-                    <Route path={constants.root + 'EstadisticasUser'} element={<EstadisticasUser/>}></Route>                   
 
                     <Route element={<ProtectedRoute />}>
                         
@@ -45,6 +40,11 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'HomeAdmin'} element={<HomeAdmin/>}></Route>
                         <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
                         <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
+                        <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
+                        <Route path={constants.root + 'CambiarUsuario'} element={<CambiarUsuario/>}></Route>  
+                        <Route path={constants.root + 'CambiarContrasena'} element={<CambiarContrasena/>}></Route>  
+                        <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
+                        <Route path={constants.root + 'EstadisticasUser'} element={<EstadisticasUser/>}></Route>  
 
                     </Route>
 
