@@ -21,6 +21,7 @@ export function PageLogin() {
     event.preventDefault(); // Evitar que se recargue la página al enviar el formulario
 
     console.log("Nombre Completo: " + nombreCorreo);
+    console.log("Nombre Completo: " + contrasena);
 
     try {
       // Llamar a la función signin con los datos del usuario
@@ -69,7 +70,7 @@ export function PageLogin() {
             placeholderForm="Introduce su contraseña"
             labelText="Contraseña"
             value={contrasena}
-            onChange={setContrasena}
+            onChange={(e) => setContrasena(e.target.value)}
           />
           <MyButton className="button-login" color="midnightblue" size="xl" type="submit">Iniciar sesión</MyButton>
           <p className="paragraph-login">Si no tienes cuenta, <Link to={constants.root + "PageRegister"} className="pulsa-aqui">pulsa aquí</Link></p>

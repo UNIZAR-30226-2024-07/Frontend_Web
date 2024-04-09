@@ -5,7 +5,7 @@ import { ImEye } from "react-icons/im";
 import "./MyForm.css"
 
 
-export function MyFormPasswd({placeholderForm, labelText }) {
+export function MyFormPasswd({placeholderForm, labelText, value, onChange}) {
   
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -28,6 +28,8 @@ export function MyFormPasswd({placeholderForm, labelText }) {
           </button>
         }
         type={isVisible ? "text" : "password"}
+        value={value}  // Aquí se utiliza el prop value
+        onChange={onChange} // Aquí se utiliza el prop onChange
         className="max-w-xs"
       />
     </div>
