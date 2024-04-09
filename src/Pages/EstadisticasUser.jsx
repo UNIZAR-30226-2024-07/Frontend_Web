@@ -8,6 +8,8 @@ function EstadisticasUser() {
     const [partidasGanadas, setPartidasGanadas] = useState(80);
     const [partidasPerdidas, setPartidasPerdidas] = useState(20);
   
+
+    
     return (
       <div className='estadisticas-user'>
         <MyNav isLoggedIn={false} isDashboard={true} />
