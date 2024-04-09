@@ -14,7 +14,7 @@ import PruebaMatch from "../Pages/PruebaMatch"
 import CrearCuentaAdmin from "../Pages/CrearCuentaAdmin"
 import HomeAdmin from "../Pages/HomeAdmin"
 import CrearSala from "../Pages/CrearSala"
-
+import AjustesUser from "../Pages/AjustesUser"
 
 const RouterPrincipal = () => {
     return (
@@ -25,6 +25,7 @@ const RouterPrincipal = () => {
                     <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
                     <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
                     <Route path={constants.root + 'PageLogin'} element={<PageLogin/>}></Route>  
+                    <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
                     <Route path={constants.root + 'PageRegister'} element={<PageRegister/>}></Route>                   
 
                     <Route element={<ProtectedRoute />}>
@@ -38,7 +39,6 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'HomeAdmin'} element={<HomeAdmin/>}></Route>
                         <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
                         <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
-
 
                     </Route>
 
