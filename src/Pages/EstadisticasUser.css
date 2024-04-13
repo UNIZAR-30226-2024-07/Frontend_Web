@@ -10,31 +10,40 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: 400px; /* Ancho máximo del contenedor */
-    margin: auto; /* Centra horizontalmente */
-    padding: 20px; /* Espacio alrededor del contenido */
-    background-color: #993f2b; /* Color de fondo */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
-    text-align: center; /* Alineación del texto */
+    max-width: 1000px; /* Ancho máximo ajustable */
+    margin: auto;
+    padding: 20px;
+    background-color: #993f2b;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
     margin-top: 250px;
+}
 
+.stat-pair {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%; /* Asegura que cada par ocupe todo el ancho del contenedor */
 }
 
 .stat-item {
-    margin-bottom: 20px;
-    text-align: center;
-    padding: 20px; /* Añade espacio alrededor del contenido */
-    border-radius: 10px; /* Bordes redondeados */
-    background-color: white; /* Fondo blanco */
+    font-weight: bold; /* Opcional: resalta el nombre de la estadística */
+    text-align: left; /* Alinea el nombre de la estadística a la izquierda */
+    background-color: white;
+    padding: 20px 30px; /* Ajusta el padding según sea necesario */
+    border-radius: 10px; 
+    font-size: 25px;
+    margin-right: 50px; /* Ajusta el margen derecho según sea necesario */
 }
 
 .stat-value {
-    font-size: 18px;
+    font-size: 20px;
     color: black;
-    background-color: #3F497F; /* Fondo azul */
-    padding: 8px 16px; /* Ajusta el espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-    margin-top: -10px; /* Ajusta el margen superior */
-    margin-bottom: 20px; /* Ajusta el margen inferior */
+    background-color: #3F497F;
+    padding: 20px 26px;
+    border-radius: 5px;
 }
+
+
+

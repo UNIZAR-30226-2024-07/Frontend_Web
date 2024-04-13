@@ -20,22 +20,22 @@ export function CambiarUsuario() {
 
     // Validar que las contraseñas nuevas coincidan
     if (nuevousuario !== repetirusuario) {
-      console.error('Las contraseñas no coinciden');
+      console.error('Los usuarios no coinciden');
       return;
     }
 
     try {
       // Llamar a la función para cambiar la contraseña
-      const response = await axios.put(`/api/user/update`, {nuevousuario})
+      const response = await axios.put(`/user/update`, {nick: nuevousuario})
       if (response.status !== 200) {
-          console.log("Fallo al modificar la contraseña: ", response.data);
-          throw new Error('Error al modificar la contraseña');
+          console.log("Fallo al modificar el usuario: ", response.data);
+          throw new Error('Error al modificar el usuario');
       }
 
       // Redirigir al usuario a la página de dashboard después de cambiar la contraseña
       navigate(constants.root + 'PageDashboard');
     } catch (error) {
-      console.error('Error al cambiar la contraseña:', error.message);
+      console.error('Error al cambiar el usuario:', error.message);
     }
 
     // Limpiar los campos después de enviar el formulario

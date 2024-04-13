@@ -38,7 +38,7 @@ const AjustesUser = () => {
 
   const handleVerEstadisticas = () => {
     // Lógica para navegar a la pantalla de ver estadísticas
-    navigate('/Frontend_Web/verEstadisticas');
+    navigate('/Frontend_Web/EstadisticasUser');
   };
 
   return (
