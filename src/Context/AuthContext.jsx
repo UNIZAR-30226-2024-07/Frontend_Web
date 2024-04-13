@@ -5,6 +5,27 @@ import { loginRequest, registerRequest, verifyTokenRequest } from "../api/auth";
 
 const AuthContext = createContext();
 
+
+export async function returnMyName() {
+  try {
+      const response = await verifyTokenRequest();
+      if (response.status === 200) {
+          return {
+              status: "success",
+              data: response.data.user
+          };
+      } else {
+          throw new Error(response.data.message || 'No users found');
+      }
+  } catch (error) {
+      return {
+          status: "error",
+          message: error.message
+      };
+  }
+}
+
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within a AuthProvider");
@@ -37,6 +58,8 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
+
+
 
   const signin = async (user) => {
     try {

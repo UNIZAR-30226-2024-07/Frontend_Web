@@ -18,6 +18,7 @@ import AjustesUser from "../Pages/AjustesUser"
 import { CambiarContrasena } from "../Pages/CambiarContrasena"
 import {CambiarUsuario} from "../Pages/CambiarUsuario"
 import EstadisticasUser from "../Pages/EstadisticasUser"
+import { MyAvatar } from "../Components/MyAvatar"
 
 
 const RouterPrincipal = () => {
@@ -33,6 +34,7 @@ const RouterPrincipal = () => {
                         
                         <Route path={constants.root + 'PageFriendFind'} element={<PageFriendFind/>}></Route>
                         <Route path={constants.root + 'PageFriendList'} element={<PageFriendList/>}></Route>
+                        <Route path={constants.root + 'PageAllUsers'} element={<MyAvatar/>}></Route>
                         <Route path={constants.root + 'PageFriendRequest'} element={<PageFriendRequest/>}></Route>
                         <Route path={constants.root + 'PageDashboard'} element={<PageDashboard/>}></Route>
                         <Route path={constants.root + 'ejemploSubidaFoto'} element={<EjemploSubidaFoto/>}></Route>

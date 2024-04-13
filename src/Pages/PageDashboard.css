@@ -1,9 +1,8 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    background-image: url('public/Imagenes/FondoPrincipal.png'); 
-    background-size: cover; 
-    background-repeat: no-repeat; 
+.page-dashboard{
+  min-height: 100vh;
+  background-color: #539165;
+  margin: 0;
+  padding: 0;
 }
 
 

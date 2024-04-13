@@ -80,3 +80,27 @@
   border-radius: 25px;
   margin-left: 5px; 
 }
+
+.button-container .button-friend-now {
+  font-size: 25px;
+  font-weight: bolder;
+  background-color: #3F497F !important;
+  color: white;
+  width: 250px !important;
+  height: 70px !important;
+  border-radius: 25px;
+  margin-left: 5px; 
+}
+
+.button-container .button-friend-send {
+  font-size: 25px;
+  font-weight: bolder;
+  background-color: #3F497F !important;
+  color: white;
+  width: 250px !important;
+  height: 70px !important;
+  border-radius: 25px;
+  margin-left: 5px; 
+}
+
+

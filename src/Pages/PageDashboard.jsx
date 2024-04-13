@@ -6,6 +6,7 @@ import "./PageDashboard.css"
 export function PageDashboard() {
     return (
       <>
+      <div className="page-dashboard">
         <MyNav isLoggedIn={false} isDashboard={true}/>
         <div className="avatar-dashboard">
             <MyAvatar>
@@ -16,6 +17,7 @@ export function PageDashboard() {
             <MyButton color="midnightblue" size="xxl" variant="bordered">Partida Privada</MyButton>
             <MyButton color="midnightblue" size="xxl" variant="bordered">Torneo</MyButton>
         </div>
+      </div>
       </>
   );
 }
