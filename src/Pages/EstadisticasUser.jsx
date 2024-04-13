@@ -6,10 +6,10 @@ import axios from '../api/axios';
 
 function EstadisticasUser() {
   const [userData, setUserData] = useState(null);
-  // const [torneosGanados, setTorneosGanados] = useState(0);
-  // const [monedasGanadas, setMonedasGanadas] = useState(0);
-  // const [torneosJugados, setTorneosJugados] = useState(0);
-  // const [finalesTorneos, setFinalesTorneos] = useState(0);
+  const [torneosGanados, setTorneosGanados] = useState(0);
+  const [monedasGanadas, setMonedasGanadas] = useState(0);
+  const [torneosJugados, setTorneosJugados] = useState(0);
+  const [finalesTorneos, setFinalesTorneos] = useState(0);
   const [amigos, setAmigos] = useState(0);
   const [avatares, setAvatares] = useState(0);
   const [tapetes, setTapetes] = useState(0);
@@ -34,14 +34,14 @@ function EstadisticasUser() {
       try {
         if (!userData) return; // Salir si no se ha obtenido userData
 
-        // const responseTorneosGanados = await axios.get(`/stat/statByNameAndUser/${userData}/Torneos ganados`);
-        // setTorneosGanados(responseTorneosGanados.data.stat.value);
-        // const responseMonedasGanadas = await axios.get(`/stat/statByNameAndUser/${userData}/Monedas ganadas en partida`);
-        // setMonedasGanadas(responseMonedasGanadas.data.stat.value);
-        // const responseTorneoJugados = await axios.get(`/stat/statByNameAndUser/${userData}/Torneos jugados`);
-        // setTorneosJugados(responseTorneoJugados.data.stat.value);
-        // const responseFinalesTorneo = await axios.get(`/stat/statByNameAndUser/${userData}/Finales de torneos jugadas`);
-        // setFinalesTorneos(responseFinalesTorneo.data.stat.value);
+        const responseTorneosGanados = await axios.get(`/stat/statByNameAndUser/${userData}/Torneos ganados`);
+        setTorneosGanados(responseTorneosGanados.data.stat.value);
+        const responseMonedasGanadas = await axios.get(`/stat/statByNameAndUser/${userData}/Monedas ganadas en partida`);
+        setMonedasGanadas(responseMonedasGanadas.data.stat.value);
+        const responseTorneoJugados = await axios.get(`/stat/statByNameAndUser/${userData}/Torneos jugados`);
+        setTorneosJugados(responseTorneoJugados.data.stat.value);
+        const responseFinalesTorneo = await axios.get(`/stat/statByNameAndUser/${userData}/Finales de torneos jugadas`);
+        setFinalesTorneos(responseFinalesTorneo.data.stat.value);
         const responseAmigos = await axios.get(`/stat/statByNameAndUser/${userData}/Número de amigos`);
         setAmigos(responseAmigos.data.stat.value);
         const responseAvatar = await axios.get(`/stat/statByNameAndUser/${userData}/Avatares adquiridos`);
@@ -63,27 +63,27 @@ function EstadisticasUser() {
   return (
     <div className='estadisticas-user'>
       <MyNav isLoggedIn={false} isDashboard={true} />
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-        <div className="container-stats">
+      <div style={{ display: 'flex', justifyContent: 'space-around' } }>
+        <div className="container-stats" style={{ maxWidth: '40%', flex: '1' }}>
         <div className="stat-pair">
-          <div className="stat-item">Numero de amigos</div>
-          <div className="stat-value">{amigos}</div>
+          <div className="stat-item">Torneos ganados</div>
+          <div className="stat-value">{torneosGanados}</div>
         </div>
         <div className="stat-pair">
-          <div className="stat-item">Avatares adquiridos</div>
-          <div className="stat-value">{avatares}</div>
+          <div className="stat-item">Monedas ganadas en partida</div>
+          <div className="stat-value">{monedasGanadas}</div>
         </div>
         <div className="stat-pair">
-          <div className="stat-item">Tapetes adquiridos</div>
-          <div className="stat-value">{tapetes}</div>
+          <div className="stat-item">Torneos Jugados</div>
+          <div className="stat-value">{torneosJugados}</div>
         </div>
         <div className="stat-pair">
-          <div className="stat-item">Cartas adquiridos</div>
-          <div className="stat-value">{cartas}</div>
+          <div className="stat-item">Finales de torneos jugadas</div>
+          <div className="stat-value">{finalesTorneos}</div>
         </div>
         </div>
 
-        <div className="container-stats">
+        <div className="container-stats" style={{ maxWidth: '40%', flex: '1' }}>
         <div className="stat-pair">
           <div className="stat-item">Numero de amigos</div>
           <div className="stat-value">{amigos}</div>
@@ -102,6 +102,7 @@ function EstadisticasUser() {
         </div>
         </div>
       </div>
+      
     </div>
   );
 }
