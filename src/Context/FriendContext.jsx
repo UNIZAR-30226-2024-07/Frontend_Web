@@ -15,10 +15,7 @@ import { returnAvatarByID } from "../api/avatar"
   export async function returnFriends() {
     try {
       const response = await returnListFriend();
-      console.group("la respuesta ha sido: " , response.status);
-      console.log("El resultado de la lista de amigos es: " ,response);
       if (response.status === 200) {
-        console.log("El resultado de la lista de amigos es: " ,response.data.friend);
         return {
           status: "success",
           data: response.data.friend
@@ -38,14 +35,12 @@ import { returnAvatarByID } from "../api/avatar"
   export async function returnPendingFriends() {
     try {
       const response = await PendingFriend();
-      console.group("la respuesta ha sido AAAAAAAAAAAAAAAAAAAAAA: " , response.status);
       if (response.status === 200) {
         return {
           status: "success",
-          data: response.data.user
+          data: response.data.friend
         };
       } else {
-        console.log("HE DADO UN ERROR A");
         throw new Error(response.data.message || 'No users found');
       }
     } catch (error) {
@@ -89,7 +84,6 @@ import { returnAvatarByID } from "../api/avatar"
   export async function addFriends(userID) {
     try {
       const response = await addFriend(userID);
-      console.group("la respuesta ha sido AAAAAAAAAAAAAAAAAAAAAA: " , response.status);
       if (response.status === 200) {
 
         return {
@@ -111,14 +105,12 @@ import { returnAvatarByID } from "../api/avatar"
   export async function eliminateFriends(userID) {
     try {
       const response = await eliminateFriend(userID);
-      console.group("la respuesta ha sido AAAAAAAAAAAAAAAAAAAAAA: " , response.status);
       if (response.status === 200) {
         return {
           status: "success",
           data: response.data.user
         };
       } else {
-        console.log("HE DADO UN ERROR A");
         throw new Error(response.data.message || 'Error al enviar solicitud');
       }
     } catch (error) {
@@ -133,14 +125,12 @@ import { returnAvatarByID } from "../api/avatar"
     try {
     console.log("El ID ES:",userID);
     const response = await acceptFriend(userID);
-    console.group("la respuesta ha sido AAAAAAAAAAAAAAAAAAAAAA: " , response.status);
       if (response.status === 200) {
         return {
           status: "success",
           data: response.data.user
         };
       } else {
-        console.log("HE DADO UN ERROR A");
         throw new Error(response.data.message || 'Error al enviar solicitud');
       }
     } catch (error) {
@@ -154,7 +144,6 @@ import { returnAvatarByID } from "../api/avatar"
   export async function rejectFriends(userID) {
     try {
       const response = await rejectFriend(userID);
-      console.group("la respuesta ha sido AAAAAAAAAAAAAAAAAAAAAA: " , response.status);
       if (response.status === 200) {
         return {
           
@@ -162,7 +151,6 @@ import { returnAvatarByID } from "../api/avatar"
           data: response.data.user
         };
       } else {
-        console.log("HE DADO UN ERROR A");
         throw new Error(response.data.message || 'Error al enviar solicitud');
       }
     } catch (error) {
@@ -176,7 +164,6 @@ import { returnAvatarByID } from "../api/avatar"
   export async function returnAllReceived() {
     try {
       const response = await returnAllReceivedFriends();
-      console.group("la respuesta ha sido AAAAAAAAAAAAAAAAAAAAAA: " , response.status);
       console.log(response.status);
       if (response.status === 200) {
         return {
@@ -184,7 +171,6 @@ import { returnAvatarByID } from "../api/avatar"
           data: response.data.friend 
         };
       } else {
-        console.log("HE DADO UN ERROR A");
         throw new Error(response.message || 'No users found');
       }
     } catch (error) {
@@ -195,3 +181,5 @@ import { returnAvatarByID } from "../api/avatar"
     }
   }
   
+
+

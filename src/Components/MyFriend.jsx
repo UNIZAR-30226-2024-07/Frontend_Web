@@ -1,17 +1,15 @@
 import { Button } from "@nextui-org/react";
-import { useState } from 'react';
 import { eliminateFriends, addFriends, acceptFriends, rejectFriends } from '../Context/FriendContext'; // Importa las funciones necesarias
 import "./MyFriend.css";
 
-export function MyFriend({ user, isFriendList, isRequestList, isFriendFind, type }) {
-  const [requestSent, setRequestSent] = useState(false);
+export function MyFriend({ user, isFriendList, isRequestList, isFriendFind, type, setReloadParent }) {
 
   const handleSendFriendRequest = async () => {
     try {
       const response = await addFriends(user._id);
       if (response.status === "success") {
         console.log("Invitación de amistad enviada con éxito");
-        setRequestSent(true);
+        setReloadParent(); 
       }
     } catch (error) {
       console.error("Error al enviar la solicitud de amistad:", error);
@@ -23,6 +21,7 @@ export function MyFriend({ user, isFriendList, isRequestList, isFriendFind, type
       const response = await eliminateFriends(user._id);
       if (response.status === "success") {
         console.log("Amigo eliminado con éxito");
+        setReloadParent(); 
       } else {
         console.error("Error al eliminar amigo:", response.message);
       }
@@ -36,6 +35,7 @@ export function MyFriend({ user, isFriendList, isRequestList, isFriendFind, type
       const response = await acceptFriends(user._id);
       if (response.status === "success") {
         console.log("Amigo aceptado con éxito");
+        setReloadParent(); 
       } else {
         console.error("Error al aceptar amigo:", response.message);
       }
@@ -49,6 +49,7 @@ export function MyFriend({ user, isFriendList, isRequestList, isFriendFind, type
       const response = await rejectFriends(user._id);
       if (response.status === "success") {
         console.log("Amigo rechazado con éxito");
+        setReloadParent(); 
       } else {
         console.error("Error al rechazar amigo:", response.message);
       }
@@ -75,18 +76,18 @@ export function MyFriend({ user, isFriendList, isRequestList, isFriendFind, type
       {isFriendFind && (
         <div className="button-container">
           {type === 1 && (
-            <Button className="button-friend" onClick={handleSendFriendRequest} disabled={requestSent}>
-              Enviar solicitud
+            <Button className="button-friend">
+              Solicitud enviada
             </Button>
           )}
           {type === 2 && (
-            <Button className="button-friend-now" onClick={handleSendFriendRequest} disabled={requestSent}>
+            <Button className="button-friend-now">
               Ya es tu amigo
             </Button>
           )}
           {type !== 1 && type !== 2 && (
-            <Button className="button-friend-send" onClick={handleSendFriendRequest} disabled={requestSent}>
-              Solicitud enviada
+            <Button className="button-friend-send" onClick={handleSendFriendRequest}>
+              Enviar solicitud
             </Button>
           )}
         </div>

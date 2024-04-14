@@ -7,10 +7,8 @@ export const returnListFriend =  async () =>  axios.get ('/friend/getAllFriends'
 export const addFriend = async (ID) => {
   try {
     const response =  axios.post(`/friend/add/${ID}`);
-    console.log("hola", response)
     return response;
   } catch (error) {
-    console.log("HE DADO UN ERROR");
     throw new Error(`Error al enviar la solicitud de amistad: ${error.message}`);
   }
 };
@@ -28,7 +26,6 @@ export const eliminateFriend = async (ID) => {
     console.log("hola");
     return response;
   } catch (error) {
-    console.log("HE DADO UN ERROR");
     throw new Error(`Error al eliminar al amigo: ${error.message}`);
   }
 };
@@ -40,7 +37,6 @@ export const rejectFriend = async (ID) => {
     const response = await axios.delete(`/friend/reject/${ID}`);
     return response;
   } catch (error) {
-    console.log("HE DADO UN ERROR");
     throw new Error(`Error al rechazar petición de amistad: ${error.message}`);
   }
 };
@@ -51,10 +47,8 @@ export const acceptFriend = async (ID) => {
     console.log("El id es:",ID);
     console.log("la ruta es: ", `/friend/accept/${ID}`);
     const response =  await axios.put(`/friend/accept/${ID}`);
-    console.log("hola SOY RETRASADO");
     return response;
   } catch (error) {
-    console.log("HE DADO UN ERROR");
     throw new Error(`Error al aceptar petición de amistad: ${error.message}`);
   }
 };

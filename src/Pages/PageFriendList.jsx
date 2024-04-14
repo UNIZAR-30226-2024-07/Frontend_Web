@@ -37,6 +37,7 @@ export function PageFriendList() {
                                 .catch(err => setError(err.message));
                         } else {
                             console.log("La lista de usuarios está vacía.");
+                            setAvatarsFetched(true); 
                         }
                     } else {
                         setError(response.message);
@@ -48,9 +49,14 @@ export function PageFriendList() {
         }
     }, [avatarsFetched]);
 
+    const handleReloadPage = () => {
+        window.location.reload(); 
+    };
+
     if (error) {
         return <p>Error: {error}</p>;
     }
+
     return (
         <div className="page-friend">
             <MyNav isLoggedIn={false} isDashboard={false} />
@@ -72,15 +78,19 @@ export function PageFriendList() {
                     </Link>
                 </div>
             </div>
-            {users.length > 0 && (
+            {users.length > 0 ? (
                 <div className="friend">
                     <ul className="friend-list">
                         {users.map(user => (
                             <li className="friend-list-item" key={user._id}>
-                                <MyFriend user={user} isFriendList={true} isRequestList={false} isFriendFind={false} />
+                                <MyFriend user={user} isFriendList={true} isRequestList={false} isFriendFind={false}  setReloadParent={handleReloadPage}  />
                             </li>
                         ))}
                     </ul>
+                </div>
+            ) : (
+                <div className="no-friends">
+                    No se encontraron amigos
                 </div>
             )}
         </div>
