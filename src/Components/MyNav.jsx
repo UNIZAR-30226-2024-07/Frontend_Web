@@ -4,6 +4,7 @@ import { MyIcon } from "./MyIcon";
 import { MyButton } from "./MyButton";
 import './MyNav.css';
 import { FaShopify } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import constants from '../constants';
 import { useAuth } from "../Context/AuthContext";
@@ -13,6 +14,8 @@ export function MyNav({ isLoggedIn, isDashboard }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useAuth(); // Obtiene la función logout del contexto de autenticación
   const navigate = useNavigate(); // Obtiene la función navigate de react-router-dom
+  const destino = isLoggedIn ? constants.root  : constants.root + "PageDashboard" ;
+
 
   const menuItems = [
     { text: "Amigos", path: constants.root + "PageFriendList" },
@@ -26,12 +29,13 @@ export function MyNav({ isLoggedIn, isDashboard }) {
     logout(); // Llama a la función logout del contexto de autenticación
     navigate(constants.root); // Redirige a la página de inicio después de cerrar sesión
   }
+  
 
   return (
     <Navbar isBordered onMenuOpenChange={setIsMenuOpen} className="custom-navbar" maxWidth="2xl">
       <NavbarContent justify="start" className="navbar-start">
         <div className="icon-container">
-          <Link to={constants.root}>
+          <Link to={destino}>
             <MyIcon />
           </Link>
         </div>
@@ -56,6 +60,9 @@ export function MyNav({ isLoggedIn, isDashboard }) {
             <NavbarContent justify="end">
               <Link to="/" style={{ color: 'black', cursor: 'pointer', marginRight: '20px' }}>
                 <FaShopify className="text-4xl" />
+              </Link>
+              <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
+                <IoSettingsOutline className="text-4xl" />
               </Link>
               <NavbarMenuToggle
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
