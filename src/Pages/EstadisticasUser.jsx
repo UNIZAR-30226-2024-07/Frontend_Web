@@ -62,7 +62,7 @@ function EstadisticasUser() {
     
   return (
     <div className='estadisticas-user'>
-      <MyNav isLoggedIn={false} isDashboard={true} />
+      <MyNav isLoggedIn={false} isDashboard={false} />
       <div style={{ display: 'flex', justifyContent: 'space-around' } }>
         <div className="container-stats" style={{ maxWidth: '40%', flex: '1' }}>
         <div className="stat-pair">
