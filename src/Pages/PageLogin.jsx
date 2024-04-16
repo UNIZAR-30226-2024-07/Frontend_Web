@@ -55,7 +55,7 @@ export function PageLogin() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <>
+    <div className="inicio">
       <MyNav isLoggedIn={false} isDashboard={false} />
       <div className='form-container'>
         <form className='form-login' onSubmit={handleSubmit}>
@@ -77,7 +77,7 @@ export function PageLogin() {
 
         </form>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import constants from '../constants';
 import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
+import "./PageLogin.css"
 
 export function PageRegister() {
   const { signup, isAuthenticated } = useAuth();
@@ -60,8 +60,8 @@ export function PageRegister() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <>
-      <MyNav isLoggedIn={false} />
+    <div className="inicio">
+     <MyNav isLoggedIn={false} />
       <div className='form-container'>
         <form className='form-login' onSubmit={handleSubmit}>
           <MyForm
@@ -116,6 +116,6 @@ export function PageRegister() {
           <MyButton className="button-login" color="midnightblue" size="xl" type="submit">Registrarse</MyButton>
         </form>
       </div>
-    </>
+    </div>
   );
 }

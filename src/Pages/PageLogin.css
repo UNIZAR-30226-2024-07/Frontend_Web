@@ -1,7 +1,7 @@
-html, body {
+.inicio {
     margin: 0;
     padding: 0;
-    background-image: url('public/Imagenes/FondoPrincipal.png'); /* Reemplaza 'ruta/de/la/imagen.jpg' con la ruta de tu imagen */
+    background-image: url('/Imagenes/FondoPrincipal.png'); /* Reemplaza 'ruta/de/la/imagen.jpg' con la ruta de tu imagen */
     background-size: cover; /* La imagen se ajustará para cubrir todo el fondo */
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     height: 100%;
