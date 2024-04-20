@@ -1,0 +1,91 @@
+
+  .confirmar {
+    color: white; /* Color del texto blanco */
+    font-weight: bold; /* Texto en negrita */
+
+    font-size: 30px; /* Tamaño de fuente para el texto de confirmación */
+    margin-bottom: 20px; /* Espacio inferior entre el texto de confirmación y la imagen */
+  }
+  
+  .confirmation-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3F497FFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    width: 80%; /* Ancho del cuadro de diálogo en relación con el tamaño de la pantalla */
+    max-width: 600px; /* Ancho máximo del cuadro de diálogo */
+    max-height: 700px;
+    height: auto; /* Altura automática para adaptarse al contenido */
+    text-align: center; /* Centrar el contenido horizontalmente */
+  }
+  
+  .confirmation-dialog img {
+    width: 30%; /* Ancho de la imagen del avatar en relación con el cuadro de diálogo */
+    max-width: 200px; /* Ancho máximo de la imagen del avatar */
+    height: auto; /* Altura automática para mantener la proporción */
+    margin-bottom: 20px;
+  }
+  
+  .confirmation-dialog button {
+    padding: 10px 50px;
+    border: none;
+    margin-right: 10px; /* Espacio a la derecha de cada botón */
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold; /* Texto en negrita */
+    color: white; /* Color del texto blanco */
+
+    font-size: 16px; /* Tamaño de fuente para los botones */
+  }
+  
+  .confirmation-dialog button:first-child {
+    background-color: #4CAF50;
+  }
+  
+  .confirmation-dialog button:last-child {
+    background-color: #f44336;
+  }
+  
+  .flex{
+    display: flex; /* Usar flexbox para organizar elementos en línea */
+    align-items: center; /* Alinear verticalmente al centro */
+  }
+
+  .flex .avatar-imagee {
+    flex: 0 0 auto; /* No se expande, no se contrae, tamaño automático */
+    margin-right: 20px; /* Espacio entre la imagen y el texto */
+  }
+  
+  .flex div {
+    flex: 1; /* Ocupa todo el espacio disponible */
+  }
+
+  .flex .texto {
+    flex: 1; /* Ocupa todo el espacio disponible */
+    color: white; /* Color del texto blanco */
+    font-weight: bold; /* Texto en negrita */
+    margin-bottom: 70px; /* Espacio inferior entre el texto y la imagen */
+    margin-left: -50px; /* Eliminar el margen izquierdo */
+    font-size: 20px; /* Tamaño de fuente para el texto de confirmación */
+  }
+  
+
+  .flex .monedas {
+    font-size: 20px; /* Tamaño de fuente para el texto de confirmación */
+
+    align-items: center; /* Alinear verticalmente al centro */
+    margin-left: 30px; /* Eliminar el margen izquierdo */
+  }
+  
+  .flex .monedas-icono {
+    width: 28px; /* Ancho de la imagen de la moneda */
+    height: auto; /* Altura automática para mantener la proporción */
+    margin-right: 10px; /* Espacio a la derecha de la imagen de la moneda */
+    margin-bottom: 0px;
+  }
+  

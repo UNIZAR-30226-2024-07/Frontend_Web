@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from '../api/axios';
-import './Tienda.css';
-import {MyNav} from '../Components/MyNav';
+import './PageTienda.css';
+import { MyNav } from '../Components/MyNav';
 import ListaAvatares from '../Components/ListaAvatares'
 
-export function Tienda() {
+export function PageTienda() {
   const [avatars, setAvatars] = useState([]);
   const [rugs, setRugs] = useState([]);
   const [coins, setCoins] = useState(null);
@@ -55,12 +55,10 @@ export function Tienda() {
 
 
   return (
-    <>
+    <div className='page-tienda'>
+      <MyNav isLoggedIn={false} isDashboard={true}/>
 
-    <div className='tienda'>
-      <MyNav isLoggedIn={false} isDashboard={false}/>
-
-      <div className='fe'>
+      <div className='div-inicial'>
         <div className='moneda'>
           <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
           {coins}
@@ -68,8 +66,7 @@ export function Tienda() {
         <ListaAvatares avatars={rugs} name="Tapetes"/> 
         <ListaAvatares avatars={cards} name="Cartas"/>
         <ListaAvatares avatars={avatars} name="Avatares"/>
-      </div>    
+      </div>   
     </div> 
-    </>
   );
 }

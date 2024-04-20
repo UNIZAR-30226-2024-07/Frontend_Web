@@ -20,7 +20,7 @@ import { CambiarContrasena } from "../Pages/CambiarContrasena"
 import {CambiarUsuario} from "../Pages/CambiarUsuario"
 import EstadisticasUser from "../Pages/EstadisticasUser"
 import { MyAvatar } from "../Components/MyAvatar"
-import {Tienda} from "../Pages/Tienda"
+import {PageTienda} from "../Pages/PageTienda"
 
 const RouterPrincipal = () => {
     return (
@@ -45,7 +45,8 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'CambiarContrasena'} element={<CambiarContrasena/>}></Route>  
                         <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
                         <Route path={constants.root + 'EstadisticasUser'} element={<EstadisticasUser/>}></Route>  
-                        <Route path={constants.root + 'Tienda'} element={<Tienda/>}></Route>  
+                        {/* <Route path={constants.root + 'PageTienda'} element={<PageTienda/>}></Route>   */}
+                        <Route path={constants.root + 'PageTienda'} element={<PageTienda/>}></Route>  
 
                     </Route>
 

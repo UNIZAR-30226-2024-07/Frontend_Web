@@ -58,7 +58,7 @@ export function MyNav({ isLoggedIn, isDashboard }) {
         {isDashboard && (
           <>
             <NavbarContent justify="end">
-              <Link to={constants.root + "Tienda"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
+              <Link to={constants.root + "PageTienda"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
                 <FaShopify className="text-4xl" />
               </Link>
               <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
@@ -67,7 +67,7 @@ export function MyNav({ isLoggedIn, isDashboard }) {
               <NavbarMenuToggle
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               />
-            </NavbarContent>
+            
             <NavbarMenu className="nav-menu">
               {menuItems.map((item, index) => (
                 <NavbarMenuItem key={`${item.text}-${index}`} onClick={item.onClick}>
@@ -75,6 +75,7 @@ export function MyNav({ isLoggedIn, isDashboard }) {
                 </NavbarMenuItem>
               ))}
             </NavbarMenu>
+            </NavbarContent>
           </>
         )}
       </NavbarContent>

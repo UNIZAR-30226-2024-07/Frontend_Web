@@ -1,11 +1,11 @@
-.tienda {
-  min-height: 100vh;
+.page-tienda {
+  height: 100vh;
   background-color: #539165;
   margin: 0;
   padding: 0;
 }
 
-.fe {
+.div-inicial {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,8 +13,8 @@
   margin-top: 50px; /* Espacio entre elementos */
 }
 
-.fe > * {
-  margin-bottom: 70px; /* Espacio entre elementos */
+.div-inicial > * {
+  margin-bottom: 60px; /* Espacio entre elementos */
 } 
 
 .moneda {

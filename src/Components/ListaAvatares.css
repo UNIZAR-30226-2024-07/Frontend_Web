@@ -78,8 +78,6 @@
   
   
   
-
-
   .confirmar {
     color: white; /* Color del texto blanco */
     font-weight: bold; /* Texto en negrita */
@@ -106,7 +104,7 @@
   }
   
   .confirmation-dialog img {
-    width: 30%; /* Ancho de la imagen del avatar en relación con el cuadro de diálogo */
+    width: 20%; /* Ancho de la imagen del avatar en relación con el cuadro de diálogo */
     max-width: 200px; /* Ancho máximo de la imagen del avatar */
     height: auto; /* Altura automática para mantener la proporción */
     margin-bottom: 20px;
@@ -132,41 +130,52 @@
     background-color: #f44336;
   }
   
-  .flex{
+  .fleex{
     display: flex; /* Usar flexbox para organizar elementos en línea */
     align-items: center; /* Alinear verticalmente al centro */
   }
 
-  .flex .avatar-imagee {
+  .fleex .avatar-imagee {
     flex: 0 0 auto; /* No se expande, no se contrae, tamaño automático */
-    margin-right: 20px; /* Espacio entre la imagen y el texto */
+    margin-right: 30px; /* Espacio entre la imagen y el texto */
   }
   
-  .flex div {
+  .fleex div {
     flex: 1; /* Ocupa todo el espacio disponible */
   }
 
-  .flex .texto {
+  .fleex .texto {
     flex: 1; /* Ocupa todo el espacio disponible */
     color: white; /* Color del texto blanco */
+    display: flex-start;
+
     font-weight: bold; /* Texto en negrita */
-    margin-bottom: 70px; /* Espacio inferior entre el texto y la imagen */
+    margin-bottom: 50px; /* Espacio inferior entre el texto y la imagen */
     margin-left: -50px; /* Eliminar el margen izquierdo */
     font-size: 20px; /* Tamaño de fuente para el texto de confirmación */
   }
   
 
-  .flex .moneda {
+  .fleex .monedas {
     font-size: 20px; /* Tamaño de fuente para el texto de confirmación */
-
+    display: flex;
     align-items: center; /* Alinear verticalmente al centro */
-    margin-left: 30px; /* Eliminar el margen izquierdo */
+    margin-left: 100px; /* Eliminar el margen izquierdo */
+    margin-bottom: 20px;
   }
   
-  .flex .moneda-icono {
+  .fleex .monedas-icono {
     width: 28px; /* Ancho de la imagen de la moneda */
     height: auto; /* Altura automática para mantener la proporción */
-    margin-right: 10px; /* Espacio a la derecha de la imagen de la moneda */
-    margin-bottom: 0px;
+    margin-right: 10px; /* Espacio a la derecha de la imagen de la moneda */  
+    margin-top: 20px;
+  }
+
+  
+  .error-message {
+    color: red; /* Color rojo para el mensaje de error */
+    font-weight: bold; /* Texto en negrita */
+    margin-bottom: 10px;
+    font-size: 16px; /* Tamaño de fuente del mensaje de error */
   }
   
