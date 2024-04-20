@@ -1,77 +1,39 @@
-.tienda{
+.tienda {
   min-height: 100vh;
   background-color: #539165;
   margin: 0;
   padding: 0;
 }
-  
 
-.avatar-scroll {
-  display: flex; /* Mostrar elementos en línea */
+.fe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px; /* Espacio entre elementos */
 }
 
-.avatar-list {
-  list-style: none;
-  padding: 0;
-  display: flex; /* Mostrar elementos en línea */
-  flex-wrap: nowrap; /* No permitir envolver elementos */
-  margin: 0; /* Eliminar el margen predeterminado */
-  padding: 0; /* Eliminar el relleno predeterminado */
+.fe > * {
+  margin-bottom: 70px; /* Espacio entre elementos */
+} 
+
+.moneda {
+  background-color: #3F497FFF;
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+  margin-left: 50px; /* Margen izquierdo */
+  width: 200px; /* Ancho del cuadrado */
+  height: 50px; /* Altura del cuadrado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px; /* Radio de los bordes */
+  margin-left: 1000px; /* Mueve el cuadrado hacia la derecha */
 }
 
-.avatar-list li {
-  flex: 0 0 auto; /* Permitir que los elementos crezcan y se encojan automáticamente */
-  margin-right: 10px; /* Espacio entre elementos */
-}
-
-.avatar-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
-
-.avatar-container {
-  overflow-x: auto; /* Permitir desplazamiento horizontal */
-  overflow-y: hidden; /* Ocultar desplazamiento vertical */
-  white-space: nowrap; /* Evitar el retorno automático de línea */
-  position: relative; /* Establecer la posición relativa para el contenedor */
-  width: 800px; /* Ancho fijo del contenedor */
-  display: flex; /* Mostrar elementos como un flex container */
-  justify-content: flex-end; /* Alinear elementos en el eje principal hacia la derecha */
-  margin: 0 auto; /* Centrar el contenedor horizontalmente */
-  margin-top: 60px; /* Agregar margen superior */
-  justify-content: flex-start; /* Alinear elementos en el eje principal hacia el principio */
-}
-
-.avatar-container::-webkit-scrollbar {
-  width: 20px; /* Ancho de la barra de desplazamiento */
-}
-
-.avatar-container::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Color de fondo de la barra de desplazamiento */
-}
-
-.avatar-container::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color del cursor de la barra de desplazamiento */
-  border-radius: 6px; /* Borde redondeado del cursor */
-}
-
-.avatar-container::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Cambiar el color del cursor al pasar el mouse */
-}
-
-.avatar-scroll {
-  display: inline-block; /* Mostrar elementos en línea */
-}
-
-.avatar-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  white-space: nowrap; /* Evitar el retorno automático de línea */
-}
-
-.avatar-list li {
-  display: inline-block; /* Mostrar elementos en línea */
-  margin-right: 10px; /* Espacio entre elementos */
+.moneda-icono {
+  width: 30px; /* Ancho deseado */
+  height: 30px; /* Altura deseada */
+  margin-right: 10px; /* Espacio entre el icono y el texto */
 }

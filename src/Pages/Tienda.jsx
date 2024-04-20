@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import axios from '../api/axios';
 import './Tienda.css';
-import constants from '../constants'
-import { MyNav } from '../Components/MyNav';
+import {MyNav} from '../Components/MyNav';
+import ListaAvatares from '../Components/ListaAvatares'
 
-export const Tienda = () => {
+export function Tienda() {
   const [avatars, setAvatars] = useState([]);
   const [rugs, setRugs] = useState([]);
+  const [coins, setCoins] = useState(null);
+  const [cards, setCards] = useState([]);
+
 
   useEffect(() => {
     const fetchAvatars = async () => {
       try {
-        const response = await axios.get('/avatar/getAllAvatars');
+        const response = await axios.get('/avatar/getAvatarStore');
         setAvatars(response.data.avatar);
       } catch (error) {
         console.error('Failed to load avatars:', error);
@@ -20,52 +23,53 @@ export const Tienda = () => {
 
     const fetchRugs = async () => {
       try {
-        const response = await axios.get('/rug/getAllRugs');
-        console.log("holaa?");
+        const response = await axios.get('/rug/getRugStore');
         setRugs(response.data.rug);
       } catch (error) {
-        console.error('Failed to load avatars:', error);
+        console.error('Failed to load rugs:', error);
+      }
+    };
+
+    const fetchCards = async () => {
+      try {
+        const response = await axios.get('/card/getCardStore');
+        setCards(response.data.card);
+      } catch (error) {
+        console.error('Failed to load cards:', error);
+      }
+    };
+
+    const saberMonedas = async () => {
+      try {
+        const response = await axios.get('/user/verify');
+        setCoins(response.data.user.coins);
+      } catch (error) {
+        console.error('Failed to load cards:', error);
       }
     };
     fetchAvatars();
     fetchRugs();
-  }, []);
+    fetchCards();
+    saberMonedas();
+   }, []);
 
 
   return (
+    <>
+
     <div className='tienda'>
-    
-    <MyNav isLoggedIn={false} isDashboard={true}/>
-      <div className="avatar-container">
-        <div className="avatar-scroll">
-          <ul className="avatar-list">
-            {avatars.map(avatar => (
-              <li key={avatar._id}>
-                <img 
-                  src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
-                  alt={avatar.name}
-                  className="avatar-image"
-                />
-              </li>
-            ))}
-          </ul>
+      <MyNav isLoggedIn={false} isDashboard={false}/>
+
+      <div className='fe'>
+        <div className='moneda'>
+          <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
+          {coins}
         </div>
-      </div>
-      <div className="avatar-container">
-        <div className="avatar-scroll">
-          <ul className="avatar-list">
-            {rugs.map(rug => (
-              <li key={rug._id}>
-                <img 
-                  src={constants.dirApi + "/" + constants.uploadsFolder + "/" + rug.imageFileName}
-                  alt={rug.name}
-                  className="avatar-image"
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
+        <ListaAvatares avatars={rugs} name="Tapetes"/> 
+        <ListaAvatares avatars={cards} name="Cartas"/>
+        <ListaAvatares avatars={avatars} name="Avatares"/>
+      </div>    
+    </div> 
+    </>
   );
-};
+}
