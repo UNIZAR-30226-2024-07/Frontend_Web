@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+
 import axios from '../api/axios'
 
 import './CrearCuentaAdmin.css';
@@ -9,7 +10,7 @@ import { MyFormPasswd } from '../Components/MyFormPasswd';
 
 const CrearCuentaAdmin = () => {
 
-    //const { signup } = useAuth();
+    const navigate = useNavigate();
 
     // Estados para los campos de entrada
     const [nick, setNick] = useState('');
@@ -26,13 +27,15 @@ const CrearCuentaAdmin = () => {
             name: nombre,
             surname: apellido,
             email: nombreCorreo,
-            password: contrasena
+            password: contrasena,
+            rol: 'admin'
         };
 
         try {
             const response = await axios.post('/user/add', formData)
             if (response.status == 200) {
-                history.push('/HomeAdmin');
+                // Redirigir al admin a la página de admin home después de iniciar sesión
+                navigate(constants.root + 'HomeAdmin');
             }
             else {
                 console.log("Fallo al añadir el usuario: ", response.data);

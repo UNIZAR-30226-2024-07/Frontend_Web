@@ -1,6 +1,7 @@
 import {Route, BrowserRouter, Routes} from "react-router-dom"
 import { AuthProvider } from "../Context/AuthContext"
 import { ProtectedRoute } from "./ProtectedRoute"
+import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin"
 import { PageHome } from "../Pages/PageHome"
 import { PageFriendFind } from "../Pages/PageFriendFind"
 import { PageFriendList } from "../Pages/PageFriendList"
@@ -32,22 +33,29 @@ const RouterPrincipal = () => {
 
                     <Route element={<ProtectedRoute />}>
                         
+                        <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
+                        
                         <Route path={constants.root + 'PageFriendFind'} element={<PageFriendFind/>}></Route>
                         <Route path={constants.root + 'PageFriendList'} element={<PageFriendList/>}></Route>
                         <Route path={constants.root + 'PageAllUsers'} element={<MyAvatar/>}></Route>
                         <Route path={constants.root + 'PageFriendRequest'} element={<PageFriendRequest/>}></Route>
                         <Route path={constants.root + 'PageDashboard'} element={<PageDashboard/>}></Route>
-                        <Route path={constants.root + 'ejemploSubidaFoto'} element={<EjemploSubidaFoto/>}></Route>
-                        <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
-                        <Route path={constants.root + 'HomeAdmin'} element={<HomeAdmin/>}></Route>
-                        <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
-                        <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
                         <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
                         <Route path={constants.root + 'CambiarUsuario'} element={<CambiarUsuario/>}></Route>  
                         <Route path={constants.root + 'CambiarContrasena'} element={<CambiarContrasena/>}></Route>  
                         <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
                         <Route path={constants.root + 'EstadisticasUser'} element={<EstadisticasUser/>}></Route>  
                         <Route path={constants.root + 'Tienda'} element={<Tienda/>}></Route>  
+
+                    </Route>
+
+                    <Route element={<ProtectedRouteAdmin />}>
+                        
+                        <Route path={constants.root + 'ejemploSubidaFoto'} element={<EjemploSubidaFoto/>}></Route>
+
+                        <Route path={constants.root + 'HomeAdmin'} element={<HomeAdmin/>}></Route>
+                        <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
+                        <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
 
                     </Route>
 

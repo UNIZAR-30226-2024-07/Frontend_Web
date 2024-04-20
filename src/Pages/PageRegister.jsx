@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import "./PageLogin.css"
 
 export function PageRegister() {
-  const { signup, isAuthenticated } = useAuth();
+  const { signup, isAuthenticated, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   // Estados para los campos de entrada
@@ -44,7 +44,8 @@ export function PageRegister() {
         name: nombre,
         surname: apellido,
         email: correoElectronico,
-        password: contrasena
+        password: contrasena,
+        rol: 'user'
       });
 
       // Redirigir al usuario a la página de dashboard después de registrar
@@ -54,10 +55,14 @@ export function PageRegister() {
     }
   };
 
-  // Redirigir al usuario a la página de dashboard si ya está autenticado
+  // Redirigir al usuario a la página de dashboard / HomeAdmin si ya está autenticado
   useEffect(() => {
-    if (isAuthenticated) navigate(constants.root + 'PageDashboard');
-  }, [isAuthenticated, navigate]);
+    if (isAuthenticated && isAdmin) {
+      navigate(constants.root + 'HomeAdmin');
+    } else if (isAuthenticated) {
+      navigate(constants.root + 'PageDashboard');
+    }
+  }, [isAuthenticated, isAdmin, navigate]);
 
   return (
     <div className="inicio">
