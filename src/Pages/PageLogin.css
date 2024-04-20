@@ -1,9 +1,7 @@
 .inicio {
     margin: 0;
     padding: 0;
-    background-image: url('/Imagenes/FondoPrincipal.png'); /* Reemplaza 'ruta/de/la/imagen.jpg' con la ruta de tu imagen */
-    background-size: cover; /* La imagen se ajustará para cubrir todo el fondo */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-color: #539165 !important;
     height: 100%;
 }
 
