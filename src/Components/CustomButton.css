@@ -1,6 +1,7 @@
 .custom-button {
-    background-color: white;
-    color: black;
+    background-color: #3F497FFF;
+    color: white;
+    font-weight: bold;
     font-size: 22px;
     padding: 22px 42px;
     margin-bottom: 10px;
@@ -9,9 +10,6 @@
     border-radius: 20px; /* Agrega bordes redondeados al formulario */
 }
   
-.custom-button:hover {
-    background-color: #f0f0f0;
-}
   
  
 .custom-button-centered {

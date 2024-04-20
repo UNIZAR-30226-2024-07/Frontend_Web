@@ -58,7 +58,7 @@ export function MyNav({ isLoggedIn, isDashboard }) {
         {isDashboard && (
           <>
             <NavbarContent justify="end">
-              <Link to={constants.root + "Tienda"} style={{ color: 'black', cursor: 'pointer', marginRight: '20px' }}>
+              <Link to={constants.root + "Tienda"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
                 <FaShopify className="text-4xl" />
               </Link>
               <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>

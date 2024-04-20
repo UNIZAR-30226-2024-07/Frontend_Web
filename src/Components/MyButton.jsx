@@ -5,7 +5,7 @@ export const MyButton = extendVariants(Button, {
   variants: {
     // <- modify/add variants
     color: {
-      midnightblue: "text-[#fff] bg-[#3F497F]",
+      midnightblue: "text-[#fff] bg-[#3F497FFF]",
       red: "text-[#fff] bg-[#f00]",
       grey:  "text-[#fff] bg-[#242424]",
       olive: "text-[#000] bg-[#84cc16]",
