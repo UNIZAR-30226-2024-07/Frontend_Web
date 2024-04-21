@@ -26,7 +26,7 @@ export function PageLogin() {
         password: contrasena,
         rol: 'Null'   
       });
-      setError(res.message.message);
+      setError(res.data.message);
       if (res.data.user.rol === "admin") {
         navigate(constants.root + 'HomeAdmin');
       } else {

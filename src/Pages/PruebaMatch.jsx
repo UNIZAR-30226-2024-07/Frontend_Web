@@ -166,20 +166,28 @@ const PruebaMatch = () => {
     useEffect(() => {
         socket = io(constants.dirApi)
 
-        socket.on("starting public board", (boardId) => {
+        socket.on("starting public board", (boardId, initCards) => {
             console.log("Que empieza la partida")
             setTituloVisible(!tituloVisible)
             setBoardId(boardId)
+            console.log(initCards)
+            const infoPlayer = initCards.find(infoPlayer => infoPlayer.userId === user._id);
+            setCardsFirst(infoPlayer.cards)
+            setTotalFirst(infoPlayer.totalCards)
             console.log(boardId)
         })
 
-        socket.on("starting private board", (boardId) => {
+        socket.on("starting private board", (boardId, initCards) => {
             console.log("Partida Privada a punto de comenzar")
             setTituloVisible(!tituloVisible)
             setBoardId(boardId)
+            console.log(initCards)
+            const infoPlayer = initCards.find(infoPlayer => infoPlayer.userId === user._id);
+            setCardsFirst(infoPlayer.cards)
+            setTotalFirst(infoPlayer.totalCards)
             console.log(boardId)
         })
-    }, [tituloVisible]) // Se ejecuta solo una vez cuando el componente se monta
+    }, [tituloVisible, user]) // Se ejecuta solo una vez cuando el componente se monta
 
     return (
         <div>
@@ -256,8 +264,8 @@ const PruebaMatch = () => {
                         <p>Carta: {carta.value} of {carta.suit}</p>
                         </div>
                     ))}
-                    <p>Is defeat: {defeatFirst}</p>
-                    <p>Is BlackJack: {blackJackFirst}</p>
+                    <p>Is defeat: {defeatFirst ? "Sí" : "No"}</p>
+                    <p>Is BlackJack: {blackJackFirst ? "Sí" : "No"}</p>
                 </div>
 
                 <div style={{ backgroundColor: 'yellow'}}>
@@ -269,8 +277,8 @@ const PruebaMatch = () => {
                         <p>Carta: {carta.value} of {carta.suit}</p>
                         </div>
                     ))}
-                    <p>Is defeat: {defeatSecond}</p>
-                    <p>Is BlackJack: {blackJackSecond}</p>
+                    <p>Is defeat: {defeatSecond ? "Sí" : "No"}</p>
+                    <p>Is BlackJack: {blackJackSecond ? "Sí" : "No"}</p>
                 </div>                
             </div>
         </div>
