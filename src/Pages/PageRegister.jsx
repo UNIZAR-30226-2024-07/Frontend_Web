@@ -1,4 +1,3 @@
-import { MyNav } from "../Components/MyNav";
 import { MyForm } from "../Components/MyForm";
 import { MyFormPasswd } from "../Components/MyFormPasswd";
 import { MyButton } from "../Components/MyButton";
@@ -6,6 +5,9 @@ import { useState, useEffect } from "react";
 import constants from '../constants';
 import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+import { IoMdMail } from "react-icons/io";
+import { RiLockPasswordFill } from "react-icons/ri";
 import "./PageLogin.css"
 
 export function PageRegister() {
@@ -19,27 +21,38 @@ export function PageRegister() {
   const [correoElectronico, setCorreoElectronico] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [repetirContrasena, setRepetirContrasena] = useState('');
+  const [error, setError] = useState(null); // Estado para almacenar el mensaje de error
 
   // Manejador para el envío del formulario
-  const handleSubmit = async (event) => {
+   // Manejador para el envío del formulario
+   const handleSubmit = async (event) => {
     event.preventDefault(); // Evitar que se recargue la página al enviar el formulario
-
+  
     // Validar que las contraseñas coincidan
     if (contrasena !== repetirContrasena) {
-      console.error('Las contraseñas no coinciden');
+      setError('Las contraseñas no coinciden');
       return;
     }
-    console.log("Nombre Completo: " + nombre);
-    console.log("Apellido Completo" + apellido)
-    console.log("Usuario Completo: " + nombreUsuario);
-    console.log("Correo Completo: " + correoElectronico);
-    console.log("Contraseña Completo: " + contrasena);
-
-
+  
+    // Validar que la contraseña cumpla con los requisitos
+    const regexUpperCase = /[A-Z]/; // al menos una mayúscula
+    const regexLowerCase = /[a-z]/; // al menos una minúscula
+    const regexNumber = /[0-9]/; // al menos un número
+    const regexLength = /.{6,}/; // al menos 6 caracteres
+  
+    if (
+      !regexUpperCase.test(contrasena) ||
+      !regexLowerCase.test(contrasena) ||
+      !regexNumber.test(contrasena) ||
+      !regexLength.test(contrasena)
+    ) {
+      setError('La contraseña debe contener al menos una mayúscula, una minúscula, un número y tener al menos 6 caracteres');
+      return;
+    }
+  
     try {
       // Llamar a la función signup con los datos del usuario
-      await signup({
-
+      const res = await signup({
         nick: nombreUsuario,
         name: nombre,
         surname: apellido,
@@ -49,78 +62,92 @@ export function PageRegister() {
       });
 
       // Redirigir al usuario a la página de dashboard después de registrar
-      navigate(constants.root + 'PageDashboard');
+      if(res.message.status != "error"){
+        navigate(constants.root + 'PageDashboard');
+      }
+      else{
+        setError(res.message.message);
+      }
     } catch (error) {
-      console.error('Error al registrar usuario:', error.message);
+      setError("Error al registrar usuario");
     }
   };
+  
 
   // Redirigir al usuario a la página de dashboard / HomeAdmin si ya está autenticado
   useEffect(() => {
     if (isAuthenticated && isAdmin) {
       navigate(constants.root + 'HomeAdmin');
-    } else if (isAuthenticated) {
+    } else if (isAuthenticated && !isAdmin) {
       navigate(constants.root + 'PageDashboard');
     }
   }, [isAuthenticated, isAdmin, navigate]);
 
   return (
     <div className="inicio">
-     <MyNav isLoggedIn={false} />
       <div className='form-container'>
         <form className='form-login' onSubmit={handleSubmit}>
-          <MyForm
-            typeForm="nickname"
-            placeholderForm="Introduce su nombre"
-            labelText="Nombre"
-            className="form-element"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-          />
-          <MyForm
-            typeForm="nickname"
-            placeholderForm="Introduce su apellido"
-            labelText="Apellido"
-            className="form-element"
-            value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
-          />
-
-          <MyForm
-            typeForm="nickname"
-            placeholderForm="Introduce su nombre de usuario"
-            labelText="Nombre de usuario"
-            className="form-element"
-            value={nombreUsuario}
-            onChange={(e) => setNombreUsuario(e.target.value)}
-          />
-
-          <MyForm
-            typeForm="nickname"
-            placeholderForm="Introduce su correo electronico"
-            labelText="Correo Electronico"
-            className="form-element"
-            value={correoElectronico}
-            onChange={(e) => setCorreoElectronico(e.target.value)}
-          />
-
-          <MyFormPasswd
-            placeholderForm="Introduce su contraseña"
-            labelText="Contraseña"
-            value={contrasena}
-            onChange={(e) => setContrasena(e.target.value)}
-          />
-
-          <MyFormPasswd
-            placeholderForm="Repite su contraseña"
-            labelText="Repetir Contraseña"
-            value={repetirContrasena}
-            onChange={(e) => setRepetirContrasena(e.target.value)}
-          />
-
+          <h1 className="titulo-form">Registro Usuario</h1>
+          <div className="part-form">
+            <FaUser className="img-form"/>
+            <MyForm
+              typeForm="nickname"
+              placeholderForm="Nombre"
+              className="form-element"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+            />
+          </div>
+          <div className="part-form">
+            <FaUser className="img-form"/>
+            <MyForm
+              typeForm="nickname"
+              placeholderForm="Apellidos"
+              className="form-element"
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)}
+            />
+          </div>
+          <div className="part-form">
+            <FaUser className="img-form"/>
+            <MyForm
+              typeForm="nickname"
+              placeholderForm="Nickname"
+              className="form-element"
+              value={nombreUsuario}
+              onChange={(e) => setNombreUsuario(e.target.value)}
+            />
+          </div>
+          <div className="part-form">
+            <IoMdMail className="img-form"/>
+            <MyForm
+              typeForm="nickname"
+              placeholderForm="Correo electronico"
+              className="form-element"
+              value={correoElectronico}
+              onChange={(e) => setCorreoElectronico(e.target.value)}
+            />
+          </div>
+          <div className="part-form">
+            <RiLockPasswordFill className="img-form"/>
+            <MyFormPasswd
+              placeholderForm="Contraseña"
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
+            />
+          </div>
+          <div className="part-form">
+            <RiLockPasswordFill className="img-form"/>
+            <MyFormPasswd
+              placeholderForm="Repita contraseña"
+              value={repetirContrasena}
+              onChange={(e) => setRepetirContrasena(e.target.value)}
+            />
+          </div>
           <MyButton className="button-login" color="midnightblue" size="xl" type="submit">Registrarse</MyButton>
         </form>
       </div>
+      {error && <div className="error-login">{error}</div>}
     </div>
   );
 }

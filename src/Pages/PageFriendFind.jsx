@@ -59,11 +59,11 @@ export function PageFriendFind() {
 
     useEffect(() => {
         // Filtrar usuarios basados en el término de búsqueda
-        const filtered = users.filter(user =>
-            user.name.toLowerCase().includes(searchTerm.toLowerCase())
+        const filtered = searchTerm === '' ? [] : users.filter(user =>
+            user.name.includes(searchTerm) // No convertir a minúsculas el nombre del usuario
         );
         setFilteredUsers(filtered);
-    }, [searchTerm, users]); // Solo se ejecutará cuando searchTerm o users cambien
+    }, [searchTerm, users]);
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -128,11 +128,14 @@ export function PageFriendFind() {
             {searchTerm !== '' && (
                 <div className="friend">
                     <ul className="friend-list">
-                        {filteredUsers.map(usuario => (
-                            <li className="friend-list-item" key={usuario._id}>
-                                <MyFriend user={usuario} isFriendList={false} isRequestList={false} isFriendFind={true} setReloadParent={handleFriendUpdate} type={usuario.type} />
-                            </li>
-                        ))}
+                    {filteredUsers.map(usuario => (
+                
+    <li className="friend-list-item" key={usuario._id}>
+        {usuario.rol === "user" && (
+            <MyFriend user={usuario} isFriendList={false} isRequestList={false} isFriendFind={true} setReloadParent={handleFriendUpdate} type={usuario.type} />
+        )}
+    </li>
+))}
                     </ul>
                 </div>
             )}

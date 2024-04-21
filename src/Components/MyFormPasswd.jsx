@@ -14,7 +14,6 @@ export function MyFormPasswd({placeholderForm, labelText, value, onChange}) {
   return (
     <div className="max-w-xs my-form-container">
       <Input
-          isRequired
           label={<span className="form-input">{labelText}</span>}
           placeholder={placeholderForm}
           labelPlacement="outside"

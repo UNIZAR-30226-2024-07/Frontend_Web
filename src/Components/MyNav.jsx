@@ -19,7 +19,7 @@ export function MyNav({ isLoggedIn, isDashboard }) {
 
   const menuItems = [
     { text: "Amigos", path: constants.root + "PageFriendList" },
-    { text: "Ranking", path: constants.root + "PageAllUsers" },
+    { text: "Ranking", path: constants.root + "Ranking" },
     { text: "Skins", path: constants.root + "PageFriendList" },
     { text: "Log out", onClick: handleLogout } // Asigna la función handleLogout al botón "Log out"
   ];
@@ -64,7 +64,7 @@ export function MyNav({ isLoggedIn, isDashboard }) {
               <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
                 <IoSettingsOutline className="text-4xl" />
               </Link>
-              <NavbarMenuToggle
+              <NavbarMenuToggle style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               />
             

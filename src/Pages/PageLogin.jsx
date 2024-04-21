@@ -2,54 +2,44 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../Context/AuthContext";
 import constants from '../constants';
 import { Link, useNavigate } from "react-router-dom";
-import { MyNav } from "../Components/MyNav";
 import { MyForm } from "../Components/MyForm";
 import { MyFormPasswd } from "../Components/MyFormPasswd";
-import { MyButton } from "../Components/MyButton";
 import './PageLogin.css';
+import { FaUser } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { Button } from "@nextui-org/react";
 
 export function PageLogin() {
   const { signin, isAuthenticated, isAdmin } = useAuth();
   const navigate = useNavigate();
 
-  // Estados para los campos de entrada
   const [nombreCorreo, setNombreCorreo] = useState('');
   const [contrasena, setContrasena] = useState('');
+  const [error, setError] = useState(null); 
 
-  // Manejador para el envío del formulario
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Evitar que se recargue la página al enviar el formulario
-
-    console.log("Nombre Completo: " + nombreCorreo);
-    console.log("Contraseña completa: " + contrasena);
+    event.preventDefault();
 
     try {
-      // Llamar a la función signin con los datos del usuario
-      // Rol da igual porque luego se redirige. Es un login compartido
       const res = await signin({
         nick: nombreCorreo,
         password: contrasena,
         rol: 'Null'   
       });
+      setError(res.message.message);
       if (res.data.user.rol === "admin") {
-        // Redirigir al admin a la página de admin home después de iniciar sesión
         navigate(constants.root + 'HomeAdmin');
       } else {
-        // Redirigir al usuario a la página de dashboard después de iniciar sesión
         navigate(constants.root + 'PageDashboard');
       }
-
-
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message);
     }
 
-    // Limpiar los campos después de enviar el formulario
     setNombreCorreo('');
     setContrasena('');
   };
 
-  // Redirigir al usuario a la página de dashboard / HomeAdmin si ya está autenticado
   useEffect(() => {
     if (isAuthenticated && isAdmin) {
       navigate(constants.root + 'HomeAdmin');
@@ -60,30 +50,35 @@ export function PageLogin() {
 
   return (
     <div className="inicio">
-      <MyNav isLoggedIn={false} isDashboard={false} />
       <div className='form-container'>
         <form className='form-login' onSubmit={handleSubmit}>
-          <MyForm
-            typeForm="nickname"
-            placeholderForm="Enter your nickname"
-            labelText="Nickname"
-            value={nombreCorreo}
-            onChange={(e) => setNombreCorreo(e.target.value)}
-          />
-          <MyFormPasswd
-            placeholderForm="Introduce su contraseña"
-            labelText="Contraseña"
-            value={contrasena}
-            onChange={(e) => setContrasena(e.target.value)}
-          />
-          <MyButton className="button-login" color="midnightblue" size="xl" type="submit">Iniciar sesión</MyButton>
-          <p className="paragraph-login">Si no tienes cuenta, <Link to={constants.root + "PageRegister"} className="pulsa-aqui">pulsa aquí</Link></p>
+          <h1 className="titulo-form">Inicio Sesión</h1>
+          <div className="part-form">
+            <FaUser className="img-form"/>
+            <MyForm
+              typeForm="nickname"
+              placeholderForm="Nickname"
+              value={nombreCorreo}
+              onChange={(e) => setNombreCorreo(e.target.value)}
+            />
+          </div>
+          <div className="part-form">
+            <RiLockPasswordFill className="img-form"/>
+            <MyFormPasswd
+              placeholderForm="Contraseña"
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
+            />
+          </div>
+          <Button className="button-login" type="submit">Iniciar sesión</Button>
+          {error && <div className="error-login">{error}</div>}
+          <h2 className="parrafado-centrado">Si no tienes cuenta pulsa aquí</h2>
+          <Link to={constants.root + "PageRegister"}>
+            <Button className="button-login">Registrarse</Button>
+          </Link>
 
         </form>
       </div>
     </div>
   );
 }
-
-
-

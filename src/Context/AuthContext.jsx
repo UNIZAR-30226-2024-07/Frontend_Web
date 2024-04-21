@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
+      console.log("Registro usuaario")
       if (res.status === 200) {
         setUser(res.data.user);
         setIsAuthenticated(true);
