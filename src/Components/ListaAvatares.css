@@ -37,12 +37,18 @@
     margin-right: 10px; /* Espacio entre elementos */
   }
   
+  .avatar-images {
+    width: 110px;
+    height: 110px;
+    border-radius: 60%;
+    border: 10px solid green; /* Establecer el ancho y el estilo del borde, y el color en verde */
+  }
+
   .avatar-imagee {
     width: 110px;
     height: 110px;
     border-radius: 60%;
   }
-  
   .avatar-container {
     overflow-x: auto; /* Permitir desplazamiento horizontal */
     overflow-y: hidden; /* Ocultar desplazamiento vertical */

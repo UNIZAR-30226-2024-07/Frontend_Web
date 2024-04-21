@@ -21,7 +21,7 @@ import {CambiarUsuario} from "../Pages/CambiarUsuario"
 import EstadisticasUser from "../Pages/EstadisticasUser"
 import { MyAvatar } from "../Components/MyAvatar"
 import {PageTienda} from "../Pages/PageTienda"
-
+import { SelectAvatar } from "../Pages/SelectAvatar"
 const RouterPrincipal = () => {
     return (
         <AuthProvider>
@@ -45,7 +45,7 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'CambiarContrasena'} element={<CambiarContrasena/>}></Route>  
                         <Route path={constants.root + 'AjustesUser'} element={<AjustesUser/>}></Route>  
                         <Route path={constants.root + 'EstadisticasUser'} element={<EstadisticasUser/>}></Route>  
-                        {/* <Route path={constants.root + 'PageTienda'} element={<PageTienda/>}></Route>   */}
+                        <Route path={constants.root + 'SelectAvatar'} element={<SelectAvatar/>}></Route>  
                         <Route path={constants.root + 'PageTienda'} element={<PageTienda/>}></Route>  
 
                     </Route>

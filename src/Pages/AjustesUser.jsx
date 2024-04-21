@@ -41,11 +41,17 @@ const AjustesUser = () => {
     navigate('/Frontend_Web/EstadisticasUser');
   };
 
+  const handleProbarAvatares = () => {
+    // Lógica para navegar a la pantalla de ver estadísticas
+    navigate('/Frontend_Web/SelectAvatar');
+  };
+
   return (
     <div className='ajustes-user'>
       <MyNav isLoggedIn={false} isDashboard={true} /> 
         <div className="button-cont">
           {/* <CustomButton text="Cambiar avatar" onClick={handleCambiarAvatar} /> */}
+          <CustomButton text="avataress" onClick={handleProbarAvatares} />
           <CustomButton text="Cambiar nombre usuario" onClick={handleCambiarNombreUsuario} />
           <CustomButton text="Cambiar contraseña" onClick={handleCambiarContrasena} />
           <CustomButton text="Ver estadísticas" onClick={handleVerEstadisticas} />

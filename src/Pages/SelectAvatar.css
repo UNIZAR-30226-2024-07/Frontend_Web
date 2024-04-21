@@ -1,0 +1,40 @@
+.page-select {
+    height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .div-a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px; /* Espacio entre elementos */
+  }
+  
+  .div-a > * {
+    margin-bottom: 60px; /* Espacio entre elementos */
+  } 
+  
+  .monedas {
+    background-color: #3F497FFF;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    margin-left: 50px; /* Margen izquierdo */
+    width: 200px; /* Ancho del cuadrado */
+    height: 50px; /* Altura del cuadrado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* Radio de los bordes */
+    margin-left: 1000px; /* Mueve el cuadrado hacia la derecha */
+  }
+  
+  .monedas-icono {
+    width: 30px; /* Ancho deseado */
+    height: 30px; /* Altura deseada */
+    margin-right: 10px; /* Espacio entre el icono y el texto */
+  }
+  

@@ -16,6 +16,7 @@ export function PageTienda() {
       try {
         const response = await axios.get('/avatar/getAvatarStore');
         setAvatars(response.data.avatar);
+        console.log(response);
       } catch (error) {
         console.error('Failed to load avatars:', error);
       }
@@ -63,9 +64,9 @@ export function PageTienda() {
           <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
           {coins}
         </div>
-        <ListaAvatares avatars={rugs} name="Tapetes"/> 
-        <ListaAvatares avatars={cards} name="Cartas"/>
-        <ListaAvatares avatars={avatars} name="Avatares"/>
+        <ListaAvatares avatars={rugs} name="Tapetes" type="1"  defaul=""/> 
+        <ListaAvatares avatars={cards} name="Cartas" type="1" defaul=""/>
+        <ListaAvatares avatars={avatars} name="Avatares" type="1" defaul=""/>
       </div>   
     </div> 
   );
