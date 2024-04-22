@@ -43,11 +43,12 @@
     border-radius: 60%;
   }
 
-  .avatar-imagee {
+  .avatar-image2 {
     width: 110px;
     height: 110px;
-    border-radius: 60%;
+    border-radius: 20%
   }
+
   .avatar-container {
     overflow-x: auto; /* Permitir desplazamiento horizontal */
     overflow-y: hidden; /* Ocultar desplazamiento vertical */

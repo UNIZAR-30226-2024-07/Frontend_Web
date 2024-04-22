@@ -6,11 +6,13 @@ import { useState } from 'react';
 import axios from '../api/axios';
 import { FaCheckSquare } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
-const ListaAvatares = ({ avatars, name, type, defaul }) => {
+const ListaAvatares = ({ avatars, name, type, defaul, onAvatarClick }) => {
   const [selectedAvatar, setSelectedAvatar] = useState();
   const [precio, setPrecio] = useState(null);
   const [error, setError] = useState(null);
   const [bien, setBien] = useState(false);
+  const className = name === 'Avatares' ? 'avatar-images' : 'avatar-image2';
+  const [mensaje, setMensaje] = useState(false); // Estado para controlar la visibilidad del mensaje de compra exitosa
 
   // type == 1
   const saberPrecio = async (avatar) => {
@@ -143,6 +145,7 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
       }
       setBien(true);
       setSelectedAvatar(null); // Cierra el cuadro de diálogo de confirmación
+      mensajee();
     } else {
       if (name === 'Avatares') {
         seleccionarAvatar(avatar.image)
@@ -153,7 +156,8 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
       }
     }
     setTimeout(() => {
-      window.location.reload();
+      // window.location.reload();
+      onAvatarClick();
     }, 1000); // 1000 milisegundos = 1 segundo
   };
 
@@ -166,49 +170,32 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
     setError(null);
   }
 
+  const mensajee = () => {
+    setMensaje(true);
+    setTimeout(() => {
+      setMensaje(false);
+    }, 1000); // Tiempo en milisegundos (en este caso, 3 segundos)
+  };
   
-  const render = () => {
+  const lista = () => {
     return (
       avatars.map(avatar => (
         <li key={avatar.image}>
          {avatar.image === defaul ? (
-          // <img 
-          //   src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
-          //   alt={avatar.image}
-          //   className='avatar-images'
-          //   onClick={() =>handleAvatarClick(avatar)}
-          // />
-          // <div style={{ position: 'relative', display: 'inline-block' }}>
-          // <img 
-          //   src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
-          //   alt={avatar.image}
-          //   className='avatar-images'
-          //   onClick={() =>handleAvatarClick(avatar)}
-          // />
-          // <FaCheckSquare style={{ 
-          //   position: 'absolute', 
-          //   top: '5px', 
-          //   right: '5px',
-          //   color: 'green',
-          //   fontSize: '30px' 
-          // }} />
-          // </div>
-
-
-              <div style={{ position: 'relative', display: 'inline-block' }}>
-          <img 
-            src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
-            alt={avatar.image}
-            className='avatar-images'
-            onClick={() => handleAvatarClick(avatar)}
-          />
-          <GreenCheckSquare size={30} />
-        </div>
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <img 
+              src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
+              alt={avatar.image}
+              className={className}
+              onClick={() => handleAvatarClick(avatar)}
+            />
+            <GreenCheckSquare size={30} />
+          </div>
           ) : (
           <img 
             src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
             alt={avatar.image}
-            className='avatar-imagee'
+            className={className}
             onClick={() => handleAvatarClick(avatar)}
           />
           )}
@@ -226,7 +213,7 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
           <div className="avatar-container">
             <div className="avatar-scroll">
                 <ul className="avatar-list">
-                {render()}
+                {lista()}
                 </ul>
             </div>
           </div>
@@ -261,7 +248,7 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
           <div className="error-message">{error}</div>
           <button onClick={volver}>Okey</button>
         </div>}
-      {bien && type == 1 && 
+      {mensaje && bien && type == 1 && 
         <div className="confirmation-dialog">
           <div className="error-message">La compra ha sido realizada correctamente</div>
         </div>}

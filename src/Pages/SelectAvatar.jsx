@@ -14,86 +14,48 @@ export function SelectAvatar() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const fetchAvatars = async () => {
-      try {
-        const response = await axios.get('/avatar/getAllMyAvatars');
-        setAvatars(response.data.avatars);
-        console.log(response);
-      } catch (error) {
-        console.error('Failed to load avatars:', error);
-      }
-    };
-
-    const fetchRugs = async () => {
-      try {
-        const response = await axios.get('/rug/getAllMyRugs');
-        setRugs(response.data.rugs);
-      } catch (error) {
-        console.error('Failed to load rugs:', error);
-      }
-    };
-
-    const fetchCards = async () => {
-      try {
-        const response = await axios.get('/card/getAllMyCards');
-        setCards(response.data.cards);
-      } catch (error) {
-        console.error('Failed to load cards:', error);
-      }
-    };
-    const defaultAvatar = async () => {
-        try {
-          const response = await axios.get(`/avatar/currentAvatar`);
-          setDefaulA(response.data.avatar);
-
-        } catch (error) {
-          console.error('Failed to buy of card:', error);
-        }
-    };
-
-    const defaultCard = async () => {
-        try {
-            const response = await axios.get(`/card/currentCard`);
-            setDefaulB(response.data.card);
-        } catch (error) {
-            console.error('Failed to buy of card:', error);
-        }
-    };
-
-    const defaultRug = async () => {
-        try {
-          const response = await axios.get(`/rug/currentRug`);
-          setDefaulC(response.data.rug);
-        } catch (error) {
-            console.error('Failed to buy of card:', error);
-        }
-    };
+    handleListaAvataresClick();
+  
     const timeout = setTimeout(() => {
         // Aquí colocas el código que deseas ejecutar después de unos segundos
         setMounted(true);
-        console.log('Se han pasado 3 segundos');
-      }, 2000); // 3000 milisegundos = 3 segundos
-  
-    defaultRug();
-    defaultAvatar();
-    defaultCard();
-    fetchAvatars();
-    fetchRugs();
-    fetchCards();
+      }, 1000); // 3000 milisegundos = 3 segundos
+
     return () => clearTimeout(timeout);
 
    }, []);
 
+   // Función para ejecutar el efecto useEffect nuevamente
+  const handleListaAvataresClick = async () => {
+    try {
+      const [avatarsRes, rugsRes, cardsRes, defaultAvatarRes, defaultCardRes, defaultRugRes] = await Promise.all([
+        axios.get('/avatar/getAllMyAvatars'),
+        axios.get('/rug/getAllMyRugs'),
+        axios.get('/card/getAllMyCards'),
+        axios.get(`/avatar/currentAvatar`),
+        axios.get(`/card/currentCard`),
+        axios.get(`/rug/currentRug`)
+      ]);
 
+      setAvatars(avatarsRes.data.avatars);
+      setRugs(rugsRes.data.rugs);
+      setCards(cardsRes.data.cards);
+      setDefaulA(defaultAvatarRes.data.avatar);
+      setDefaulB(defaultCardRes.data.card);
+      setDefaulC(defaultRugRes.data.rug);
+    } catch (error) {
+      console.error('Failed to reload data:', error);
+    }
+  };
   return (
     mounted && 
     <div className='page-select'>
       <MyNav isLoggedIn={false} isDashboard={true}/>
 
       <div className='div-a'>
-        <ListaAvatares avatars={rugs} name="Tapetes" type='2' defaul={defaulC.image}/> 
-        <ListaAvatares avatars={cards} name="Cartas" type="2" defaul={defaulB.image}/>
-        <ListaAvatares avatars={avatars} name="Avatares" type="2" defaul={defaulA.image}/>
+        <ListaAvatares avatars={rugs} name="Tapetes" type='2' defaul={defaulC.image} onAvatarClick={handleListaAvataresClick}/> 
+        <ListaAvatares avatars={cards} name="Cartas" type="2" defaul={defaulB.image} onAvatarClick={handleListaAvataresClick}/>
+        <ListaAvatares avatars={avatars} name="Avatares" type="2" defaul={defaulA.image} onAvatarClick={handleListaAvataresClick}/>
       </div>   
     </div> 
   );
