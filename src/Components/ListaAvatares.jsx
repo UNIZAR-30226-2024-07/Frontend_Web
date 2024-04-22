@@ -59,6 +59,7 @@ const ListaAvatares = ({ avatars, name, type, defaul, onAvatarClick }) => {
   const comprarAvatar = async (avatar) => {
     try {
       await axios.put(`/user/buyAvatar`, {avatarName: avatar});
+      mensajee();
     } catch (error) {
       console.error('Failed to buy of avatar:', error);
       setError('No se ha podido comprar el avatar por insuficientes monedas');
@@ -68,6 +69,7 @@ const ListaAvatares = ({ avatars, name, type, defaul, onAvatarClick }) => {
   const comprarRug = async (avatar) => {
     try {
       await axios.put(`/user/buyRug`, {rugName: avatar});
+      mensajee();
     } catch (error) {
       console.error('Failed to buy of tapete:', error);
       setError('No se ha podido comprar el tapete por insuficientes monedas');
@@ -76,6 +78,7 @@ const ListaAvatares = ({ avatars, name, type, defaul, onAvatarClick }) => {
   const comprarCard = async (avatar) => {
     try {
       await axios.put(`/user/buyCard`, {cardName: avatar});
+      mensajee();
     } catch (error) {
       console.error('Failed to buy of card:', error);
       setError('No se ha podido comprar la carta por insuficientes monedas');
@@ -137,7 +140,7 @@ const ListaAvatares = ({ avatars, name, type, defaul, onAvatarClick }) => {
     // Aquí puedes agregar la lógica para confirmar la compra
     if (type === "1") {
       if (name === 'Avatares') {
-        comprarAvatar(avatar.image)
+        comprarAvatar(avatar.image);
       } else if (name === 'Tapetes') {
         comprarRug(avatar.image);
       } else if (name === 'Cartas') {
@@ -145,7 +148,6 @@ const ListaAvatares = ({ avatars, name, type, defaul, onAvatarClick }) => {
       }
       setBien(true);
       setSelectedAvatar(null); // Cierra el cuadro de diálogo de confirmación
-      mensajee();
     } else {
       if (name === 'Avatares') {
         seleccionarAvatar(avatar.image)

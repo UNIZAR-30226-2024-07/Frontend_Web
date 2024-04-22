@@ -19,7 +19,7 @@ export function SelectAvatar() {
     const timeout = setTimeout(() => {
         // Aquí colocas el código que deseas ejecutar después de unos segundos
         setMounted(true);
-      }, 1000); // 3000 milisegundos = 3 segundos
+      }, 2000); // 3000 milisegundos = 3 segundos
 
     return () => clearTimeout(timeout);
 
