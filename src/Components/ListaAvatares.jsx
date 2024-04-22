@@ -4,23 +4,16 @@ import constants from '../constants'
 import './ListaAvatares.css'
 import { useState } from 'react';
 import axios from '../api/axios';
-
-const ListaAvatares = ({ avatars, name, type, defaul }) => {
+import { FaCheckSquare } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
+const ListaAvatares = ({ avatars, name, type, defaul, onAvatarClick }) => {
   const [selectedAvatar, setSelectedAvatar] = useState();
   const [precio, setPrecio] = useState(null);
   const [error, setError] = useState(null);
+  const [bien, setBien] = useState(false);
+  const className = name === 'Avatares' ? 'avatar-images' : 'avatar-image2';
+  const [mensaje, setMensaje] = useState(false); // Estado para controlar la visibilidad del mensaje de compra exitosa
 
-  
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     // Aquí colocas el código que deseas ejecutar después de unos segundos
-  //     console.log('Se han pasado 3 segundos');
-  //   }, 3000); // 3000 milisegundos = 3 segundos
-
-  //   return () => clearTimeout(timeout); // Limpiar el temporizador al desmontar el componente
-  // }, []); // El segundo argumento de useEffect indica que el efecto solo se ejecuta una vez
-
-  
   // type == 1
   const saberPrecio = async (avatar) => {
     try {
@@ -49,9 +42,24 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
     }
   };
 
+
+  const GreenCheckSquare = ({ size = 30 }) => {
+    return (
+      <div style={{ position: 'absolute',top: '20%', left: '90%', transform: 'translate(-50%, -50%)'}}>
+        <div style={{ color: 'green', display: 'inline-block', position: 'relative' }}>
+          <FaCheckSquare size={size} />
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+            <FaCheck color="white" size={size * 0.7} />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const comprarAvatar = async (avatar) => {
     try {
       await axios.put(`/user/buyAvatar`, {avatarName: avatar});
+      mensajee();
     } catch (error) {
       console.error('Failed to buy of avatar:', error);
       setError('No se ha podido comprar el avatar por insuficientes monedas');
@@ -61,6 +69,7 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
   const comprarRug = async (avatar) => {
     try {
       await axios.put(`/user/buyRug`, {rugName: avatar});
+      mensajee();
     } catch (error) {
       console.error('Failed to buy of tapete:', error);
       setError('No se ha podido comprar el tapete por insuficientes monedas');
@@ -69,6 +78,7 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
   const comprarCard = async (avatar) => {
     try {
       await axios.put(`/user/buyCard`, {cardName: avatar});
+      mensajee();
     } catch (error) {
       console.error('Failed to buy of card:', error);
       setError('No se ha podido comprar la carta por insuficientes monedas');
@@ -130,12 +140,13 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
     // Aquí puedes agregar la lógica para confirmar la compra
     if (type === "1") {
       if (name === 'Avatares') {
-        comprarAvatar(avatar.image)
+        comprarAvatar(avatar.image);
       } else if (name === 'Tapetes') {
         comprarRug(avatar.image);
       } else if (name === 'Cartas') {
         comprarCard(avatar.image);
       }
+      setBien(true);
       setSelectedAvatar(null); // Cierra el cuadro de diálogo de confirmación
     } else {
       if (name === 'Avatares') {
@@ -147,8 +158,9 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
       }
     }
     setTimeout(() => {
-      window.location.reload();
-    }, 3000); // 3000 milisegundos = 3 segundos
+      // window.location.reload();
+      onAvatarClick();
+    }, 1000); // 1000 milisegundos = 1 segundo
   };
 
   const handleCancel = () => {
@@ -160,24 +172,32 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
     setError(null);
   }
 
-  // type == 2
+  const mensajee = () => {
+    setMensaje(true);
+    setTimeout(() => {
+      setMensaje(false);
+    }, 1000); // Tiempo en milisegundos (en este caso, 3 segundos)
+  };
   
-  const render = () => {
+  const lista = () => {
     return (
       avatars.map(avatar => (
         <li key={avatar.image}>
          {avatar.image === defaul ? (
-          <img 
-            src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
-            alt={avatar.image}
-            className='avatar-images'
-            onClick={() =>handleAvatarClick(avatar)}
-          />
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <img 
+              src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
+              alt={avatar.image}
+              className={className}
+              onClick={() => handleAvatarClick(avatar)}
+            />
+            <GreenCheckSquare size={30} />
+          </div>
           ) : (
           <img 
             src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
             alt={avatar.image}
-            className='avatar-imagee'
+            className={className}
             onClick={() => handleAvatarClick(avatar)}
           />
           )}
@@ -195,7 +215,7 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
           <div className="avatar-container">
             <div className="avatar-scroll">
                 <ul className="avatar-list">
-                {render()}
+                {lista()}
                 </ul>
             </div>
           </div>
@@ -229,6 +249,10 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
         <div className="confirmation-dialog">
           <div className="error-message">{error}</div>
           <button onClick={volver}>Okey</button>
+        </div>}
+      {mensaje && bien && type == 1 && 
+        <div className="confirmation-dialog">
+          <div className="error-message">La compra ha sido realizada correctamente</div>
         </div>}
     </div>
   );

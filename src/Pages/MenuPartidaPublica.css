@@ -1,0 +1,36 @@
+/* Main.css */
+.page-publica {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+}
+
+.lista {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    flex-wrap: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
+    white-space: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
+    margin: auto; /* Centra horizontalmente el contenedor */
+    margin-top: 170px;
+    position: relative; /* Establecer la posición relativa para el contenedor */
+    width: 90%;
+}
+
+.titulo {
+    background-color: #3F497FFF;
+    color: white;
+    font-weight: bold;
+    font-size: 50px;
+    margin-left: 50px; /* Margen izquierdo */
+    width: 500px; /* Ancho del cuadrado */
+    height: 100px; /* Altura del cuadrado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* Radio de los bordes */
+    margin-left: 650px; /* Mueve el cuadrado hacia la derecha */
+    margin-top: 60px;
+
+}

@@ -2,7 +2,7 @@ import { useState } from "react"; // Añade useEffect a tus importaciones
 import constants from '../constants';
 import { useNavigate } from "react-router-dom";
 import { MyNav } from "../Components/MyNav";
-import { MyFormPasswd } from "../Components/MyFormPasswd";
+import { MyForm } from "../Components/MyForm";
 import { MyButton } from "../Components/MyButton";
 import './CambiarUsuario.css';
 import axios from "../api/axios";
@@ -13,6 +13,7 @@ export function CambiarUsuario() {
   // Estados para los campos de entrada
   const [nuevousuario, setNuevousuario] = useState('');
   const [repetirusuario, setRepetirusuario] = useState('');
+  const [error, setError] = useState('');
 
   // Manejador para el envío del formulario
   const handleSubmit = async (event) => {
@@ -21,6 +22,7 @@ export function CambiarUsuario() {
     // Validar que las contraseñas nuevas coincidan
     if (nuevousuario !== repetirusuario) {
       console.error('Los usuarios no coinciden');
+      setError('Los usuarios no coinciden');
       return;
     }
 
@@ -49,19 +51,24 @@ export function CambiarUsuario() {
       <MyNav isLoggedIn={false} isDashboard={false} />
       <div className='form-container'>
         <form className='form-login' onSubmit={handleSubmit}>
-          <MyFormPasswd
-            placeholderForm="Introduce tu nueva contraseña"
+          <div className="cambio-usuario">Cambio usuario</div>
+          <MyForm
+            placeholderForm="Introduce tu nuevo usuario"
             labelText="Nuevo Usuario"
             value={nuevousuario}
             onChange={(e) => setNuevousuario(e.target.value)}
           />
-          <MyFormPasswd
-            placeholderForm="Repite tu nueva contraseña"
+          <MyForm
+            placeholderForm="Repite tu nuevo usuario"
             labelText="Repetir Usuario"
             value={repetirusuario}
             onChange={(e) => setRepetirusuario(e.target.value)}
           />
-          <MyButton className="button-login" color="midnightblue" size="xl" type="submit">Cambiar Contraseña</MyButton>
+          <div className="boton">
+            <MyButton className="button-login" color="midnightblue" size="xl" type="submit">Cambiar Usuario</MyButton>
+          </div>
+          {error && <div className="error">{error}</div>}
+
         </form>
       </div>
     </div>

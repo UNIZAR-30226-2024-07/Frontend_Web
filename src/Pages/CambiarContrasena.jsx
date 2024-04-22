@@ -2,7 +2,7 @@ import { useState } from "react"; // Añade useEffect a tus importaciones
 import constants from '../constants';
 import { useNavigate } from "react-router-dom";
 import { MyNav } from "../Components/MyNav";
-import { MyFormPasswd } from "../Components/MyFormPasswd";
+import { MyForm } from "../Components/MyForm";
 import { MyButton } from "../Components/MyButton";
 import './CambiarContrasena.css';
 import axios from "../api/axios";
@@ -13,6 +13,7 @@ export function CambiarContrasena() {
   // Estados para los campos de entrada
   const [nuevaContrasena, setNuevaContrasena] = useState('');
   const [repetirContrasena, setRepetirContrasena] = useState('');
+  const [error, setError] = useState('');
 
   // Manejador para el envío del formulario
   const handleSubmit = async (event) => {
@@ -21,6 +22,7 @@ export function CambiarContrasena() {
     // Validar que las contraseñas nuevas coincidan
     if (nuevaContrasena !== repetirContrasena) {
       console.error('Las contraseñas no coinciden');
+      setError('Las contraseñas no coinciden');
       return;
     }
 
@@ -49,19 +51,24 @@ export function CambiarContrasena() {
       <MyNav isLoggedIn={false} isDashboard={false} />
       <div className='form-container'>
         <form className='form-login' onSubmit={handleSubmit}>
-          <MyFormPasswd
+        <div className="cambio-contraseña">Cambio contraseña</div>
+          <MyForm
+            typeForm="nickname"
             placeholderForm="Introduce tu nueva contraseña"
             labelText="Nueva Contraseña"
             value={nuevaContrasena}
             onChange={(e) => setNuevaContrasena(e.target.value)}
           />
-          <MyFormPasswd
+          <MyForm
             placeholderForm="Repite tu nueva contraseña"
             labelText="Repetir Contraseña"
             value={repetirContrasena}
             onChange={(e) => setRepetirContrasena(e.target.value)}
           />
+          <div className="botonc">
           <MyButton className="button-login" color="midnightblue" size="xl" type="submit">Cambiar Contraseña</MyButton>
+          </div>
+          {error && <div className="error">{error}</div>}
         </form>
       </div>
     </div>

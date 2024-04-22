@@ -54,6 +54,25 @@ export function PageTienda() {
     saberMonedas();
    }, []);
 
+   const fetchData = async () => {
+    try {
+      const [avatarsRes, rugsRes, cardsRes, verify] = await Promise.all([
+        axios.get('/avatar/getAvatarStore'),
+        axios.get('/rug/getRugStore'),
+        axios.get('/card/getCardStore'),
+        axios.get('/user/verify')
+      ]);
+
+      setAvatars(avatarsRes.data.avatar);
+      setRugs(rugsRes.data.rug);
+      setCards(cardsRes.data.card);
+      setCoins(verify.data.user.coins);
+
+      
+    } catch (error) {
+      console.error('Failed to load data:', error);
+    }
+  };
 
   return (
     <div className='page-tienda'>
@@ -64,9 +83,9 @@ export function PageTienda() {
           <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
           {coins}
         </div>
-        <ListaAvatares avatars={rugs} name="Tapetes" type="1"  defaul=""/> 
-        <ListaAvatares avatars={cards} name="Cartas" type="1" defaul=""/>
-        <ListaAvatares avatars={avatars} name="Avatares" type="1" defaul=""/>
+        <ListaAvatares avatars={rugs} name="Tapetes" type="1"  defaul="" onAvatarClick={fetchData}/> 
+        <ListaAvatares avatars={cards} name="Cartas" type="1" defaul="" onAvatarClick={fetchData}/>
+        <ListaAvatares avatars={avatars} name="Avatares" type="1" defaul="" onAvatarClick={fetchData}/>
       </div>   
     </div> 
   );
