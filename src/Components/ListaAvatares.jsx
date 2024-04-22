@@ -4,23 +4,14 @@ import constants from '../constants'
 import './ListaAvatares.css'
 import { useState } from 'react';
 import axios from '../api/axios';
-
+import { FaCheckSquare } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 const ListaAvatares = ({ avatars, name, type, defaul }) => {
   const [selectedAvatar, setSelectedAvatar] = useState();
   const [precio, setPrecio] = useState(null);
   const [error, setError] = useState(null);
+  const [bien, setBien] = useState(false);
 
-  
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     // Aquí colocas el código que deseas ejecutar después de unos segundos
-  //     console.log('Se han pasado 3 segundos');
-  //   }, 3000); // 3000 milisegundos = 3 segundos
-
-  //   return () => clearTimeout(timeout); // Limpiar el temporizador al desmontar el componente
-  // }, []); // El segundo argumento de useEffect indica que el efecto solo se ejecuta una vez
-
-  
   // type == 1
   const saberPrecio = async (avatar) => {
     try {
@@ -47,6 +38,20 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
     } catch (error) {
       console.error('Failed to load price of card:', error);
     }
+  };
+
+
+  const GreenCheckSquare = ({ size = 30 }) => {
+    return (
+      <div style={{ position: 'absolute',top: '20%', left: '90%', transform: 'translate(-50%, -50%)'}}>
+        <div style={{ color: 'green', display: 'inline-block', position: 'relative' }}>
+          <FaCheckSquare size={size} />
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+            <FaCheck color="white" size={size * 0.7} />
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const comprarAvatar = async (avatar) => {
@@ -136,6 +141,7 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
       } else if (name === 'Cartas') {
         comprarCard(avatar.image);
       }
+      setBien(true);
       setSelectedAvatar(null); // Cierra el cuadro de diálogo de confirmación
     } else {
       if (name === 'Avatares') {
@@ -148,7 +154,7 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
     }
     setTimeout(() => {
       window.location.reload();
-    }, 3000); // 3000 milisegundos = 3 segundos
+    }, 1000); // 1000 milisegundos = 1 segundo
   };
 
   const handleCancel = () => {
@@ -160,19 +166,44 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
     setError(null);
   }
 
-  // type == 2
   
   const render = () => {
     return (
       avatars.map(avatar => (
         <li key={avatar.image}>
          {avatar.image === defaul ? (
+          // <img 
+          //   src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
+          //   alt={avatar.image}
+          //   className='avatar-images'
+          //   onClick={() =>handleAvatarClick(avatar)}
+          // />
+          // <div style={{ position: 'relative', display: 'inline-block' }}>
+          // <img 
+          //   src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
+          //   alt={avatar.image}
+          //   className='avatar-images'
+          //   onClick={() =>handleAvatarClick(avatar)}
+          // />
+          // <FaCheckSquare style={{ 
+          //   position: 'absolute', 
+          //   top: '5px', 
+          //   right: '5px',
+          //   color: 'green',
+          //   fontSize: '30px' 
+          // }} />
+          // </div>
+
+
+              <div style={{ position: 'relative', display: 'inline-block' }}>
           <img 
             src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
             alt={avatar.image}
             className='avatar-images'
-            onClick={() =>handleAvatarClick(avatar)}
+            onClick={() => handleAvatarClick(avatar)}
           />
+          <GreenCheckSquare size={30} />
+        </div>
           ) : (
           <img 
             src={constants.dirApi + "/" + constants.uploadsFolder + "/" + avatar.imageFileName}
@@ -229,6 +260,10 @@ const ListaAvatares = ({ avatars, name, type, defaul }) => {
         <div className="confirmation-dialog">
           <div className="error-message">{error}</div>
           <button onClick={volver}>Okey</button>
+        </div>}
+      {bien && type == 1 && 
+        <div className="confirmation-dialog">
+          <div className="error-message">La compra ha sido realizada correctamente</div>
         </div>}
     </div>
   );

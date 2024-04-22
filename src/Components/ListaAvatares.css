@@ -41,7 +41,6 @@
     width: 110px;
     height: 110px;
     border-radius: 60%;
-    border: 10px solid green; /* Establecer el ancho y el estilo del borde, y el color en verde */
   }
 
   .avatar-imagee {
@@ -179,8 +178,8 @@
 
   
   .error-message {
-    color: red; /* Color rojo para el mensaje de error */
-    font-weight: bold; /* Texto en negrita */
+    color: white;
+    font-weight: bold;
     margin-bottom: 10px;
     font-size: 16px; /* Tamaño de fuente del mensaje de error */
   }

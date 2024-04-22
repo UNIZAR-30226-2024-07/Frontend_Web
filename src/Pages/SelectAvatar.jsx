@@ -62,8 +62,8 @@ export function SelectAvatar() {
 
     const defaultRug = async () => {
         try {
-            const response = await axios.get(`/rug/currentRug`);
-            setDefaulC(response.data.rug);
+          const response = await axios.get(`/rug/currentRug`);
+          setDefaulC(response.data.rug);
         } catch (error) {
             console.error('Failed to buy of card:', error);
         }
@@ -72,11 +72,10 @@ export function SelectAvatar() {
         // Aquí colocas el código que deseas ejecutar después de unos segundos
         setMounted(true);
         console.log('Se han pasado 3 segundos');
-      }, 1000); // 3000 milisegundos = 3 segundos
+      }, 2000); // 3000 milisegundos = 3 segundos
   
-
-    defaultAvatar();
     defaultRug();
+    defaultAvatar();
     defaultCard();
     fetchAvatars();
     fetchRugs();
@@ -87,7 +86,8 @@ export function SelectAvatar() {
 
 
   return (
-    mounted && <div className='page-select'>
+    mounted && 
+    <div className='page-select'>
       <MyNav isLoggedIn={false} isDashboard={true}/>
 
       <div className='div-a'>
