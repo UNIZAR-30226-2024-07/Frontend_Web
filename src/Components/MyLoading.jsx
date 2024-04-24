@@ -1,7 +1,6 @@
 import  { useState, useEffect } from 'react';
 import "./MyLoading.css"
 
-
 const progressBarClasses = 'w-full bg-zinc-300 rounded-full h-4 dark:bg-zinc-700';
 const progressFillClasses = 'bg-zinc-600 h-4 rounded-full';
 
@@ -20,7 +19,7 @@ const ProgressBar = () => {
   }, []);
 
   return (
-    <div className="w-96 p-4 bg-white rounded-lg shadow-lg">
+    <div className="w-6/12 p-4 bg-white rounded-lg shadow-lg">
       <div className="font-semibold mb-2">LOADING...</div>
       <div className={progressBarClasses} id="progressBar">
         <div
