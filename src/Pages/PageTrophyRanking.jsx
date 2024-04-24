@@ -11,6 +11,7 @@ import constants from '../constants';
 import { MyRanking } from "../Components/MyRanking";
 import { returnFriendsAvatar } from '../Context/FriendContext';
 import "./PageTrophyRanking.css";
+import MyLoading from '../Components/MyLoading';
 
 export function PageTrophyRanking() {
     const [userRanking, setUserRanking] = useState([]);
@@ -96,7 +97,7 @@ export function PageTrophyRanking() {
     }, [statsFetched, avatarsFetched]);
 
     if (loading) {
-        return <div>Cargando...</div>;
+        return <div> <MyLoading/> </div>;
     }
 
     return (
