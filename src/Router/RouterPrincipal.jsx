@@ -24,6 +24,7 @@ import { SelectAvatar } from "../Pages/SelectAvatar"
 import {PageTrophyRanking} from "../Pages/PageTrophyRanking"
 import {PageMoneyRanking} from "../Pages/PageMoneyRanking"
 import MenuPartidaPublica from "../Pages/MenuPartidaPublica"
+import PruebaPublicBoard from "../Pages/PruebaPublicBoard"
 
 const RouterPrincipal = () => {
     return (
@@ -37,6 +38,7 @@ const RouterPrincipal = () => {
                     <Route element={<ProtectedRoute />}>
                         
                         <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
+                        <Route path={constants.root + 'public'} element={<PruebaPublicBoard/>}></Route>
                         
                         <Route path={constants.root + 'PageFriendFind'} element={<PageFriendFind/>}></Route>
                         <Route path={constants.root + 'PageFriendList'} element={<PageFriendList/>}></Route>
