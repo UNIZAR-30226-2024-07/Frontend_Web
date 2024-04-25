@@ -14,15 +14,16 @@ const hand1 = 1     // Segunda mano
 const indexUser = 0  // Indice del jugador en players
 
 const PruebaPublicBoard = () => {
+    const { user } = useAuth()
     const [boardId, setBoardId] = useState("") // BoardId
 
     // Mano de un jugador
     const hand = {
-        cards: [],
-        total: 0,
-        defeat: false,
-        blackJack: false,
-        active: false
+        cards: [], // Vector que contiene las cartas de la jugada
+        total: 0, // Suma de la puntuación de las cartas
+        defeat: false, // Si defeat = true, el jugador ha perdido esta mano
+        blackJack: false, // blackJack = true cuando se tienen 21 puntos
+        active: false // TODO: 
     }
     // Información de un jugador
     const objPlayer = {
@@ -31,28 +32,17 @@ const PruebaPublicBoard = () => {
     }
     // Información banca
     const objBank = {
-        plauerId: 'Bank',
+        playerId: 'Bank',
         hand: {...hand}
-    }
-    // Información todos los jugadores
-    const allPlayers = []
-    for (let i = 0; i < numPlayers; i++) {
-        const playerCopy = {...objPlayer}
-        allPlayers.push(playerCopy)
     }
 
     // Información todos los jugadores
     // El jugador players[0] es el user
-    const [players, setPlayers] = useState(allPlayers);   
+    const [players, setPlayers] = useState([]);   
     const [bank, setBank] = useState(objBank)   // Información de la banca
 
     const [tituloVisible, setTituloVisible] = useState(false) // Variable "tonta" para ver cuando se ha conseguido una partida
     const [partidasPublicas, setPartidasPublicas] = useState([]) // Lista de partidas públicas
-    const { user } = useAuth()
-
-    const partidaPublica = (partida) => {
-        socket.emit("enter public board", { body: { typeId: partida._id, userId: user._id }})
-    }
 
     const getPartidasPublicas = async () => {
         try {
@@ -66,6 +56,10 @@ const PruebaPublicBoard = () => {
             console.error("Error al pedir las partidas. " + e.message)
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Lógica juego partidas
+    ////////////////////////////////////////////////////////////////////////////
 
     // numHand: 0 si es la primera mano / 1 si es la segunda mano
     const drawCard = async (event, numHand, players, setPlayers) => {
@@ -169,8 +163,26 @@ const PruebaPublicBoard = () => {
     }
 
     useEffect(() => {
+        const newPlayers = []
+        for (let i = 0; i < numPlayers; i++) {
+            const playerCopy = {...objPlayer}
+            newPlayers.push(playerCopy)
+        }
+        setPlayers(newPlayers)
+        console.log("newPlayers", newPlayers)
+    }, [])
+
+    useEffect(() => {
         getPartidasPublicas()
     })
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Manejo de Socket.io
+    ////////////////////////////////////////////////////////////////////////////
+
+    const partidaPublica = (partida) => {
+        socket.emit("enter public board", { body: { typeId: partida._id, userId: user._id }})
+    }
 
     useEffect(() => {
         socket = io(constants.dirApi)
@@ -180,6 +192,8 @@ const PruebaPublicBoard = () => {
             setTituloVisible(!tituloVisible)
             setBoardId(boardId)
             
+            // Guardar banca
+            // Información de la banca en el último componente initCards
             const updatedBank = {...bank}
             updatedBank.hand.cards = initCards[initCards.length - 1].cards
             updatedBank.hand.total = initCards[initCards.length - 1].totalCards
@@ -187,32 +201,37 @@ const PruebaPublicBoard = () => {
             updatedBank.hand.active = true
             setBank(updatedBank)
             
-            const infoPlayer = initCards.find(infoPlayer => infoPlayer.userId === user._id);
-            const updatedPlayers = [...players]
-
+            // const updatedPlayers = [...players]
+            const updatedPlayers = []
+            
             console.log("Inicial:", updatedPlayers)////////////////////////////////////////////////////////////////
-
+            
             // Guardar primeras dos cartas usuario
-            updatedPlayers[indexUser].playerId = infoPlayer.userId
-            updatedPlayers[indexUser].hands[hand0].cards = infoPlayer.cards
-            updatedPlayers[indexUser].hands[hand0].total = infoPlayer.totalCards
-            updatedPlayers[indexUser].hands[hand0].blackJack = infoPlayer.blackJack
+            const infoPlayer = initCards.find(infoPlayer => infoPlayer.userId === user._id);
+            let playerObj
+            playerObj.playerId = infoPlayer.userId
+            playerObj.hands[hand0].cards = infoPlayer.cards
+            playerObj.hands[hand0].total = infoPlayer.totalCards
+            playerObj.hands[hand0].blackJack = infoPlayer.blackJack
+            updatedPlayers.push(playerObj)
 
 
             console.log("Antes asignar:", updatedPlayers)////////////////////////////////////////////////////////////////
 
             // Asignar resto de jugadores
             // Recorrer initBoards menos última componente que es la Banca
-            let indexPlayers = 1
+            // let indexPlayers = 1
             for (let i = 0; i < initCards.length - 1; i++) {
                 // Si no es el usuario
                 if (initCards[i].userId !== user._id) {
-                    updatedPlayers[indexPlayers].playerId = initCards[i].userId
-                    updatedPlayers[indexPlayers].hands[hand0].cards = initCards[i].cards
-                    updatedPlayers[indexPlayers].hands[hand0].total = initCards[i].totalCards
-                    updatedPlayers[indexPlayers].hands[hand0].blackJack = initCards[i].blackJack
-                    updatedPlayers[indexPlayers].hands[hand0].active = true
-                    indexPlayers = indexPlayers + 1
+                    let otherPlayerObj
+                    otherPlayerObj.playerId = initCards[i].userId
+                    otherPlayerObj.hands[hand0].cards = initCards[i].cards
+                    otherPlayerObj.hands[hand0].total = initCards[i].totalCards
+                    otherPlayerObj.hands[hand0].blackJack = initCards[i].blackJack
+                    otherPlayerObj.hands[hand0].active = true
+                    updatedPlayers.push(otherPlayerObj)
+                    // indexPlayers = indexPlayers + 1
                 }
             }
 
@@ -229,8 +248,7 @@ const PruebaPublicBoard = () => {
                     <p style={{color: 'black'}}> BlackJack </p>
                 ) : (
                     <p>  </p>
-                ) 
-                }
+                )}
             </div>
 
             <button type="submit" className="matchPublic" onClick={partidaPublica}>
@@ -269,7 +287,7 @@ const PruebaPublicBoard = () => {
                 <p>Jugador:</p>
                 {[hand0, hand1].map(numHand => (
                     <div key={numHand + "-" + indexUser} style={{ backgroundColor: 'brown' }}>
-                        {players[indexUser].hands[numHand].active && (
+                        { players[indexUser] && players[indexUser].hands[numHand].active && (
                             <div>
                                 <p>Mano {numHand}</p>
                                 {!players[indexUser].hands[numHand].defeat && 
@@ -298,10 +316,11 @@ const PruebaPublicBoard = () => {
                 {/* Iterar sobre los jugadores */}
                 {(() => {
                     const jsxArray = [];
-                    for (let index = indexUser + 1; index < numPlayers; index++) {
+                    // for (let index = indexUser + 1; index < numPlayers; index++) {
+                    for (let index = indexUser + 1; index < players.length; index++) {
                         const playerHands = [];
                         [hand0, hand1].forEach(numHand => {
-                            if (players[index].hands[numHand].active) {
+                            if ( players[index] && players[index].hands[numHand].active) {
                                 const handJSX = (
                                     <div key={numHand + "-" + index} style={{ backgroundColor: 'green' }}>
                                         {/* Renderizar las cartas */}
