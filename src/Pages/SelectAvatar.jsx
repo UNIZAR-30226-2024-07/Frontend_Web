@@ -3,30 +3,20 @@ import axios from '../api/axios';
 import './SelectAvatar.css';
 import { MyNav } from '../Components/MyNav';
 import ListaAvatares from '../Components/ListaAvatares'
+import MyLoading from '../Components/MyLoading';
 
 export function SelectAvatar() {
   const [avatars, setAvatars] = useState([]);
   const [rugs, setRugs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState([]);
   const [defaulA, setDefaulA] = useState(null);
   const [defaulB, setDefaulB] = useState(null);
   const [defaulC, setDefaulC] = useState(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    handleListaAvataresClick();
-  
-    const timeout = setTimeout(() => {
-        // Aquí colocas el código que deseas ejecutar después de unos segundos
-        setMounted(true);
-      }, 2000); // 3000 milisegundos = 3 segundos
-
-    return () => clearTimeout(timeout);
-
-   }, []);
+  // const [mounted, setMounted] = useState(false);
 
    // Función para ejecutar el efecto useEffect nuevamente
-  const handleListaAvataresClick = async () => {
+   const handleListaAvataresClick = async () => {
     try {
       const [avatarsRes, rugsRes, cardsRes, defaultAvatarRes, defaultCardRes, defaultRugRes] = await Promise.all([
         axios.get('/avatar/getAllMyAvatars'),
@@ -47,8 +37,32 @@ export function SelectAvatar() {
       console.error('Failed to reload data:', error);
     }
   };
+
+  useEffect(() => {
+    handleListaAvataresClick();
+  
+    // const timeout = setTimeout(() => {
+    //     // Aquí colocas el código que deseas ejecutar después de unos segundos
+    //     setMounted(true);
+    //   }, 2000); // 3000 milisegundos = 3 segundos
+
+    // return () => clearTimeout(timeout);
+
+   }, []);
+
+  useEffect(() => {
+    if (defaulC && avatars && defaulB && defaulA && defaulC && cards && rugs) {
+      setLoading(false);
+    }
+  }, [defaulC, avatars, defaulB ,defaulA, cards,rugs]);
+
+  if (loading) {
+      return <div> <MyLoading/> </div>;
+  }
+
+  
   return (
-    mounted && 
+    // mounted && 
     <div className='page-select'>
       <MyNav isLoggedIn={false} isDashboard={true}/>
 
