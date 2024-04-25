@@ -13,7 +13,6 @@ export function SelectAvatar() {
   const [defaulA, setDefaulA] = useState(null);
   const [defaulB, setDefaulB] = useState(null);
   const [defaulC, setDefaulC] = useState(null);
-  // const [mounted, setMounted] = useState(false);
 
    // Función para ejecutar el efecto useEffect nuevamente
    const handleListaAvataresClick = async () => {
@@ -40,29 +39,17 @@ export function SelectAvatar() {
 
   useEffect(() => {
     handleListaAvataresClick();
-  
-    // const timeout = setTimeout(() => {
-    //     // Aquí colocas el código que deseas ejecutar después de unos segundos
-    //     setMounted(true);
-    //   }, 2000); // 3000 milisegundos = 3 segundos
-
-    // return () => clearTimeout(timeout);
-
-   }, []);
-
-  useEffect(() => {
     if (defaulC && avatars && defaulB && defaulA && defaulC && cards && rugs) {
       setLoading(false);
     }
   }, [defaulC, avatars, defaulB ,defaulA, cards,rugs]);
 
   if (loading) {
-      return <div> <MyLoading/> </div>;
+    return <div> <MyLoading/> </div>;
   }
 
   
   return (
-    // mounted && 
     <div className='page-select'>
       <MyNav isLoggedIn={false} isDashboard={true}/>
 
