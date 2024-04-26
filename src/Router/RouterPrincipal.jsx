@@ -24,7 +24,7 @@ import { SelectAvatar } from "../Pages/SelectAvatar"
 import {PageTrophyRanking} from "../Pages/PageTrophyRanking"
 import {PageMoneyRanking} from "../Pages/PageMoneyRanking"
 import MenuPartidaPublica from "../Pages/MenuPartidaPublica"
-import PruebaPublicBoard from "../Pages/PruebaPublicBoard"
+import PruebaPublicBoard from "../Pages/PublicBoard/PruebaPublicBoard"
 
 const RouterPrincipal = () => {
     return (
