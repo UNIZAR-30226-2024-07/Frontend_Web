@@ -173,19 +173,9 @@ const PruebaPublicBoard = () => {
         }
     }
 
-    // useEffect(() => {
-    //     const newPlayers = []
-    //     for (let i = 0; i < numPlayers; i++) {
-    //         const playerCopy = {...objPlayer}
-    //         newPlayers.push(playerCopy)
-    //     }
-    //     setPlayers(newPlayers)
-    //     console.log("newPlayers", newPlayers)
-    // }, [])
-
     useEffect(() => {
         getPartidasPublicas()
-    })
+    }, [])
 
     ////////////////////////////////////////////////////////////////////////////
     // Manejo de Socket.io
@@ -314,10 +304,10 @@ const PruebaPublicBoard = () => {
                 <p>Banca</p>
                 <div key={'Bank'} style={{ backgroundColor: 'yellow' }}>
                     {bank.hand.active && (
-                        <div>
+                        <div className="cartas">
                             {/* Renderizar las cartas */}
                             {bank.hand.cards.map((card, cardIndex) => (
-                                <p key={cardIndex}>{card.value + '-' + card.suit}</p>    // Cambiar por imagen
+                                <img key={cardIndex} src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}/>    
                             ))}
                         </div>
                     )}
@@ -350,7 +340,7 @@ const PruebaPublicBoard = () => {
                                 )}
                                 {/* Renderizar las cartas */}
                                 {player.hands[numHand].cards.map((card, cardIndex) => (
-                                    <p key={cardIndex}>{card.value + '-' + card.suit}</p>    // Cambiar por imagen
+                                    <img key={cardIndex} src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}/>
                                 ))}
                             </div>
                         )}
@@ -374,7 +364,7 @@ const PruebaPublicBoard = () => {
                                     <div key={numHand + "-" + index} style={{ backgroundColor: 'green' }}>
                                         {/* Renderizar las cartas */}
                                         {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
-                                            <p key={cardIndex}>{card.value + '-' + card.suit}</p> // Cambiar por imagen
+                                            <img key={cardIndex} src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}/> 
                                         ))}
                                     </div>
                                 );
@@ -390,6 +380,7 @@ const PruebaPublicBoard = () => {
             <button type="submit" className="imprimir" onClick={imprimir}>
                 Imprimir info jugadores
             </button>
+
         </div>
     )
 }
