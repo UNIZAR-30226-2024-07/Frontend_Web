@@ -6,6 +6,11 @@ export const numPlayers = 2  // Esta información hay que obtenerla cuando se pr
 export const hand0 = 0      // Primera mano
 export const hand1 = 1     // Segunda mano
 
+// export function sleep(ms) {
+//     return new Promise((resolve) => {
+//         setTimeout(resolve, ms)
+//     })
+// }
 
 // numHand: 0 si es la primera mano / 1 si es la segunda mano
 export const drawCard = async (event, numHand, player, setPlayer, boardId) => {
@@ -13,7 +18,8 @@ export const drawCard = async (event, numHand, player, setPlayer, boardId) => {
     try {
         const response = await axios.put('/publicBoard/drawCard', {
             boardId: boardId,
-            cardsOnTable: player.hands[numHand].cards
+            cardsOnTable: player.hands[numHand].cards,
+            handIndex: numHand
         })
         if (response.status !== 200) {
             console.log("Fallo: ", response);
@@ -40,7 +46,8 @@ export const double = async (event, numHand, player, setPlayer, boardId) => {
     try {
         const response = await axios.put('/publicBoard/double', {
             boardId: boardId,
-            cardsOnTable: player.hands[numHand].cards
+            cardsOnTable: player.hands[numHand].cards,
+            handIndex: numHand
         })
         if (response.status !== 200) {
             console.log("Fallo: ", response);
@@ -65,7 +72,8 @@ export const stick = async (event, numHand, player, setPlayer, boardId) => {
     try {
         const response = await axios.put('/publicBoard/stick', {
             boardId: boardId,
-            cardsOnTable: player.hands[numHand].cards
+            cardsOnTable: player.hands[numHand].cards,
+            handIndex: numHand
         })
         if (response.status !== 200) {
             console.log("Fallo: ", response);
@@ -131,6 +139,7 @@ export const getPartidasPublicas = async (setPartidasPublicas) => {
     }
 }
 
+// Obtener las cartas al principio de cada play hand
 export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlayers) => {
     // Guardar banca
     // Información de la banca en el último componente initCards
@@ -143,13 +152,14 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlaye
                 blackJack: initCards[initCards.length - 1].blackJack, 
                 active: true, 
                 stick: false,   
-                show: true 
+                show: true,
+                coinsEarned: 0
             }
     }
     setBank(bankObj)
                 
     // Guardar primeras dos cartas usuario
-    const infoPlayer = initCards.find(infoPlayer => infoPlayer.userId === userId);
+    const infoPlayer = initCards.find(infPlayer => infPlayer.userId === userId);
     // Información de un jugador
     const playerObj = {
         playerId: infoPlayer.userId,
@@ -161,7 +171,8 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlaye
                 blackJack: infoPlayer.blackJack, 
                 active: true, 
                 stick: false,  
-                show: true  
+                show: true,
+                coinsEarned: 0
             },{
                 cards: [], 
                 total: 0, 
@@ -169,7 +180,8 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlaye
                 blackJack: false, 
                 active: false,
                 stick: false,  
-                show: true 
+                show: true,
+                coinsEarned: 0
             }
         ]
     }
@@ -191,7 +203,8 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlaye
                         blackJack: initCards[i].blackJack, 
                         active: true,
                         stick: false,  
-                        show: false 
+                        show: false,
+                        coinsEarned: 0
                     },{
                         cards: [], 
                         total: 0, 
@@ -199,7 +212,8 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlaye
                         blackJack: false,
                         active: false,
                         stick: false,
-                        show: false
+                        show: false,
+                        coinsEarned: 0
                     }
                 ]
             }
@@ -209,7 +223,9 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlaye
     setRestPlayers(restPlayersArray)
 }
 
-export const getResults = (userId, results, bank, setBank, player, setPlayer, setRestPlayers) => {
+// Obtener la información de los resultados
+export const getResults = (userId, results, bank, setBank, 
+                           player, setPlayer, restPlayers, setRestPlayers) => {
     // Guardar banca
     // Información de la banca en el último componente results
     const updatedBank = {...bank}
@@ -222,16 +238,36 @@ export const getResults = (userId, results, bank, setBank, player, setPlayer, se
     // Guardar resultados usuario
     const updatedPlayer = {...player}
     const infoPlayer = results.find(infoPlayer => infoPlayer.userId === userId);
-    updatedPlayer.hands[hand0].cards = infoPlayer.cards[hand0]
-    updatedPlayer.hands[hand0].total = infoPlayer.total[hand0]
+
     updatedPlayer.hands[hand0].active = true
     updatedPlayer.hands[hand0].show = true
+
+    // Si ha confirmado la jugada
+    if(updatedPlayer.hands[hand0].stick) {
+        updatedPlayer.hands[hand0].cards = infoPlayer.cards[hand0]
+        updatedPlayer.hands[hand0].total = infoPlayer.total[hand0]
+        updatedPlayer.hands[hand0].coinsEarned = infoPlayer.coinsEarned[hand0]
+
+        // Si no ha confirmado la jugada
+    } else {
+        updatedPlayer.hands[hand0].coinsEarned = 0
+    }
+
     // Si tiene dos manos
-    if (infoPlayer.hands.length === 2) {
-        updatedPlayer.hands[hand1].cards = infoPlayer.cards[hand1]
-        updatedPlayer.hands[hand1].total = infoPlayer.total[hand1]
+    if (updatedPlayer.hands.length === 2) {
         updatedPlayer.hands[hand1].active = true
         updatedPlayer.hands[hand1].show = true
+
+        // Si ha confirmado la jugada
+        if(updatedPlayer.hands[hand1].stick) {
+            updatedPlayer.hands[hand1].cards = infoPlayer.cards[hand1]
+            updatedPlayer.hands[hand1].total = infoPlayer.total[hand1]
+            updatedPlayer.hands[hand1].coinsEarned = infoPlayer.coinsEarned[hand1]
+
+            // Si no ha confirmado la jugada
+        } else {
+            updatedPlayer.hands[hand1].coinsEarned = 0
+        }
     } 
     setPlayer(updatedPlayer)
 
@@ -241,40 +277,66 @@ export const getResults = (userId, results, bank, setBank, player, setPlayer, se
     for (let i = 0; i < results.length - 1; i++) {
         // Si no es el usuario
         if (results[i].userId !== userId) {
-            let cardsSecondHand
-            let totalSecondHand
-            let activeSecond
-            let showSecond
-            if (results[i].cards.length === 2) {
-                cardsSecondHand = results[i].cards[hand1]
-                totalSecondHand = results[i].total[hand1]
-                activeSecond = true
-                showSecond = true
+            let cards1
+            let cards2
+            let total1
+            let total2
+            let coinsEarned1
+            let coinsEarned2
+            let active2 = false
+            let show2 = false
+            const infoPlayer = results.find(infoPlayer => infoPlayer.userId === results[i].userId);
+            // Si ha confirmado la jugada
+            if(restPlayers[i].hands[hand0].stick) {
+                cards1 = infoPlayer.cards[hand0]
+                total1 = infoPlayer.total[hand0]
+                coinsEarned1 = infoPlayer.coinsEarned[hand0]
+
+                // Si no ha confirmado la jugada
             } else {
-                cardsSecondHand = []
-                totalSecondHand = 0
-                activeSecond = false
-                showSecond = false
+                cards1 = restPlayers[i].cards[hand0]
+                total1 = restPlayers[i].total[hand0]
+                coinsEarned1 = 0
             }
+
+            // Si tiene dos manos
+            if (restPlayers[i].hands.length === 2) {
+                active2 = true
+                show2 = true
+                // Si ha confirmado la jugada
+                if(restPlayers[i].hands[hand1].stick) {
+                    cards2 = infoPlayer.cards[hand1]
+                    total2 = infoPlayer.total[hand1]
+                    coinsEarned2 = infoPlayer.coinsEarned[hand1]
+
+                    // Si no ha confirmado la jugada
+                } else {
+                    cards2 = restPlayers[i].cards[hand1]
+                    total2 = restPlayers[i].total[hand1]
+                    coinsEarned2 = 0
+                }
+            } 
             const otherPlayerObj = {
                 playerId: results[i].userId,
                 hands: [
                     {
-                        cards: results[i].cards[hand0], 
-                        total: results[i].total[hand0], 
+                        cards: cards1, 
+                        total: total1, 
                         defeat: false, // No haría falta
                         blackJack: false,  // No haría falta
                         active: true,
                         stick: false,  // No haría falta
-                        show: true 
+                        show: true,
+                        coinsEarned: coinsEarned1
                     },{
-                        cards: cardsSecondHand,
-                        total: totalSecondHand,
+                        cards: cards2,
+                        total: total2,
                         defeat: false, // No haría falta
                         blackJack: false,  // No haría falta
-                        active: activeSecond,
+                        active: active2,
                         stick: false,  // No haría falta
-                        show: showSecond 
+                        show: show2,
+                        coinsEarned: coinsEarned2 
                     }
                 ]
             }

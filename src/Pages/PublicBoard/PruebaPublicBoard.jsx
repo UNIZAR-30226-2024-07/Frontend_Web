@@ -5,16 +5,22 @@ import constants from '../../constants'
 import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
 import './PruebaPublicBoard.css'
-import { numPlayers, hand0, hand1, drawCard, split, double, stick, getPartidasPublicas, getInitCards} from './PublicBoardFunctions'
+import { numPlayers, hand0, hand1, 
+         drawCard, split, double, stick, 
+         getPartidasPublicas, getInitCards,
+         getResults,
+        //  sleep
+        } from './PublicBoardFunctions'
 // Variable que se usará para la gestión de la conexión
 let socket
-const timeOut = 5
+const timeOut = 20
 
 const PruebaPublicBoard = () => {
     const { user } = useAuth()
     const [boardId, setBoardId] = useState("") // BoardId
 
     const [seconds, setSeconds] = useState(timeOut);  // Intervalo de tiempo
+    const [showCoinsEarned, setShowCoinsEarned] = useState(false);  // Intervalo de tiempo
 
     // Mano de un jugador
     const hand = {
@@ -24,7 +30,8 @@ const PruebaPublicBoard = () => {
         blackJack: false, // blackJack = true cuando se tienen 21 puntos
         active: false, // La mano se debe mostrar
         stick: false,   // Indica si se ha plantado o no el jugador con stick
-        show: false  // Mostrar carta o no
+        show: false,  // Mostrar carta o no
+        coinsEarned: 0  // Monedas ganadas
     }
     // Información de un jugador
     const objPlayer = {
@@ -102,6 +109,8 @@ const PruebaPublicBoard = () => {
 
         socket.on("play hand", (initCards) => {
             setSeconds(timeOut)
+            // Dejar visionar las monedas ganadas
+            setShowCoinsEarned(false)
             console.log("Ha llegado: play hand")
 
             // Inicializar la cartas
@@ -124,11 +133,29 @@ const PruebaPublicBoard = () => {
             };
             startTimer()
 
+
+
             // Limpiar el intervalo cuando el componente se desmonte o el temporizador se detenga
             return () => clearInterval(intervalId);
         })
 
-    }, [user, bank]) // Se ejecuta solo una vez cuando el componente se monta
+        socket.on("players deleted", (playersToDelete) => {
+            console.log("Jugadores eliminar: ", playersToDelete)
+        })
+
+        socket.on("hand results", (results) => {
+
+            console.log(results)
+
+            // Guardar resultados
+            getResults(user._id, results, bank, setBank, player, setPlayer,
+                       restPlayers, setRestPlayers)
+            
+            // Visionar las monedas ganadas
+            setShowCoinsEarned(true)
+        })
+
+    }, [user, bank, player, restPlayers]) // Se ejecuta solo una vez cuando el componente se monta
 
 
     /************************************************************************************************** */
@@ -164,10 +191,9 @@ const PruebaPublicBoard = () => {
                         <div className="cartas">
                             {/* Renderizar las cartas */}
                             {bank.hand.cards.map((card, cardIndex) => (
-                                // <img className="carta" key={cardIndex} src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}/>    
                                 <img
                                     className="carta"
-                                    key={cardIndex}
+                                    key={cardIndex + card.value + '-' + card.suit}
                                     src={bank.hand.show 
                                         ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
                                         : reverseCardUrl}
@@ -187,8 +213,12 @@ const PruebaPublicBoard = () => {
                     <div key={numHand} style={{ backgroundColor: 'brown' }}>
                         { player && player.hands[numHand].active && (
                             <div>
-                                
                                 <p>Mano {numHand} / Total: {player.hands[numHand].total}</p>
+                                {showCoinsEarned && (
+                                    <div key={numHand + 'player'}>
+                                        <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
+                                    </div>
+                                )}
                                 {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
                                 {!player.hands[numHand].defeat && 
                                  !player.hands[numHand].blackJack &&
@@ -213,10 +243,9 @@ const PruebaPublicBoard = () => {
                                 <div className="cartas">
                                     {/* Renderizar las cartas */}
                                     {player.hands[numHand].cards.map((card, cardIndex) => (
-                                        // <img className="carta" key={cardIndex} src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}/>
                                         <img
                                             className="carta"
-                                            key={cardIndex}
+                                            key={cardIndex + card.value + '-' + card.suit}
                                             src={player.hands[numHand].show 
                                                 ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
                                                 : reverseCardUrl}
@@ -242,18 +271,26 @@ const PruebaPublicBoard = () => {
                         [hand0, hand1].forEach(numHand => {
                             if ( restPlayers[index] && restPlayers[index].hands[numHand].active) {
                                 const handJSX = (
+                                    <div>
+                                    {showCoinsEarned && (
+                                        <div key={'restPlayer' + numHand}>
+                                            <p>Mano {numHand} / Total: {restPlayers[index].hands[numHand].total}</p>
+                                            <p>CoinsEarned: {restPlayers[index].hands[numHand].coinsEarned}</p>
+                                        </div>
+                                    )}
                                     <div className="cartas" key={numHand + "-" + index} style={{ backgroundColor: 'green' }}>
+                                        
                                         {/* Renderizar las cartas */}
                                         {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
-                                            // <img className="carta" key={cardIndex} src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}/> 
                                             <img
                                                 className="carta"
-                                                key={cardIndex}
+                                                key={cardIndex + card.value + '-' + card.suit}
                                                 src={restPlayers[index].hands[numHand].show 
                                                     ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
                                                     : reverseCardUrl}
                                             />
                                         ))}
+                                    </div>
                                     </div>
                                 );
                                 playerHands.push(handJSX);
