@@ -93,6 +93,11 @@ const PruebaPublicBoard = () => {
     const split = async (event, player, setPlayer) => {
         event.preventDefault()
         try {
+            if ((player[hand0].active && player[hand1].active)
+                 || (player[hand0].active && !player[hand1].active && player[hand1].length !== 2)) {
+                console.log("Fallo: Solo se puede hacer split al principio de la partida con dos cartas y deben ser iguales");
+                throw new Error('Error: Solo se puede hacer split al principio de la partida con dos cartas y deben ser iguales');
+            }
             const response = await axios.put('/publicBoard/split', {
                 boardId: boardId,
                 cardsOnTable: player.hands[hand0].cards
@@ -141,6 +146,7 @@ const PruebaPublicBoard = () => {
             updatedPlayer.hands[numHand].defeat = response.data.defeat
             updatedPlayer.hands[numHand].blackJack = response.data.blackJack    
             updatedPlayer.hands[numHand].active = true
+            updatedPlayer.hands[numHand].stick = true
             setPlayer(updatedPlayer)
         } catch (error) {
             console.error("Error:", error);
