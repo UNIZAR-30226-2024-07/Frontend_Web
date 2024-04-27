@@ -140,21 +140,21 @@ export const getPartidasPublicas = async (setPartidasPublicas) => {
 }
 
 // Obtener las cartas al principio de cada play hand
-export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlayers) => {
+export const getInitCards = (userId, initCards, setBank, setPlayer, restPlayers, setRestPlayers) => {
     // Guardar banca
-    // Información de la banca en el último componente initCards
+    const bankIndex = initCards.findIndex(init => init.userId.equals('Bank'))
     const bankObj = {
         playerId: 'Bank',
         hand: {
-                cards: initCards[initCards.length - 1].cards, 
-                total: initCards[initCards.length - 1].totalCards,
-                defeat: false, 
-                blackJack: initCards[initCards.length - 1].blackJack, 
-                active: true, 
-                stick: false,   
-                show: true,
-                coinsEarned: 0
-            }
+            cards: initCards[bankIndex].cards, 
+            total: initCards[bankIndex].totalCards,
+            defeat: false, 
+            blackJack: initCards[bankIndex].blackJack, 
+            active: true, 
+            stick: false,   
+            show: true,
+            coinsEarned: 0
+        }
     }
     setBank(bankObj)
                 
@@ -188,36 +188,35 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, setRestPlaye
     setPlayer(playerObj)
 
     // Asignar resto de jugadores
-    const restPlayersArray = []
-    // Recorrer initBoards menos última componente que es la Banca
-    for (let i = 0; i < initCards.length - 1; i++) {
-        // Si no es el usuario
-        if (initCards[i].userId !== userId) {
-            const otherPlayerObj = {
-                playerId: initCards[i].userId,
-                hands: [
-                    {
-                        cards: initCards[i].cards, 
-                        total: initCards[i].totalCards, 
-                        defeat: false, 
-                        blackJack: initCards[i].blackJack, 
-                        active: true,
-                        stick: false,  
-                        show: false,
-                        coinsEarned: 0
-                    },{
-                        cards: [], 
-                        total: 0, 
-                        defeat: false, 
-                        blackJack: false,
-                        active: false,
-                        stick: false,
-                        show: false,
-                        coinsEarned: 0
-                    }
-                ]
+    const restPlayersArray = [...restPlayers]
+    // Recorrer initBoards
+    for (let i = 0; i < initCards.length; i++) {
+        // Si no es el usuario ni la banca
+        if (initCards[i].userId !== userId && initCards[i].userId !== 'Bank') {
+
+            const index = initCards.findIndex(infPlayer => infPlayer.userId === restPlayersArray[i].playerId);
+
+            if (index !== -1) {
+                // Primera jugada de la mano
+                restPlayersArray[i].hands[hand0].cards = initCards[index].cards
+                restPlayersArray[i].hands[hand0].total = initCards[index].totalCards
+                restPlayersArray[i].hands[hand0].defeat = false
+                restPlayersArray[i].hands[hand0].blackJack = initCards[index].blackJack
+                restPlayersArray[i].hands[hand0].active = true
+                restPlayersArray[i].hands[hand0].stick = false
+                restPlayersArray[i].hands[hand0].show = false
+                restPlayersArray[i].hands[hand0].coinsEarned = 0
+                
+                // Segunda jugada de la mano
+                restPlayersArray[i].hands[hand1].cards = []
+                restPlayersArray[i].hands[hand1].total = 0
+                restPlayersArray[i].hands[hand1].defeat = false
+                restPlayersArray[i].hands[hand1].blackJack = false
+                restPlayersArray[i].hands[hand1].active = false
+                restPlayersArray[i].hands[hand1].stick = false
+                restPlayersArray[i].hands[hand1].show = false
+                restPlayersArray[i].hands[hand1].coinsEarned = 0
             }
-            restPlayersArray.push(otherPlayerObj)
         }
     }
     setRestPlayers(restPlayersArray)
@@ -342,6 +341,48 @@ export const getResults = (userId, results, bank, setBank,
             }
             restPlayersArray.push(otherPlayerObj)
         }
+    }
+    setRestPlayers(restPlayersArray)
+}
+
+export const initPlayers = (players, userId, setPlayer, setRestPlayers) => {
+    
+    // Inicializar el jugador
+    const hand = {
+        cards: [], 
+        total: 0, 
+        defeat: false, 
+        blackJack: false, 
+        active: false, 
+        stick: false,   
+        show: false, 
+        coinsEarned: 0  
+    }
+    const objPlayer = {
+        playerId: userId,
+        hands: [{ ...hand }, { ...hand }]
+    }
+    setPlayer(objPlayer)
+
+    // Inicializar el resto de jugadores
+    const restPlayersArray = []
+    for (const player of players) {
+        const hand = {
+            cards: [], 
+            total: 0, 
+            defeat: false, 
+            blackJack: false, 
+            active: false, 
+            stick: false,   
+            show: false, 
+            coinsEarned: 0  
+        }
+        // Información de un jugador
+        const objPlayer = {
+            playerId: player.player,
+            hands: [{ ...hand }, { ...hand }]
+        }
+        restPlayersArray.push(objPlayer)
     }
     setRestPlayers(restPlayersArray)
 }

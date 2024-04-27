@@ -8,7 +8,7 @@ import './PruebaPublicBoard.css'
 import { numPlayers, hand0, hand1, 
          drawCard, split, double, stick, 
          getPartidasPublicas, getInitCards,
-         getResults,
+         getResults, initPlayers
         //  sleep
         } from './PublicBoardFunctions'
 // Variable que se usará para la gestión de la conexión
@@ -96,6 +96,10 @@ const PruebaPublicBoard = () => {
                 throw new Error('Error', response);
             }
             const board = response.data.board
+
+            // Inicializar los useState de los jugadores
+            initPlayers(board.players, user._id, setPlayer, setRestPlayers)
+            
             if (board && board.players && board.players.length > 0) {
                 const player = board.players.find(player => player.player === user._id);
 
@@ -116,7 +120,7 @@ const PruebaPublicBoard = () => {
             // Inicializar la cartas
             // 1 carta del Bank
             // 2 cartas por jugador
-            getInitCards(user._id, initCards, setBank, setPlayer, setRestPlayers)
+            getInitCards(user._id, initCards, setBank, setPlayer, restPlayers, setRestPlayers)
 
             let intervalId // Variable para almacenar el ID del intervalo
             // Función para iniciar el contador de tiempo
