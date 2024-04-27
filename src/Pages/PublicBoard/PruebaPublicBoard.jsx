@@ -107,8 +107,11 @@ const PruebaPublicBoard = () => {
                 if (player.guest) {
                     const req = { body: {boardId: boardId}}
                     socket.emit("players public ready", req)
+                    console.log("Player guest: emito players public ready") ///////////////////////////////////////////////////////////////////////////////
+
                 }
             }
+            console.log("Sale de: starting public board") ///////////////////////////////////////////////////////////////////////////////
         })
 
         socket.on("play hand", (initCards) => {
@@ -117,10 +120,17 @@ const PruebaPublicBoard = () => {
             setShowCoinsEarned(false)
             console.log("Ha llegado: play hand")
 
+            console.log("Player: ", player)//////////////////////////////////////////////////////////////////////////////
+            console.log("RestPlayers: ", restPlayers)//////////////////////////////////////////////////////////////////////////////
+
             // Inicializar la cartas
             // 1 carta del Bank
             // 2 cartas por jugador
-            getInitCards(user._id, initCards, setBank, setPlayer, restPlayers, setRestPlayers)
+            getInitCards(user._id, initCards, setBank, player, setPlayer, restPlayers, setRestPlayers)
+
+            console.log("Ha iniciado las cartas:")//////////////////////////////////////////////////////////////////////////////
+            console.log("Player: ", player)//////////////////////////////////////////////////////////////////////////////
+            console.log("RestPlayers: ", restPlayers)//////////////////////////////////////////////////////////////////////////////
 
             let intervalId // Variable para almacenar el ID del intervalo
             // Función para iniciar el contador de tiempo

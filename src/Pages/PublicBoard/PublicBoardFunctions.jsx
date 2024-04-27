@@ -27,7 +27,7 @@ export const drawCard = async (event, numHand, player, setPlayer, boardId) => {
         }
 
         // console.log('DrawCard: ', response.data);
-        const updatedPlayer = {...player}
+        let updatedPlayer = {...player}
         updatedPlayer.hands[numHand].cards = response.data.cardsOnTable
         updatedPlayer.hands[numHand].total = response.data.totalCards
         updatedPlayer.hands[numHand].defeat = response.data.defeat
@@ -54,7 +54,7 @@ export const double = async (event, numHand, player, setPlayer, boardId) => {
             throw new Error('Error', response);
         }
         // console.log('Avatares:', response);
-        const updatedPlayer = {...player}
+        let updatedPlayer = {...player}
         updatedPlayer.hands[numHand].cards = response.data.cardsOnTable
         updatedPlayer.hands[numHand].total = response.data.totalCards
         updatedPlayer.hands[numHand].defeat = response.data.defeat
@@ -80,7 +80,7 @@ export const stick = async (event, numHand, player, setPlayer, boardId) => {
             throw new Error('Error', response);
         }
         console.log('RESULTADO GUARDADO CORRECTAMENTE');
-        const updatedPlayer = {...player}
+        let updatedPlayer = {...player}
         updatedPlayer.hands[numHand].stick = true
         setPlayer(updatedPlayer)
     } catch (error) {
@@ -105,7 +105,7 @@ export const split = async (event, player, setPlayer, boardId) => {
             throw new Error('Error', response);
         }
         // console.log('Avatares:', response);
-        const updatedPlayer = {...player}
+        let updatedPlayer = {...player}
 
         updatedPlayer.hands[hand0].cards = response.data.cardsOnTableFirst
         updatedPlayer.hands[hand0].total = response.data.totalCardsFirst
@@ -140,9 +140,9 @@ export const getPartidasPublicas = async (setPartidasPublicas) => {
 }
 
 // Obtener las cartas al principio de cada play hand
-export const getInitCards = (userId, initCards, setBank, setPlayer, restPlayers, setRestPlayers) => {
+export const getInitCards = (userId, initCards, setBank, player, setPlayer, restPlayers, setRestPlayers) => {
     // Guardar banca
-    const bankIndex = initCards.findIndex(init => init.userId.equals('Bank'))
+    const bankIndex = initCards.findIndex(init => init.userId == 'Bank')
     const bankObj = {
         playerId: 'Bank',
         hand: {
@@ -159,63 +159,23 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, restPlayers,
     setBank(bankObj)
                 
     // Guardar primeras dos cartas usuario
+    let updatedPlayer = {...player}
     const infoPlayer = initCards.find(infPlayer => infPlayer.userId === userId);
-    // Información de un jugador
-    const playerObj = {
-        playerId: infoPlayer.userId,
-        hands: [
-            {
-                cards: infoPlayer.cards, 
-                total: infoPlayer.totalCards, 
-                defeat: false, 
-                blackJack: infoPlayer.blackJack, 
-                active: true, 
-                stick: false,  
-                show: true,
-                coinsEarned: 0
-            },{
-                cards: [], 
-                total: 0, 
-                defeat: false, 
-                blackJack: false, 
-                active: false,
-                stick: false,  
-                show: true,
-                coinsEarned: 0
-            }
-        ]
-    }
-    setPlayer(playerObj)
+
+    updatedPlayer = storeInitCardsPlayer(updatedPlayer, infoPlayer)
+    setPlayer(updatedPlayer)
 
     // Asignar resto de jugadores
-    const restPlayersArray = [...restPlayers]
+    let restPlayersArray = [...restPlayers]
     // Recorrer initBoards
     for (let i = 0; i < initCards.length; i++) {
         // Si no es el usuario ni la banca
         if (initCards[i].userId !== userId && initCards[i].userId !== 'Bank') {
 
+            // Obtener el indice del player correcto
             const index = initCards.findIndex(infPlayer => infPlayer.userId === restPlayersArray[i].playerId);
-
             if (index !== -1) {
-                // Primera jugada de la mano
-                restPlayersArray[i].hands[hand0].cards = initCards[index].cards
-                restPlayersArray[i].hands[hand0].total = initCards[index].totalCards
-                restPlayersArray[i].hands[hand0].defeat = false
-                restPlayersArray[i].hands[hand0].blackJack = initCards[index].blackJack
-                restPlayersArray[i].hands[hand0].active = true
-                restPlayersArray[i].hands[hand0].stick = false
-                restPlayersArray[i].hands[hand0].show = false
-                restPlayersArray[i].hands[hand0].coinsEarned = 0
-                
-                // Segunda jugada de la mano
-                restPlayersArray[i].hands[hand1].cards = []
-                restPlayersArray[i].hands[hand1].total = 0
-                restPlayersArray[i].hands[hand1].defeat = false
-                restPlayersArray[i].hands[hand1].blackJack = false
-                restPlayersArray[i].hands[hand1].active = false
-                restPlayersArray[i].hands[hand1].stick = false
-                restPlayersArray[i].hands[hand1].show = false
-                restPlayersArray[i].hands[hand1].coinsEarned = 0
+                restPlayersArray[i] = storeInitCardsPlayer(restPlayersArray[i], initCards[index])
             }
         }
     }
@@ -226,141 +186,62 @@ export const getInitCards = (userId, initCards, setBank, setPlayer, restPlayers,
 export const getResults = (userId, results, bank, setBank, 
                            player, setPlayer, restPlayers, setRestPlayers) => {
     // Guardar banca
-    // Información de la banca en el último componente results
+    // Información de la banca
+    const bankIndex = results.findIndex(res => res.userId = 'Bank')
     const updatedBank = {...bank}
-    updatedBank.hand.cards = results[results.length - 1].cards
-    updatedBank.hand.total = results[results.length - 1].total
+    updatedBank.hand.cards = results[bankIndex].cards
+    updatedBank.hand.total = results[bankIndex].total
     updatedBank.hand.active = true
     updatedBank.hand.show = true
     setBank(updatedBank)
     
     // Guardar resultados usuario
-    const updatedPlayer = {...player}
+    let updatedPlayer = {...player}
     const infoPlayer = results.find(infoPlayer => infoPlayer.userId === userId);
 
-    updatedPlayer.hands[hand0].active = true
-    updatedPlayer.hands[hand0].show = true
-
-    // Si ha confirmado la jugada
-    if(updatedPlayer.hands[hand0].stick) {
-        updatedPlayer.hands[hand0].cards = infoPlayer.cards[hand0]
-        updatedPlayer.hands[hand0].total = infoPlayer.total[hand0]
-        updatedPlayer.hands[hand0].coinsEarned = infoPlayer.coinsEarned[hand0]
-
-        // Si no ha confirmado la jugada
-    } else {
-        updatedPlayer.hands[hand0].coinsEarned = 0
-    }
-
-    // Si tiene dos manos
-    if (updatedPlayer.hands.length === 2) {
-        updatedPlayer.hands[hand1].active = true
-        updatedPlayer.hands[hand1].show = true
-
-        // Si ha confirmado la jugada
-        if(updatedPlayer.hands[hand1].stick) {
-            updatedPlayer.hands[hand1].cards = infoPlayer.cards[hand1]
-            updatedPlayer.hands[hand1].total = infoPlayer.total[hand1]
-            updatedPlayer.hands[hand1].coinsEarned = infoPlayer.coinsEarned[hand1]
-
-            // Si no ha confirmado la jugada
-        } else {
-            updatedPlayer.hands[hand1].coinsEarned = 0
-        }
-    } 
+    updatedPlayer = storeResultPlayer(updatedPlayer, infoPlayer)
     setPlayer(updatedPlayer)
 
     // Asignar resto de jugadores
-    const restPlayersArray = []
-    // Recorrer initBoards menos última componente que es la Banca
-    for (let i = 0; i < results.length - 1; i++) {
-        // Si no es el usuario
-        if (results[i].userId !== userId) {
-            let cards1
-            let cards2
-            let total1
-            let total2
-            let coinsEarned1
-            let coinsEarned2
-            let active2 = false
-            let show2 = false
-            const infoPlayer = results.find(infoPlayer => infoPlayer.userId === results[i].userId);
-            // Si ha confirmado la jugada
-            if(restPlayers[i].hands[hand0].stick) {
-                cards1 = infoPlayer.cards[hand0]
-                total1 = infoPlayer.total[hand0]
-                coinsEarned1 = infoPlayer.coinsEarned[hand0]
-
-                // Si no ha confirmado la jugada
-            } else {
-                cards1 = restPlayers[i].cards[hand0]
-                total1 = restPlayers[i].total[hand0]
-                coinsEarned1 = 0
+    let restPlayersArray = [...restPlayers]
+    // Recorrer initBoards
+    for (let i = 0; i < results.length; i++) {
+        // Si no es el usuario ni la banca
+        if (results[i].userId !== userId && results[i].userId !== 'Bank') {
+            const index = results.findIndex(res => res.userId === restPlayersArray[i].playerId);
+            if (index !== -1) {
+                restPlayersArray[i] = storeResultPlayer(restPlayersArray[i], results[index])
             }
-
-            // Si tiene dos manos
-            if (restPlayers[i].hands.length === 2) {
-                active2 = true
-                show2 = true
-                // Si ha confirmado la jugada
-                if(restPlayers[i].hands[hand1].stick) {
-                    cards2 = infoPlayer.cards[hand1]
-                    total2 = infoPlayer.total[hand1]
-                    coinsEarned2 = infoPlayer.coinsEarned[hand1]
-
-                    // Si no ha confirmado la jugada
-                } else {
-                    cards2 = restPlayers[i].cards[hand1]
-                    total2 = restPlayers[i].total[hand1]
-                    coinsEarned2 = 0
-                }
-            } 
-            const otherPlayerObj = {
-                playerId: results[i].userId,
-                hands: [
-                    {
-                        cards: cards1, 
-                        total: total1, 
-                        defeat: false, // No haría falta
-                        blackJack: false,  // No haría falta
-                        active: true,
-                        stick: false,  // No haría falta
-                        show: true,
-                        coinsEarned: coinsEarned1
-                    },{
-                        cards: cards2,
-                        total: total2,
-                        defeat: false, // No haría falta
-                        blackJack: false,  // No haría falta
-                        active: active2,
-                        stick: false,  // No haría falta
-                        show: show2,
-                        coinsEarned: coinsEarned2 
-                    }
-                ]
-            }
-            restPlayersArray.push(otherPlayerObj)
         }
     }
     setRestPlayers(restPlayersArray)
 }
+           
 
 export const initPlayers = (players, userId, setPlayer, setRestPlayers) => {
     
     // Inicializar el jugador
-    const hand = {
-        cards: [], 
-        total: 0, 
-        defeat: false, 
-        blackJack: false, 
-        active: false, 
-        stick: false,   
-        show: false, 
-        coinsEarned: 0  
-    }
     const objPlayer = {
         playerId: userId,
-        hands: [{ ...hand }, { ...hand }]
+        hands: [
+            {   cards: [], 
+                total: 0, 
+                defeat: false, 
+                blackJack: false, 
+                active: false, 
+                stick: false,   
+                show: false, 
+                coinsEarned: 0   
+            }, 
+            {   cards: [], 
+                total: 0, 
+                defeat: false, 
+                blackJack: false, 
+                active: false, 
+                stick: false,   
+                show: false, 
+                coinsEarned: 0   
+            }]
     }
     setPlayer(objPlayer)
 
@@ -385,4 +266,61 @@ export const initPlayers = (players, userId, setPlayer, setRestPlayers) => {
         restPlayersArray.push(objPlayer)
     }
     setRestPlayers(restPlayersArray)
+}
+
+const storeResultPlayer = (updatedPlayer, infoPlayer) => {
+    updatedPlayer.hands[hand0].active = true
+    updatedPlayer.hands[hand0].show = true
+
+    // Si ha confirmado la jugada
+    if(updatedPlayer.hands[hand0].stick) {
+        updatedPlayer.hands[hand0].cards = infoPlayer.cards[hand0]
+        updatedPlayer.hands[hand0].total = infoPlayer.total[hand0]
+        updatedPlayer.hands[hand0].coinsEarned = infoPlayer.coinsEarned[hand0]
+
+        // Si no ha confirmado la jugada
+    } else {
+        updatedPlayer.hands[hand0].coinsEarned = 0
+    }
+
+    // Si tiene dos manos
+    if (updatedPlayer.hands[hand1].active) {
+        updatedPlayer.hands[hand1].show = true
+
+        // Si ha confirmado la jugada
+        if(updatedPlayer.hands[hand1].stick) {
+            updatedPlayer.hands[hand1].cards = infoPlayer.cards[hand1]
+            updatedPlayer.hands[hand1].total = infoPlayer.total[hand1]
+            updatedPlayer.hands[hand1].coinsEarned = infoPlayer.coinsEarned[hand1]
+
+            // Si no ha confirmado la jugada
+        } else {
+            updatedPlayer.hands[hand1].coinsEarned = 0
+        }
+    }
+    return updatedPlayer
+}
+
+const storeInitCardsPlayer = (updatedPlayer, infoPlayer) => {
+    // Primera mano
+    updatedPlayer.hands[hand0].cards = infoPlayer.cards
+    updatedPlayer.hands[hand0].total = infoPlayer.totalCards
+    updatedPlayer.hands[hand0].defeat= false
+    updatedPlayer.hands[hand0].blackJack= infoPlayer.blackJack
+    updatedPlayer.hands[hand0].active= true
+    updatedPlayer.hands[hand0].stick = false
+    updatedPlayer.hands[hand0].show = true
+    updatedPlayer.hands[hand0].coinsEarned = 0
+
+    // Segunda mano
+    updatedPlayer.hands[hand1].cards = []
+    updatedPlayer.hands[hand1].total = 0
+    updatedPlayer.hands[hand1].defeat = false
+    updatedPlayer.hands[hand1].blackJack = false
+    updatedPlayer.hands[hand1].active = false
+    updatedPlayer.hands[hand1].stick = false 
+    updatedPlayer.hands[hand1].show = true
+    updatedPlayer.hands[hand1].coinsEarned = 0
+
+    return updatedPlayer
 }
