@@ -13,7 +13,7 @@ import { numPlayers, hand0, hand1,
         } from './PublicBoardFunctions'
 // Variable que se usará para la gestión de la conexión
 let socket
-const timeOut = 20
+const timeOut = 30
 
 const PruebaPublicBoard = () => {
     const { user } = useAuth()
@@ -108,12 +108,10 @@ const PruebaPublicBoard = () => {
                 if (player.guest) {
                     const req = { body: {boardId: boardId}}
                     socket.emit("players public ready", req)
-                    console.log("Player guest: emito players public ready") ///////////////////////////////////////////////////////////////////////////////
 
+                    console.log("Emitir: players public ready")///////////////////////////////////////////////////////////////////////
                 }
             }
-            console.log("Sale de: starting public board") ///////////////////////////////////////////////////////////////////////////////
-            console.log("RestPlayers (starting public board):", restPlayers)
         })
 
         socket.on("play hand", (initCards) => {
@@ -122,17 +120,10 @@ const PruebaPublicBoard = () => {
             setShowCoinsEarned(false)
             console.log("Ha llegado: play hand")
 
-            // console.log("Player: ", player)//////////////////////////////////////////////////////////////////////////////
-            // console.log("RestPlayers: ", restPlayers)//////////////////////////////////////////////////////////////////////////////
-
             // Inicializar la cartas
             // 1 carta del Bank
             // 2 cartas por jugador
             getInitCards(user._id, initCards, setBank, player, setPlayer, restPlayers, setRestPlayers)
-
-            console.log("Ha iniciado las cartas:")//////////////////////////////////////////////////////////////////////////////
-            console.log("Player: ", player)//////////////////////////////////////////////////////////////////////////////
-            console.log("RestPlayers: ", restPlayers)//////////////////////////////////////////////////////////////////////////////
 
             let intervalId // Variable para almacenar el ID del intervalo
             // Función para iniciar el contador de tiempo
@@ -164,8 +155,7 @@ const PruebaPublicBoard = () => {
             console.log(results)
 
             // Guardar resultados
-            getResults(user._id, results, bank, setBank, player, setPlayer,
-                       restPlayers, setRestPlayers)
+            getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers)
             
             // Visionar las monedas ganadas
             setShowCoinsEarned(true)
@@ -191,7 +181,7 @@ const PruebaPublicBoard = () => {
             </button>
             <div>
                 {partidasPublicas.map(partida => (
-                    <button key={partida._id} onClick={() => partidaPublica(partida)}>
+                    <button style={{ marginRight: '10px' }} key={partida._id} onClick={() => partidaPublica(partida)}>
                         {partida.name}
                     </button>
                 ))}
@@ -201,7 +191,7 @@ const PruebaPublicBoard = () => {
 
             {/* Mostrar mano BANCA */}
             <div style={{ backgroundColor: 'white'}}>
-                <p>Banca</p>
+                <p>Banca / Total: {bank.hand.total}</p>
                 <div key={'Bank'} style={{ backgroundColor: 'yellow' }}>
                     {bank.hand.active && (
                         <div className="cartas">
@@ -240,15 +230,16 @@ const PruebaPublicBoard = () => {
                                  !player.hands[numHand].blackJack &&
                                  !player.hands[numHand].stick ? (
                                     <div>
-                                        <button onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}>DrawCard</button>
-                                        <button onClick={(e) => double(e, numHand, player, setPlayer, boardId)}>Double</button>
-                                        <button onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}>Stick</button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}>DrawCard</button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}>Double</button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}>Stick</button>
                                         
                                         {player.hands[hand0].active && 
                                         !player.hands[hand1].active &&
-                                        player.hands[hand0].cards.length === 2 && (
+                                        player.hands[hand0].cards.length === 2 &&
+                                        player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
                                             // Split solo si no se ha hecho split y son dos cartas
-                                            <button onClick={(e) => split(e, player, setPlayer, boardId)}>Split</button>
+                                            <button style={{ marginRight: '10px' }} onClick={(e) => split(e, player, setPlayer, boardId)}>Split</button>
                                         )}
                                     </div>
                                 ) : (
@@ -277,6 +268,7 @@ const PruebaPublicBoard = () => {
             <hr/>     {/* Linea separación */}
 
             {/* Mostrar resto JUGADORES */}
+
             <div style={{ backgroundColor: 'blue' }}>
                 {/* Iterar sobre los jugadores */}
                 <p>Resto jugadores:</p>
@@ -287,26 +279,28 @@ const PruebaPublicBoard = () => {
                         [hand0, hand1].forEach(numHand => {
                             if ( restPlayers[index] && restPlayers[index].hands[numHand].active) {
                                 const handJSX = (
-                                    <div>
-                                    {showCoinsEarned && (
-                                        <div key={'restPlayer' + numHand}>
-                                            <p>Mano {numHand} / Total: {restPlayers[index].hands[numHand].total}</p>
-                                            <p>CoinsEarned: {restPlayers[index].hands[numHand].coinsEarned}</p>
+                                    <div key={restPlayers[index].playerId + "-" + numHand}>
+                                        {showCoinsEarned && (
+                                            <div key={'restPlayer' + numHand}>
+                                                <p>Mano {numHand} / Total: {restPlayers[index].hands[numHand].total}</p>
+                                                <p>CoinsEarned: {restPlayers[index].hands[numHand].coinsEarned}</p>
+                                            </div>
+                                        )}
+                                        <div className="cartas" 
+                                             key={restPlayers[index].playerId + "-" + numHand} 
+                                             style={{ backgroundColor: 'green' }}
+                                        >  
+                                            {/* Renderizar las cartas */}
+                                            {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
+                                                <img
+                                                    className="carta"
+                                                    key={numHand + '-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
+                                                    src={restPlayers[index].hands[numHand].show 
+                                                        ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                        : reverseCardUrl}
+                                                />
+                                            ))}
                                         </div>
-                                    )}
-                                    <div className="cartas" key={numHand + "-" + index} style={{ backgroundColor: 'green' }}>
-                                        
-                                        {/* Renderizar las cartas */}
-                                        {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
-                                            <img
-                                                className="carta"
-                                                key={numHand + '-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
-                                                src={restPlayers[index].hands[numHand].show 
-                                                    ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
-                                                    : reverseCardUrl}
-                                            />
-                                        ))}
-                                    </div>
                                     </div>
                                 );
                                 playerHands.push(handJSX);
@@ -316,7 +310,7 @@ const PruebaPublicBoard = () => {
                     }
                     return jsxArray;
                 })()}
-            </div>
+            </div>  
 
             <button type="submit" className="imprimir" onClick={imprimir}>
                 Imprimir info jugadores
