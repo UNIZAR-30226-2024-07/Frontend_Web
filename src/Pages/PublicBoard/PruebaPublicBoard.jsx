@@ -82,6 +82,7 @@ const PruebaPublicBoard = () => {
     useEffect(() => {
         socket = io(constants.dirApi)
 
+        //// Evento
         socket.on("starting public board", async (boardId) => {
             console.log("Que empieza la partida")
             setBoardId(boardId)
@@ -98,7 +99,7 @@ const PruebaPublicBoard = () => {
             const board = response.data.board
 
             // Inicializar los useState de los jugadores
-            initPlayers(board.players, user._id, setPlayer, setRestPlayers)
+            initPlayers(board.players, user._id, setPlayer, restPlayers)
             
             if (board && board.players && board.players.length > 0) {
                 const player = board.players.find(player => player.player === user._id);
@@ -112,6 +113,7 @@ const PruebaPublicBoard = () => {
                 }
             }
             console.log("Sale de: starting public board") ///////////////////////////////////////////////////////////////////////////////
+            console.log("RestPlayers (starting public board):", restPlayers)
         })
 
         socket.on("play hand", (initCards) => {
@@ -120,8 +122,8 @@ const PruebaPublicBoard = () => {
             setShowCoinsEarned(false)
             console.log("Ha llegado: play hand")
 
-            console.log("Player: ", player)//////////////////////////////////////////////////////////////////////////////
-            console.log("RestPlayers: ", restPlayers)//////////////////////////////////////////////////////////////////////////////
+            // console.log("Player: ", player)//////////////////////////////////////////////////////////////////////////////
+            // console.log("RestPlayers: ", restPlayers)//////////////////////////////////////////////////////////////////////////////
 
             // Inicializar la cartas
             // 1 carta del Bank
@@ -207,7 +209,7 @@ const PruebaPublicBoard = () => {
                             {bank.hand.cards.map((card, cardIndex) => (
                                 <img
                                     className="carta"
-                                    key={cardIndex + card.value + '-' + card.suit}
+                                    key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
                                     src={bank.hand.show 
                                         ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
                                         : reverseCardUrl}
@@ -259,7 +261,7 @@ const PruebaPublicBoard = () => {
                                     {player.hands[numHand].cards.map((card, cardIndex) => (
                                         <img
                                             className="carta"
-                                            key={cardIndex + card.value + '-' + card.suit}
+                                            key={numHand + '-' + cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
                                             src={player.hands[numHand].show 
                                                 ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
                                                 : reverseCardUrl}
@@ -298,7 +300,7 @@ const PruebaPublicBoard = () => {
                                         {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
                                             <img
                                                 className="carta"
-                                                key={cardIndex + card.value + '-' + card.suit}
+                                                key={numHand + '-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
                                                 src={restPlayers[index].hands[numHand].show 
                                                     ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
                                                     : reverseCardUrl}

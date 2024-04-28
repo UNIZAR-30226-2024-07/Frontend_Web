@@ -167,6 +167,8 @@ export const getInitCards = (userId, initCards, setBank, player, setPlayer, rest
 
     // Asignar resto de jugadores
     let restPlayersArray = [...restPlayers]
+    console.log("RestPlayers (getInitCards): ", restPlayers)
+    console.log("RestPlayersArray (getInitCards): ", restPlayersArray)
     // Recorrer initBoards
     for (let i = 0; i < initCards.length; i++) {
         // Si no es el usuario ni la banca
@@ -218,7 +220,28 @@ export const getResults = (userId, results, bank, setBank,
 }
            
 
-export const initPlayers = (players, userId, setPlayer, setRestPlayers) => {
+export const initPlayers = (players, userId, setPlayer, restPlayers) => {
+    // Inicializar el resto de jugadores
+    // const restPlayersArray = []
+    for (const player of players) {
+        const hand = {
+            cards: [], 
+            total: 0, 
+            defeat: false, 
+            blackJack: false, 
+            active: false, 
+            stick: false,   
+            show: false, 
+            coinsEarned: 0  
+        }
+        // Información de un jugador
+        const objPlayer = {
+            playerId: player.player,
+            hands: [{ ...hand }, { ...hand }]
+        }
+        restPlayers.push(objPlayer)
+    }
+    console.log("RestPlayersArray (initPlayers): ", restPlayers)
     
     // Inicializar el jugador
     const objPlayer = {
@@ -244,28 +267,6 @@ export const initPlayers = (players, userId, setPlayer, setRestPlayers) => {
             }]
     }
     setPlayer(objPlayer)
-
-    // Inicializar el resto de jugadores
-    const restPlayersArray = []
-    for (const player of players) {
-        const hand = {
-            cards: [], 
-            total: 0, 
-            defeat: false, 
-            blackJack: false, 
-            active: false, 
-            stick: false,   
-            show: false, 
-            coinsEarned: 0  
-        }
-        // Información de un jugador
-        const objPlayer = {
-            playerId: player.player,
-            hands: [{ ...hand }, { ...hand }]
-        }
-        restPlayersArray.push(objPlayer)
-    }
-    setRestPlayers(restPlayersArray)
 }
 
 const storeResultPlayer = (updatedPlayer, infoPlayer) => {
