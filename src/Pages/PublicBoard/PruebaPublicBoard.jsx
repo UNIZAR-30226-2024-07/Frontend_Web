@@ -1,6 +1,7 @@
 // Imports
 import axios from "../../api/axios"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import constants from '../../constants'
 import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
@@ -8,7 +9,7 @@ import './PruebaPublicBoard.css'
 import { numPlayers, hand0, hand1, 
          drawCard, split, double, stick, 
          getPartidasPublicas, getInitCards,
-         getResults, initPlayers
+         getResults, initPlayers, eliminatePlayers
         //  sleep
         } from './PublicBoardFunctions'
 // Variable que se usará para la gestión de la conexión
@@ -17,8 +18,10 @@ const timeOut = 30
 
 const PruebaPublicBoard = () => {
     const { user } = useAuth()
+    const navigate = useNavigate()
     const [boardId, setBoardId] = useState("") // BoardId
 
+    const [mensajeExpulsion, setMensajeExpulsion] = useState(false)
     const [seconds, setSeconds] = useState(timeOut);  // Intervalo de tiempo
     const [showCoinsEarned, setShowCoinsEarned] = useState(false);  // Intervalo de tiempo
 
@@ -36,6 +39,8 @@ const PruebaPublicBoard = () => {
     // Información de un jugador
     const objPlayer = {
         playerId: '',
+        playing: true, // Si playing = true, significa que el usuario está 
+                       // dentro de la partida (no ha abandonado ni ha sido expulsado)
         hands: [{ ...hand }, { ...hand }]
     }
     // Información banca
@@ -147,6 +152,17 @@ const PruebaPublicBoard = () => {
         })
 
         socket.on("players deleted", (playersToDelete) => {
+            // Al llegar este evento, se debe comprobar si el usuario ha sido
+            // expulsado. En tal caso, se abandonará la partida y se volverá al
+            // menú principal
+            if (playersToDelete.includes(user._id)) {
+                setMensajeExpulsion(true)
+                setTimeout(() => {
+                    navigate(constants.root + "PageDashboard")
+                }, 3000)
+            } else {
+                eliminatePlayers(playersToDelete, restPlayers)
+            }
             console.log("Jugadores eliminar: ", playersToDelete)
         })
 
@@ -161,7 +177,7 @@ const PruebaPublicBoard = () => {
             setShowCoinsEarned(true)
         })
 
-    }, [user, bank, player, restPlayers]) // Se ejecuta solo una vez cuando el componente se monta
+    }, [user, bank, player, restPlayers, navigate]) // Se ejecuta solo una vez cuando el componente se monta
 
 
     /************************************************************************************************** */
@@ -175,6 +191,13 @@ const PruebaPublicBoard = () => {
 
     return (
         <div>
+            {/* Mensaje en caso de ser expulsado de la partida */}
+            { mensajeExpulsion &&
+                <div className="mensaje-expulsion">
+                    <p className="titulo-mensaje-expulsion"> Expulsado por inactividad </p>
+                    <p className="cuerpo-mensaje-expulsion"> Has sido expulsado de la partida por inactividad durante dos jugadas </p>
+                </div>
+            }
             {/* Listado partidas publicas para unirse */}
             <button type="submit" className="matchPublic">
                 Solicitar partida pública
@@ -278,8 +301,9 @@ const PruebaPublicBoard = () => {
                         const playerHands = [];
                         [hand0, hand1].forEach(numHand => {
                             if ( restPlayers[index] && restPlayers[index].hands[numHand].active) {
+                                const restPlayerClassName = restPlayers[index].playing ? "rest-cards-playing" : "rest-cards-not-playing"
                                 const handJSX = (
-                                    <div key={restPlayers[index].playerId + "-" + numHand}>
+                                    <div className={restPlayerClassName} key={restPlayers[index].playerId + "-" + numHand}>
                                         {showCoinsEarned && (
                                             <div key={'restPlayer' + numHand}>
                                                 <p>Mano {numHand} / Total: {restPlayers[index].hands[numHand].total}</p>

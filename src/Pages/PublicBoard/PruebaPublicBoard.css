@@ -8,3 +8,7 @@
     width: 100px; /* Establece el ancho deseado para las imágenes */
     margin-right: 10px; /* Espacio entre cada imagen */
 }
+
+.rest-cards-not-playing {
+    filter: grayscale(100%)
+}

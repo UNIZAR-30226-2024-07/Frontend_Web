@@ -249,6 +249,7 @@ export const initPlayers = (players, userId, setPlayer, restPlayers) => {
         // Información de un jugador
         const objPlayer = {
             playerId: player.player,
+            playing: true,
             hands: [{ ...hand }, { ...hand }]
         }
         restPlayers.push(objPlayer)
@@ -256,6 +257,7 @@ export const initPlayers = (players, userId, setPlayer, restPlayers) => {
     // Inicializar el jugador
     const objPlayer = {
         playerId: userId,
+        playing: true,
         hands: [
             {   cards: [], 
                 total: 0, 
@@ -363,4 +365,13 @@ const storeInitCardsPlayer = (isPlayer, updatedPlayer, infoPlayer) => {
     updatedPlayer.hands[hand1].coinsEarned = 0
 
     return updatedPlayer
+}
+
+export const eliminatePlayers = (playersToDelete, restPlayers) => {
+    for (const playerToDelete of playersToDelete) {
+        const index = restPlayers.findIndex(player => player.playerId == playerToDelete)
+        if (index !== -1) {
+            restPlayers[index].playing = false
+        }
+    }
 }
