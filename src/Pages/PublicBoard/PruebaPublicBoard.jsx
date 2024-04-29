@@ -7,7 +7,7 @@ import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
 import './PruebaPublicBoard.css'
 import { hand0, hand1, timeOut,
-         drawCard, split, double, stick, pause,
+         drawCard, split, double, stick, pause, leave,
          getPartidasPublicas, eliminatePlayers,
          initPlayers, getInitCards, getResults,
          getPartidaPausada
@@ -272,6 +272,8 @@ const PruebaPublicBoard = () => {
             {/* Mostrar manos JUGADOR */}
             <div style={{ backgroundColor: 'white'}}>
                 <p>Jugador:</p>
+                <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
+                <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
                 {[hand0, hand1].map(numHand => (
                     <div key={numHand} style={{ backgroundColor: 'brown' }}>
                         { player && player.hands[numHand].active && (
@@ -290,7 +292,6 @@ const PruebaPublicBoard = () => {
                                         <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
                                         
                                         {player.hands[hand0].active && 
                                         !player.hands[hand1].active &&
