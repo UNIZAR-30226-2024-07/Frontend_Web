@@ -76,7 +76,7 @@ export function PageTienda() {
 
   return (
     <div className='page-tienda'>
-      <MyNav isLoggedIn={false} isDashboard={true}/>
+      <MyNav isLoggedIn={false} isDashboard={false}/>
 
       <div className='div-inicial'>
         <div className='moneda'>

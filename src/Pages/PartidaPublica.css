@@ -1,0 +1,36 @@
+.partida-publica{
+  min-height: 100vh;
+  background-color: #539165;
+  margin: 0;
+  padding: 0;
+}
+
+.pause-icon {
+  font-size: 10em; /* Tamaño del icono */
+  background-color: white;
+}
+
+.mensaje-pausa {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #3F497FFF;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  width: 80%; /* Ancho del cuadro de diálogo en relación con el tamaño de la pantalla */
+  max-width: 600px; /* Ancho máximo del cuadro de diálogo */
+  max-height: 700px;
+  height: auto; /* Altura automática para adaptarse al contenido */
+  text-align: center; /* Centrar el contenido horizontalmente */
+}
+
+  
+.error-message {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 16px; /* Tamaño de fuente del mensaje de error */
+}

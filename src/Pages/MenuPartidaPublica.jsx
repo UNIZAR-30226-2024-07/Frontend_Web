@@ -22,7 +22,7 @@ const MenuPartidaPublica = () => {
     };
   return (
     <div className='page-publica'>
-      <MyNav isLoggedIn={false} isDashboard={true} /> 
+      <MyNav isLoggedIn={false} isDashboard={false} monedas={true}/> 
         <div className='titulo'>
           Partidas publicas
         </div>

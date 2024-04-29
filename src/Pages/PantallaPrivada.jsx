@@ -1,6 +1,6 @@
-import './AjustesUser.css';
+import './PantallaPrivada.css';
 import { MyNav } from "../Components/MyNav";
-import { CustomButton } from "../Components/CustomButton";
+import { MyButton } from "../Components/MyButton";
 
 // const AjustesUser = () => {
 //   return (
@@ -18,7 +18,7 @@ import { CustomButton } from "../Components/CustomButton";
 
 import { useNavigate } from "react-router-dom";
 
-const AjustesUser = () => {
+const PantallaPrivada = () => {
   const navigate = useNavigate();
 
 //   const handleCambiarAvatar = () => {
@@ -26,38 +26,32 @@ const AjustesUser = () => {
 //     navigate('/Frontend_Web/cambiarAvatar');
 //   };
 
-  const handleCambiarNombreUsuario = () => {
+  const handleCrear = () => {
     // Lógica para navegar a la pantalla de cambio de nombre de usuario
-    navigate('/Frontend_Web/CambiarUsuario');
+    navigate('/Frontend_Web/CrearPartidaPr');
   };
 
-  const handleCambiarContrasena = () => {
+  const handleUnirse = () => {
     // Lógica para navegar a la pantalla de cambio de contraseña
-    navigate('/Frontend_Web/CambiarContrasena');
+    navigate('/Frontend_Web/UnirsePartidaPr');
   };
 
-  const handleVerEstadisticas = () => {
+  const handlePractica = () => {
     // Lógica para navegar a la pantalla de ver estadísticas
-    navigate('/Frontend_Web/EstadisticasUser');
-  };
-
-  const handleProbarAvatares = () => {
-    // Lógica para navegar a la pantalla de ver estadísticas
-    navigate('/Frontend_Web/SelectAvatar');
+    navigate('/Frontend_Web/ModoPractica');
   };
 
   return (
-    <div className='ajustes-user'>
+    <div className='pantalla-privada'>
       <MyNav isLoggedIn={false} isDashboard={false} /> 
-        <div className="button-cont">
+        <div className="contenedor-privada">
           {/* <CustomButton text="Cambiar avatar" onClick={handleCambiarAvatar} /> */}
-          <CustomButton text="avataress" onClick={handleProbarAvatares} />
-          <CustomButton text="Cambiar nombre usuario" onClick={handleCambiarNombreUsuario} />
-          <CustomButton text="Cambiar contraseña" onClick={handleCambiarContrasena} />
-          <CustomButton text="Ver estadísticas" onClick={handleVerEstadisticas} />
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handleCrear}>Crear Partida</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handleUnirse}>Unirse partida</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handlePractica}>Modo practica</MyButton>
         </div>
     </div>
   );
 }
 
-export default AjustesUser;
+export default PantallaPrivada;

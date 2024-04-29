@@ -1,0 +1,15 @@
+.pantalla-privada {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor-privada {
+    display: flex;
+    flex-direction: column; /* Organiza los botones en una columna */
+    align-items: center; /* Centra horizontalmente los botones */
+    justify-content: center; /* Centra verticalmente los botones */
+    margin-top: 300px;
+    gap: 40px;
+}

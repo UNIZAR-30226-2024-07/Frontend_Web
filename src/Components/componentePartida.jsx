@@ -9,8 +9,8 @@ const componentePartida = ({ name, dificultad, bet }) => {
       <div className="description">
         <p>Dificultad: {dificultad}</p>
         <p>Apuesta por mano: {bet}</p>
+        <MyButton className="jugar" color="midnightblue" size="xxl" type="submit">Jugar</MyButton>
       </div>
-      <MyButton className="button" color="midnightblue" size="xl" type="submit">Jugar</MyButton>
     </div>
 
   </div>

@@ -51,7 +51,7 @@ export function SelectAvatar() {
   
   return (
     <div className='page-select'>
-      <MyNav isLoggedIn={false} isDashboard={true}/>
+      <MyNav isLoggedIn={false} isDashboard={false}/>
 
       <div className='div-a'>
         <ListaAvatares avatars={rugs} name="Tapetes" type='2' defaul={defaulC.image} onAvatarClick={handleListaAvataresClick}/> 

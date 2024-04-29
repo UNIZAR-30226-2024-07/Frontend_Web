@@ -1,0 +1,100 @@
+.inicio {
+    margin: 0;
+    padding: 0;
+    background-color: #539165 !important;
+    height: 100%;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ajusta esto según tus necesidades */
+}
+  
+.form-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #820300 !important;
+    padding: 60px;
+    padding-right: 150px !important;
+    padding-left: 150px !important;
+}
+
+  
+.button-login {
+    font-size: 30px !important;
+    margin-top: 5px !important;
+    font-weight: bolder !important;
+    background-color: #3F497F !important; /* Corrección del color de fondo */
+    color: white !important; /* Definir el color del texto */
+    padding: 30px 35px !important;
+    border-radius: 25px;
+}
+
+
+.register{
+    font-size: 30px !important;
+    margin-top: 5px !important;
+    font-weight: bolder !important;
+    background-color: #3F497F !important; /* Corrección del color de fondo */
+    color: white !important; /* Definir el color del texto */
+    padding: 25px 30px !important;
+    border-radius: 25px;
+}
+
+  
+.button-lr{
+    margin-left:90px;
+    margin-top:10px;
+    font-weight: bolder !important;
+    font-size: 16px !important;
+
+}
+
+
+
+.part-form{
+        display: flex;
+        align-items: center;
+}
+
+.img-form{
+    font-size: 33px !important;
+    color:white;
+    margin-right:20px;
+}
+  
+
+
+.titulo-form {
+    font-size:40px;
+    font-weight: bold;
+    color:white;
+}
+
+.parrafado-centrado{
+    font-size:25px;
+    margin-top:80px;
+    color:white;
+    font-weight: bold;
+
+
+}
+
+.error-login{
+    background-color: black;
+    color: white;
+    padding: 40px; 
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    font-size: 30px; 
+    font-weight: bolder;
+}

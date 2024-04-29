@@ -40,3 +40,27 @@
 .nav-menu a:hover {
   color: #3F497F; /* Cambia el color de texto cuando se pasa el puntero */
 }
+
+.moned {
+  color: white;
+  font-weight: bold;
+  font-size: 27px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  display: flex; /* Usamos flexbox para organizar los elementos */
+  align-items: center; /* Centramos verticalmente los elementos */
+}
+
+.moneda-icono {
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+}
+
+.div-inicia {
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  margin-right: 10px; /* Añadir margen derecho para separar del siguiente contenido */
+  margin-left: -100px; /* Añadir margen izquierdo para mover el elemento a la izquierda */
+}

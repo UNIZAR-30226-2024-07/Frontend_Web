@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "../api/axios";
 import { Navbar, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
 import { MyIcon } from "./MyIcon";
 import { MyButton } from "./MyButton";
@@ -10,19 +11,36 @@ import constants from '../constants';
 import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
-export function MyNav({ isLoggedIn, isDashboard }) {
+export function MyNav({ isLoggedIn, isDashboard, monedas }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useAuth(); // Obtiene la función logout del contexto de autenticación
   const navigate = useNavigate(); // Obtiene la función navigate de react-router-dom
   const destino = isLoggedIn ? constants.root  : constants.root + "PageDashboard" ;
 
 
+
   const menuItems = [
     { text: "Amigos", path: constants.root + "PageFriendList" },
     { text: "Ranking", path: constants.root + "Ranking" },
-    { text: "Skins", path: constants.root + "PageFriendList" },
+    { text: "Skins", path: constants.root + "SelectAvatar" },
     { text: "Log out", onClick: handleLogout } // Asigna la función handleLogout al botón "Log out"
   ];
+
+
+  const [coins, setCoins] = useState(0);
+
+  useEffect(() => {
+    const saberMonedas = async () => {
+      try {
+        const response = await axios.get('/user/verify');
+        console.log("hola");
+        setCoins(response.data.user.coins);
+      } catch (error) {
+        console.error('Failed to load cards:', error);
+      }
+    };
+    saberMonedas();
+   }, []);
 
   // Función para manejar el logout
   function handleLogout() {
@@ -57,6 +75,15 @@ export function MyNav({ isLoggedIn, isDashboard }) {
         )}
         {isDashboard && (
           <>
+            <NavbarContent justify="center">
+            <div className='div-inicia'>
+              <div className='moned'>
+                <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
+                {coins}
+              </div>
+            </div>
+            </NavbarContent>
+
             <NavbarContent justify="end">
               <Link to={constants.root + "PageTienda"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
                 <FaShopify className="text-4xl" />
@@ -75,6 +102,18 @@ export function MyNav({ isLoggedIn, isDashboard }) {
                 </NavbarMenuItem>
               ))}
             </NavbarMenu>
+            </NavbarContent>
+          </>
+        )}
+        {monedas && (
+          <>
+            <NavbarContent justify="center">
+            <div className='div-inicia'>
+              <div className='moned'>
+                <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
+                {coins}
+              </div>
+            </div>
             </NavbarContent>
           </>
         )}
