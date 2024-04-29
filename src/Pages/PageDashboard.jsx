@@ -23,7 +23,7 @@ export function PageDashboard() {
       setGetReward(response.data.rewardDisponible)   // Se puede obtener hoy?
 
       console.log("reward: ", response.data.coins)
-      console.log("disponible: " + (response.data.rewardDisponible) ? "TRUE" : "FALSE")
+      console.log("disponible: " + (response.data.rewardDisponible))
 
     } catch (error) {
         console.error("Error:", error);
@@ -32,6 +32,7 @@ export function PageDashboard() {
 
   const handleGetReward = async(getReward) => {
     try {
+      console.log("Ejecutamos getReward")
       // Si se puede obtener la recompensa
       if (getReward) {
         const response = await axios.put('/user/getDailyReward')
@@ -66,14 +67,14 @@ export function PageDashboard() {
           </MyAvatar>
       </div>
       <div className="option-dashboard">
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handlePartidaPublica}>Partida Publica</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPublica}>Partida Publica</MyButton>
           <MyButton color="midnightblue" size="xxl" variant="bordered">Partida Privada</MyButton>
           <MyButton color="midnightblue" size="xxl" variant="bordered">Torneo</MyButton>
       </div>
 
       {/* Añadido por flavio para probar coinsReward *************************************************************/}
       <div>
-        <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handleGetReward(getReward)}>
+        <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handleGetReward(getReward)}>
           Reclamar recompensa diaria: {reward} : ¿Es posible obtenerla?: {getReward ? ("TRUE") : ("FALSE")}
         </MyButton>
       </div>

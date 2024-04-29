@@ -7,9 +7,10 @@ import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
 import './PruebaPublicBoard.css'
 import { hand0, hand1, timeOut,
-         drawCard, split, double, stick, 
+         drawCard, split, double, stick, pause,
          getPartidasPublicas, eliminatePlayers,
-         initPlayers, getInitCards, getResults
+         initPlayers, getInitCards, getResults,
+         getPartidaPausada
         } from './PublicBoardFunctions'
 
 // Variable que se usará para la gestión de la conexión
@@ -54,6 +55,7 @@ const PruebaPublicBoard = () => {
     const [restPlayers, setRestPlayers] = useState([]);   // Mnos resto jugadores
 
     const [partidasPublicas, setPartidasPublicas] = useState([]) // Lista de partidas públicas
+    const [partidaPausada, setPartidaPausada] = useState("")
 
     // Información usuario
     const [reverseCardUrl, setReverseCardUrl] = useState('')
@@ -73,11 +75,16 @@ const PruebaPublicBoard = () => {
 
     useEffect(() => {
         getPartidasPublicas(setPartidasPublicas)
-    }, [])
+        getPartidaPausada(setPartidaPausada)
+    }, [partidaPausada])
 
     ////////////////////////////////////////////////////////////////////////////
     // Manejo de Socket.io
     ////////////////////////////////////////////////////////////////////////////
+
+    const reanudarPartida = () => {
+        socket.emit("resume public board", ({ body: { boardId: partidaPausada._id, userId: user._id }}))
+    }
 
     const partidaPublica = (partida) => {
         socket.emit("enter public board", { body: { typeId: partida._id, userId: user._id }})
@@ -176,6 +183,25 @@ const PruebaPublicBoard = () => {
             setShowCoinsEarned(true)
         })
 
+        socket.on("resume accepted", async () => {
+            setBoardId(partidaPausada.id)
+
+            // Obtener reverso carta
+            await getReverseCard(setReverseCardUrl)
+            
+            // Si eres el guest, se envía el evento 'players public ready'
+            const response = await axios.get('/publicBoard/boardById/' + partidaPausada.id)
+            if (response.status !== 200){
+                console.log("Fallo: ", response);
+                throw new Error('Error', response);
+            }
+            const board = response.data.board
+
+            // Inicializar los useState de los jugadores
+            initPlayers(board.players, user._id, setPlayer, restPlayers)
+
+        })
+
     }, [user, bank, player, restPlayers, navigate]) // Se ejecuta solo una vez cuando el componente se monta
 
 
@@ -207,6 +233,12 @@ const PruebaPublicBoard = () => {
                         {partida.name}
                     </button>
                 ))}
+            </div>
+            <div>
+                <p> Partidas pausadas </p>
+                { partidaPausada !== "" && (
+                    <button onClick={() => reanudarPartida()}> {partidaPausada.boardType} </button>
+                )}
             </div>
 
             <hr/>     {/* Linea separación */}
@@ -252,9 +284,10 @@ const PruebaPublicBoard = () => {
                                  !player.hands[numHand].blackJack &&
                                  !player.hands[numHand].stick ? (
                                     <div>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}>DrawCard</button>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}>Double</button>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}>Stick</button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
                                         
                                         {player.hands[hand0].active && 
                                         !player.hands[hand1].active &&

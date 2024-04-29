@@ -1,6 +1,6 @@
 // Imports
 import axios from "../../api/axios"
-
+import constants from "../../constants"
 
 export const hand0 = 0      // Primera mano
 export const hand1 = 1     // Segunda mano
@@ -129,6 +129,38 @@ export const split = async (event, player, setPlayer, boardId) => {
 
     } catch (error) {
         console.error("Error:", error);
+    }
+}
+
+export const getPartidaPausada = async (setPartidaPausada) => {
+    try {
+        const response = await axios.get('/user/getPausedBoard')
+        if (response.status !== 200) {
+            console.log("Fallo: ", response);
+            throw new Error('Error', response);
+        } else {
+            if (response.data.exists) {
+                setPartidaPausada({id: response.data.pausedBoard, 
+                                   boardType: response.data.boardType})
+            }
+        }
+    } catch (e) {
+        console.error("Error:", e)
+    }
+}
+
+export const pause = async (event, boardId, navigate) => {
+    event.preventDefault()
+    try {
+        const response = await axios.put('/publicBoard/pause/' + boardId)
+        if (response.status !== 200) {
+            console.log("Fallo: ", response);
+            throw new Error('Error', response);
+        } else {
+            navigate(constants.root + 'PageDashboard')
+        }
+    } catch (e) {
+        console.error("Error:", e)
     }
 }
 
