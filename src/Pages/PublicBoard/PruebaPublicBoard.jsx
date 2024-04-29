@@ -6,15 +6,14 @@ import constants from '../../constants'
 import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
 import './PruebaPublicBoard.css'
-import { numPlayers, hand0, hand1, 
+import { hand0, hand1, timeOut,
          drawCard, split, double, stick, 
-         getPartidasPublicas, getInitCards,
-         getResults, initPlayers, eliminatePlayers
-        //  sleep
+         getPartidasPublicas, eliminatePlayers,
+         initPlayers, getInitCards, getResults
         } from './PublicBoardFunctions'
+
 // Variable que se usará para la gestión de la conexión
 let socket
-const timeOut = 30
 
 const PruebaPublicBoard = () => {
     const { user } = useAuth()
