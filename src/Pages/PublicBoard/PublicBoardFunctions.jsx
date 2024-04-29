@@ -149,6 +149,21 @@ export const getPartidaPausada = async (setPartidaPausada) => {
     }
 }
 
+export const leave = async(event, boardId, navigate) => {
+    event.preventDefault()
+    try {
+        const response = await axios.put('/publicBoard/leaveBoard/' + boardId)
+        if (response.status !== 200) {
+            console.log("Fallo: ", response);
+            throw new Error('Error', response);
+        } else {
+            navigate(constants.root + 'PageDashboard')
+        }
+    } catch (e) {
+        console.error("Error:", e)
+    }
+}
+
 export const pause = async (event, boardId, navigate) => {
     event.preventDefault()
     try {
