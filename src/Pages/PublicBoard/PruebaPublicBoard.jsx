@@ -76,14 +76,16 @@ const PruebaPublicBoard = () => {
     useEffect(() => {
         getPartidasPublicas(setPartidasPublicas)
         getPartidaPausada(setPartidaPausada)
-    }, [partidaPausada])
+    }, [])
 
     ////////////////////////////////////////////////////////////////////////////
     // Manejo de Socket.io
     ////////////////////////////////////////////////////////////////////////////
 
     const reanudarPartida = () => {
-        socket.emit("resume public board", ({ body: { boardId: partidaPausada._id, userId: user._id }}))
+        console.log("Partida pausada id: ", partidaPausada.id)
+        console.log("UserId", user._id)
+        socket.emit("resume public board", ({ body: { boardId: partidaPausada.id, userId: user._id }}))
     }
 
     const partidaPublica = (partida) => {
@@ -184,6 +186,7 @@ const PruebaPublicBoard = () => {
         })
 
         socket.on("resume accepted", async () => {
+            console.log("Yeeeeeeee")
             setBoardId(partidaPausada.id)
 
             // Obtener reverso carta
@@ -202,7 +205,7 @@ const PruebaPublicBoard = () => {
 
         })
 
-    }, [user, bank, player, restPlayers, navigate]) // Se ejecuta solo una vez cuando el componente se monta
+    }, [user, bank, player, restPlayers, navigate, partidaPausada]) // Se ejecuta solo una vez cuando el componente se monta
 
 
     /************************************************************************************************** */
