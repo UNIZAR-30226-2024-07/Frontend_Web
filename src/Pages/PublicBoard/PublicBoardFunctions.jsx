@@ -215,6 +215,7 @@ export const initPlayers = (players, userId, setPlayer, restPlayers) => {
         const objPlayer = {
             playerId: player.player,
             playing: true,
+            currentCoins: 0,
             hands: [{ ...hand }, { ...hand }]
         }
         restPlayers.push(objPlayer)
@@ -223,6 +224,7 @@ export const initPlayers = (players, userId, setPlayer, restPlayers) => {
     const objPlayer = {
         playerId: userId,
         playing: true,
+        currentCoins: 0,
         hands: [
             {   cards: [], 
                 total: 0, 
@@ -348,6 +350,9 @@ export const eliminatePlayers = (playersToDelete, restPlayers) => {
 /************************ Funciones *****************************************************/
 const storeResultPlayer = (isPlayer, updatedPlayer, infoPlayer) => {
 
+    // Actualizar las monedas actuales
+    updatedPlayer.currentCoins = infoPlayer.currentCoins
+    
     // Mostrar primera mano si o si
     updatedPlayer.hands[hand0].active = true
     updatedPlayer.hands[hand0].show = true

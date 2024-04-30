@@ -42,6 +42,7 @@ const PublicBoard = () => {
         playerId: '',
         playing: true, // Si playing = true, significa que el usuario está 
                        // dentro de la partida (no ha abandonado ni ha sido expulsado)
+        currentCoins: 0,
         hands: [{ ...hand }, { ...hand }]
     }
     // Información banca
@@ -284,7 +285,7 @@ const PublicBoard = () => {
 
             {/* Mostrar manos JUGADOR */}
             <div style={{ backgroundColor: 'white'}}>
-                <p>Jugador:</p>
+                <p>Jugador - CurrentCoins: {player.currentCoins}</p>
                 <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
                 <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
                 {[hand0, hand1].map(numHand => (
@@ -305,7 +306,6 @@ const PublicBoard = () => {
                                         <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
                                         
                                         {player.hands[hand0].active && 
                                         !player.hands[hand1].active &&
