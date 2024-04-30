@@ -22,6 +22,7 @@ const PruebaPublicBoard = () => {
     const [boardId, setBoardId] = useState("") // BoardId
 
     const [mensajeExpulsion, setMensajeExpulsion] = useState(false)
+    const [mensajeFin, setMensajeFin] = useState(false)
     const [seconds, setSeconds] = useState(timeOut);  // Intervalo de tiempo
     const [showCoinsEarned, setShowCoinsEarned] = useState(false);  // Intervalo de tiempo
 
@@ -128,10 +129,11 @@ const PruebaPublicBoard = () => {
         })
 
         socket.on("play hand", (initCards) => {
+            console.log("Ha llegado: play hand")
+            console.log("initCards", initCards)
             setSeconds(timeOut)
             // Dejar visionar las monedas ganadas
             setShowCoinsEarned(false)
-            console.log("Ha llegado: play hand")
 
             // Inicializar la cartas
             // 1 carta del Bank
@@ -152,8 +154,6 @@ const PruebaPublicBoard = () => {
                 }, 1000);
             };
             startTimer()
-
-
 
             // Limpiar el intervalo cuando el componente se desmonte o el temporizador se detenga
             return () => clearInterval(intervalId);
@@ -205,6 +205,13 @@ const PruebaPublicBoard = () => {
 
         })
 
+        socket.on("finish board", () => {
+            setMensajeFin(true)
+            setTimeout(() => {
+                navigate(constants.root + "PageDashboard")
+            }, 3000)
+        })
+
     }, [user, bank, player, restPlayers, navigate, partidaPausada]) // Se ejecuta solo una vez cuando el componente se monta
 
 
@@ -224,6 +231,12 @@ const PruebaPublicBoard = () => {
                 <div className="mensaje-expulsion">
                     <p className="titulo-mensaje-expulsion"> Expulsado por inactividad </p>
                     <p className="cuerpo-mensaje-expulsion"> Has sido expulsado de la partida por inactividad durante dos jugadas </p>
+                </div>
+            }
+            { mensajeFin &&
+                <div className="mensaje-fin">
+                    <p className="titulo-mensaje-fin"> FIN </p>
+                    <p className="cuerpo-mensaje-fin"> La partida finalizó. Cargando...</p>
                 </div>
             }
             {/* Listado partidas publicas para unirse */}
@@ -292,6 +305,7 @@ const PruebaPublicBoard = () => {
                                         <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
                                         
                                         {player.hands[hand0].active && 
                                         !player.hands[hand1].active &&
