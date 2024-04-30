@@ -42,7 +42,6 @@ const PublicBoard = () => {
         playerId: '',
         playing: true, // Si playing = true, significa que el usuario está 
                        // dentro de la partida (no ha abandonado ni ha sido expulsado)
-        currentCoins: 0,
         hands: [{ ...hand }, { ...hand }]
     }
     // Información banca
@@ -61,6 +60,7 @@ const PublicBoard = () => {
 
     // Información usuario
     const [reverseCardUrl, setReverseCardUrl] = useState('')
+    const [currentCoins, getCurrentCoins] = useState(user.coins)
     // Función obtener reverso carta
     const getReverseCard = async(setReverseCardUrl) => {
         const response = await axios.get('/card/currentCard')
@@ -180,7 +180,7 @@ const PublicBoard = () => {
             console.log(results)
 
             // Guardar resultados
-            getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers)
+            getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers, getCurrentCoins)
             
             // Visionar las monedas ganadas
             setShowCoinsEarned(true)
@@ -285,7 +285,7 @@ const PublicBoard = () => {
 
             {/* Mostrar manos JUGADOR */}
             <div style={{ backgroundColor: 'white'}}>
-                <p>Jugador - CurrentCoins: {player.currentCoins}</p>
+                <p>Jugador - CurrentCoins: {currentCoins}</p>
                 <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
                 <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
                 {[hand0, hand1].map(numHand => (

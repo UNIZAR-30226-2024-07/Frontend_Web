@@ -301,7 +301,7 @@ export const getInitCards = (userId, initCards, setBank, player, setPlayer,
 //      - Si es el jugador: actualizar player si stick = true en dicha mano
 //      - Si es otro jugador: actualizar restPlayers[] si hay cartas en el results
 export const getResults = (userId, results, bank, setBank, 
-                           player, setPlayer, restPlayers) => {
+                           player, setPlayer, restPlayers, setCurrentCoins) => {
     // Guardar banca
     // Información de la banca
     const bankIndex = results.findIndex(res => res.userId === 'Bank')
@@ -319,7 +319,7 @@ export const getResults = (userId, results, bank, setBank,
     const infoPlayer = results.find(infoPlayer => infoPlayer.userId === userId);
 
     // storeResultPlayer (true = es el jugador)
-    updatedPlayer = storeResultPlayer(true, updatedPlayer, infoPlayer)
+    updatedPlayer = storeResultPlayer(true, updatedPlayer, infoPlayer, setCurrentCoins)
     setPlayer(updatedPlayer)
 
     // Asignar resto de jugadores
@@ -348,10 +348,10 @@ export const eliminatePlayers = (playersToDelete, restPlayers) => {
            
 
 /************************ Funciones *****************************************************/
-const storeResultPlayer = (isPlayer, updatedPlayer, infoPlayer) => {
+const storeResultPlayer = (isPlayer, updatedPlayer, infoPlayer, setCurrentCoins) => {
 
     // Actualizar las monedas actuales
-    updatedPlayer.currentCoins = infoPlayer.currentCoins
+    setCurrentCoins(infoPlayer.currentCoins)
     
     // Mostrar primera mano si o si
     updatedPlayer.hands[hand0].active = true
