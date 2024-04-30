@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import constants from '../../constants'
 import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
-import './PruebaPublicBoard.css'
+import './PublicBoard.css'
 import { hand0, hand1, timeOut,
          drawCard, split, double, stick, pause, leave,
          getPartidasPublicas, eliminatePlayers,
@@ -16,7 +16,7 @@ import { hand0, hand1, timeOut,
 // Variable que se usará para la gestión de la conexión
 let socket
 
-const PruebaPublicBoard = () => {
+const PublicBoard = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const [boardId, setBoardId] = useState("") // BoardId
@@ -396,4 +396,4 @@ const PruebaPublicBoard = () => {
     )
 }
 
-export default PruebaPublicBoard
+export default PublicBoard

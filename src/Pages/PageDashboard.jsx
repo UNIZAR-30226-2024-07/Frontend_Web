@@ -71,8 +71,8 @@ export function PageDashboard() {
           <MyAvatar/>
       </div>
       <div className="option-dashboard">
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handlePartidaPublica}>Partida Publica</MyButton>
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handlePartidaPrivada}>Partida Privada</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPublica}>Partida Publica</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPrivada}>Partida Privada</MyButton>
           <MyButton color="midnightblue" size="xxl" variant="bordered">Torneo</MyButton>
       </div>
 
