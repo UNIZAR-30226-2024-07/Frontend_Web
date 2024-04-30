@@ -23,7 +23,6 @@ import {PageTienda} from "../Pages/PageTienda"
 import { SelectAvatar } from "../Pages/SelectAvatar"
 import {PageTrophyRanking} from "../Pages/PageTrophyRanking"
 import {PageMoneyRanking} from "../Pages/PageMoneyRanking"
-import MenuPartidaPublica from "../Pages/MenuPartidaPublica"
 import PublicBoard from "../Pages/PublicBoard/PublicBoard"
 import PartidaPublica from "../Pages/PartidaPublica"
 import PartidaPrivada from "../Pages/PantallaPrivada"
@@ -58,7 +57,6 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'PageTienda'} element={<PageTienda/>}></Route>  
                         <Route path={constants.root + 'PageTrophyRanking'} element={<PageTrophyRanking/>}></Route>  
                         <Route path={constants.root + 'PageMoneyRanking'} element={<PageMoneyRanking/>}></Route>  
-                        <Route path={constants.root + 'MenuPartidaPublica'} element={<MenuPartidaPublica/>}></Route>  
                         <Route path={constants.root + 'PartidaPublica'} element={<PartidaPublica/>}></Route>  
                         <Route path={constants.root + 'PartidaPrivada'} element={<PartidaPrivada/>}></Route>  
 

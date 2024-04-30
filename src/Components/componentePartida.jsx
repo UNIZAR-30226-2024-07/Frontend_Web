@@ -1,7 +1,10 @@
 import './componentePartida.css'
 import { MyButton } from "../Components/MyButton";
+import { useNavigate } from 'react-router-dom';
+import constants from '../constants';
 
-const componentePartida = ({ name, dificultad, bet }) => {
+const ComponentePartida = ({ id, name, dificultad, bet }) => {
+  const navigate = useNavigate()
   return (
     <div className="container">
     <div className="containerr">
@@ -9,7 +12,14 @@ const componentePartida = ({ name, dificultad, bet }) => {
       <div className="description">
         <p>Dificultad: {dificultad}</p>
         <p>Apuesta por mano: {bet}</p>
-        <MyButton className="jugar" color="midnightblue" size="xxl" type="submit">Jugar</MyButton>
+        <MyButton 
+          className="jugar" 
+          color="midnightblue" 
+          size="xxl" 
+          type="submit" 
+          onClick={() => navigate(constants.root + "PublicBoard/" + id)}>
+            Jugar
+        </MyButton>
       </div>
     </div>
 
@@ -17,4 +27,4 @@ const componentePartida = ({ name, dificultad, bet }) => {
   );
 };
 
-export default componentePartida;
+export default ComponentePartida;

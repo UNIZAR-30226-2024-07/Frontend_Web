@@ -33,7 +33,7 @@ export function MyNav({ isLoggedIn, isDashboard, monedas }) {
     const saberMonedas = async () => {
       try {
         const response = await axios.get('/user/verify');
-        console.log("hola");
+        // console.log("hola");
         setCoins(response.data.user.coins);
       } catch (error) {
         console.error('Failed to load cards:', error);

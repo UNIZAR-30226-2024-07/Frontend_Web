@@ -1,11 +1,14 @@
 // Imports
+// import '../MenuPartidaPublica.css'; // Importa el archivo CSS
+import { MyButton } from "../../Components/MyButton";
+import { MyNav } from '../../Components/MyNav';
 import axios from "../../api/axios"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import constants from '../../constants'
 import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
-import './PublicBoard.css'
+import "./PublicBoard.css"
 import { hand0, hand1, timeOut,
          drawCard, split, double, stick, pause, leave,
          getPartidasPublicas, eliminatePlayers,
@@ -21,10 +24,14 @@ const PublicBoard = () => {
     const navigate = useNavigate()
     const [boardId, setBoardId] = useState("") // BoardId
 
+    const [page, setPage] = useState(0)
     const [mensajeExpulsion, setMensajeExpulsion] = useState(false)
     const [mensajeFin, setMensajeFin] = useState(false)
     const [seconds, setSeconds] = useState(timeOut);  // Intervalo de tiempo
     const [showCoinsEarned, setShowCoinsEarned] = useState(false);  // Intervalo de tiempo
+
+    const [messages, setMessages] = useState([]) // Vector de mensajes de la partida
+    const [newMessage, setNewMessage] = useState("") // Mensaje a enviar
 
     // Mano de un jugador
     const hand = {
@@ -83,14 +90,17 @@ const PublicBoard = () => {
     // Manejo de Socket.io
     ////////////////////////////////////////////////////////////////////////////
 
-    const reanudarPartida = () => {
-        console.log("Partida pausada id: ", partidaPausada.id)
-        console.log("UserId", user._id)
-        socket.emit("resume public board", ({ body: { boardId: partidaPausada.id, userId: user._id }}))
+    const partidaPublica = (tipoPartida) => {
+        socket.emit("enter public board", { body: { typeId: tipoPartida._id, userId: user._id }})
+        setPage(1)
     }
 
-    const partidaPublica = (partida) => {
-        socket.emit("enter public board", { body: { typeId: partida._id, userId: user._id }})
+    const sendMessage = async (event) => {
+        event.preventDefault()
+        socket.emit("new public message", { body: { boardId: boardId,
+                                                     userId: user._id,
+                                                     message: newMessage }})
+        setNewMessage("")
     }
 
     useEffect(() => {
@@ -212,6 +222,19 @@ const PublicBoard = () => {
             }, 3000)
         })
 
+        socket.on("new message", (args) => {
+            console.log("Llega nuevo mensaje")
+            const message = args.message
+            const name = args.name
+            const userId = args.userId
+            // Se añade al messages el mensaje message junto con su emisor
+            // 'userId' si no es el mismo usuario
+            setMessages(prevMessages => [
+                ...prevMessages,
+                { message, name, userId }
+            ])
+        })
+
     }, [user, bank, player, restPlayers, navigate, partidaPausada]) // Se ejecuta solo una vez cuando el componente se monta
 
 
@@ -226,6 +249,44 @@ const PublicBoard = () => {
 
     return (
         <div>
+        { page == 0 ? (
+            <div className='page-publica'>
+            <MyNav isLoggedIn={false} isDashboard={false} monedas={true}/> 
+                <div className='titulo'>
+                    Partidas publicas
+                </div>
+                <div className="lista">
+                {Array.isArray(partidasPublicas) && partidasPublicas.length > 0 ? (
+                    partidasPublicas.map((tipoPartida) => (
+                        <div key={tipoPartida._id}>
+                        <div className="container">
+                        <div className="containerr">
+                          <div className='primero'>{tipoPartida.name} <hr/> </div>
+                          <div className="description">
+                            <div className="dif-bet">
+                                <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
+                                <p> Apuesta por mano: {tipoPartida.bet} coins</p>
+                            </div>
+                            <MyButton 
+                              className="jugar" 
+                              color="midnightblue" 
+                              size="xxl" 
+                              type="submit" 
+                              onClick={() => partidaPublica(tipoPartida)}>
+                                Jugar
+                            </MyButton>
+                          </div>
+                        </div>
+                        </div>                    
+                        </div>
+                    ))
+                ) : (
+                    <p>No se encontraron tipos de partidas públicas.</p>
+                )}
+                </div>
+            </div>
+      ) : (
+            <div>
             {/* Mensaje en caso de ser expulsado de la partida */}
             { mensajeExpulsion &&
                 <div className="mensaje-expulsion">
@@ -239,23 +300,6 @@ const PublicBoard = () => {
                     <p className="cuerpo-mensaje-fin"> La partida finalizó. Cargando...</p>
                 </div>
             }
-            {/* Listado partidas publicas para unirse */}
-            <button type="submit" className="matchPublic">
-                Solicitar partida pública
-            </button>
-            <div>
-                {partidasPublicas.map(partida => (
-                    <button style={{ marginRight: '10px' }} key={partida._id} onClick={() => partidaPublica(partida)}>
-                        {partida.name}
-                    </button>
-                ))}
-            </div>
-            <div>
-                <p> Partidas pausadas </p>
-                { partidaPausada !== "" && (
-                    <button onClick={() => reanudarPartida()}> {partidaPausada.boardType} </button>
-                )}
-            </div>
 
             <hr/>     {/* Linea separación */}
 
@@ -391,8 +435,31 @@ const PublicBoard = () => {
             </button>
 
             <p>Time remaining: {seconds} seconds</p>
-
+            <div>
+                <div>
+                    {/* Renderizar cada mensaje */}
+                    {messages.map((message, index) => (
+                        <div className="message" key={index}>
+                            <p className="emitter">{message.userId === user._id ? 'Yo' : message.name }</p>
+                            <p className="content">{message.message}</p>
+                        </div>
+                    ))}
+                </div>
+                
+                <form>
+                    <input
+                        type="text"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                    />
+                    <button onClick={(e) => sendMessage(e)}> Enviar </button>
+                </form>
+            </div>
         </div>
+
+        )}
+        </div>
+       
     )
 }
 

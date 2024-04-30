@@ -58,7 +58,7 @@ export function PageDashboard() {
 
   const handlePartidaPublica = () => {
     // Lógica para navegar a la pantalla de cambio de nombre de usuario
-    navigate(constants.root + 'MenuPartidaPublica');
+    navigate(constants.root + 'PublicBoard');
   };
   const handlePartidaPrivada = () => {
     // Lógica para navegar a la pantalla de cambio de nombre de usuario
@@ -76,10 +76,10 @@ export function PageDashboard() {
           <MyAvatar/>
       </div>
       <div className="option-dashboard">
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPublica}>Partida Publica</MyButton>
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPrivada}>Partida Privada</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPublica()}>Partida Publica</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPrivada()}>Partida Privada</MyButton>
           <MyButton color="midnightblue" size="xxl" variant="bordered">Torneo</MyButton>
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handlePartidaSolitario}>Partida Solitario</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaSolitario()}>Partida Solitario</MyButton>
       </div>
 
       {/* Añadido por flavio para probar coinsReward *************************************************************/}
