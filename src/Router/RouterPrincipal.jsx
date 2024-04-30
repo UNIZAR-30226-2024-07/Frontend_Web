@@ -27,6 +27,7 @@ import MenuPartidaPublica from "../Pages/MenuPartidaPublica"
 import PublicBoard from "../Pages/PublicBoard/PublicBoard"
 import PartidaPublica from "../Pages/PartidaPublica"
 import PartidaPrivada from "../Pages/PantallaPrivada"
+import SingleBoard from "../Pages/SingleBoard/SingleBoard"
 
 const RouterPrincipal = () => {
     return (
@@ -40,6 +41,7 @@ const RouterPrincipal = () => {
                     <Route element={<ProtectedRoute />}>
                         
                         <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
+                        <Route path={constants.root + 'PartidaSolitario'} element={<SingleBoard />}></Route>
                         
                         <Route path={constants.root + 'PublicBoard'} element={<PublicBoard/>}></Route>
                         <Route path={constants.root + 'PageFriendFind'} element={<PageFriendFind/>}></Route>

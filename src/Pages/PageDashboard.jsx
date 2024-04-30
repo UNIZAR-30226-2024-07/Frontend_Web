@@ -6,6 +6,7 @@ import "./PageDashboard.css"
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "../api/axios";
+import constants from "../constants";
 export function PageDashboard() {
   const navigate = useNavigate();
 
@@ -57,11 +58,15 @@ export function PageDashboard() {
 
   const handlePartidaPublica = () => {
     // Lógica para navegar a la pantalla de cambio de nombre de usuario
-    navigate('/Frontend_Web/MenuPartidaPublica');
+    navigate(constants.root + 'MenuPartidaPublica');
   };
   const handlePartidaPrivada = () => {
     // Lógica para navegar a la pantalla de cambio de nombre de usuario
-    navigate('/Frontend_Web/PartidaPrivada');
+    navigate(constants.root + '/PartidaPrivada');
+  };
+  const handlePartidaSolitario = () => {
+    // Lógica para navegar a la pantalla de cambio de nombre de usuario
+    navigate(constants.root + 'PartidaSolitario');
   };
   return (
     <>
@@ -74,6 +79,7 @@ export function PageDashboard() {
           <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPublica}>Partida Publica</MyButton>
           <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPrivada}>Partida Privada</MyButton>
           <MyButton color="midnightblue" size="xxl" variant="bordered">Torneo</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={handlePartidaSolitario}>Partida Solitario</MyButton>
       </div>
 
       {/* Añadido por flavio para probar coinsReward *************************************************************/}
