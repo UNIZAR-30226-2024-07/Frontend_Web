@@ -131,23 +131,6 @@ export const split = async (event, player, setPlayer, boardId) => {
     }
 }
 
-// export const getPartidaPausada = async (setPartidaPausada) => {
-//     try {
-//         const response = await axios.get('/user/getPausedBoard')
-//         if (response.status !== 200) {
-//             console.log("Fallo: ", response);
-//             throw new Error('Error', response);
-//         } else {
-//             if (response.data.exists) {
-//                 setPartidaPausada({id: response.data.pausedBoard, 
-//                                    boardType: response.data.boardType})
-//             }
-//         }
-//     } catch (e) {
-//         console.error("Error:", e)
-//     }
-// }
-
 export const leave = async(event, boardId, navigate) => {
     event.preventDefault()
     try {
@@ -162,88 +145,6 @@ export const leave = async(event, boardId, navigate) => {
         console.error("Error:", e)
     }
 }
-
-// export const pause = async (event, boardId, navigate) => {
-//     event.preventDefault()
-//     try {
-//         const response = await axios.put('/publicBoard/pause/' + boardId)
-//         if (response.status !== 200) {
-//             console.log("Fallo: ", response);
-//             throw new Error('Error', response);
-//         } else {
-//             navigate(constants.root + 'PageDashboard')
-//         }
-//     } catch (e) {
-//         console.error("Error:", e)
-//     }
-// }
-
-/********************** Funciones tratar useState ******************************/
-
-// // Obtener todas las partidas públicas que hay
-// export const getPartidasPublicas = async (setPartidasPublicas) => {
-//     try {
-//         const response = await axios.get('/publicBoardType/getAll')
-//         if (response.status !== 200) {
-//             return console.error(response.data)
-//         }
-
-//         setPartidasPublicas(response.data.publicBoardTypes)
-//     } catch (e) {
-//         console.error("Error al pedir las partidas. " + e.message)
-//     }
-// }
-
-// // Inicializar los useState players y restPlayers
-// // Se inicializan los campos por defecto y con el userId de los jugadores
-// // Solo se hace una vez: al principio de la partida o cuando se reanuda
-// export const initPlayers = (players, userId, setPlayer, restPlayers) => {
-//     // Inicializar el resto de jugadores
-//     for (const player of players) {
-//         const hand = {
-//             cards: [], 
-//             total: 0, 
-//             defeat: false, 
-//             blackJack: false, 
-//             active: false, 
-//             stick: false,   
-//             show: false, 
-//             coinsEarned: 0  
-//         }
-//         // Información de un jugador
-//         const objPlayer = {
-//             playerId: player.player,
-//             playing: true,
-//             hands: [{ ...hand }, { ...hand }]
-//         }
-//         restPlayers.push(objPlayer)
-//     }    
-//     // Inicializar el jugador
-//     const objPlayer = {
-//         playerId: userId,
-//         playing: true,
-//         hands: [
-//             {   cards: [], 
-//                 total: 0, 
-//                 defeat: false, 
-//                 blackJack: false, 
-//                 active: false, 
-//                 stick: false,   
-//                 show: false, 
-//                 coinsEarned: 0   
-//             }, 
-//             {   cards: [], 
-//                 total: 0, 
-//                 defeat: false, 
-//                 blackJack: false, 
-//                 active: false, 
-//                 stick: false,   
-//                 show: false, 
-//                 coinsEarned: 0   
-//             }]
-//     }
-//     setPlayer(objPlayer)
-// }
 
 // Obtener las cartas al principio de cada play hand
 // Banca obtiene una carta
@@ -288,8 +189,6 @@ export const getResults = (userId, results, bank, setBank, player, setPlayer) =>
     updatedBank.hand.active = true
     updatedBank.hand.show = true
     setBank(updatedBank)
-
-    console.log("Results: ", results)
     
     // Guardar resultados usuario
     let updatedPlayer = {...player}
@@ -299,17 +198,6 @@ export const getResults = (userId, results, bank, setBank, player, setPlayer) =>
     updatedPlayer = storeResultPlayer(true, updatedPlayer, infoPlayer)
     setPlayer(updatedPlayer)
 }
-
-// // Marca como eliminados los restPlayers (saldrán con un fondo gris)
-// export const eliminatePlayers = (playersToDelete, restPlayers) => {
-//     for (const playerToDelete of playersToDelete) {
-//         const index = restPlayers.findIndex(player => player.playerId == playerToDelete)
-//         if (index !== -1) {
-//             restPlayers[index].playing = false
-//         }
-//     }
-// }
-
 
 /************************ Funciones *****************************************************/
 const storeResultPlayer = (isPlayer, updatedPlayer, infoPlayer) => {

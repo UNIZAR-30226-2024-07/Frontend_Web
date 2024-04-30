@@ -71,7 +71,6 @@ const SingleBoard = () => {
 
             const req = { body: {boardId: boardId}}
             socket.emit("players single ready", req)
-            console.log("Emitir: players single ready")//////////////////////////////////////////////////////
         })
 
         socket.on("play hand", (initCards) => {
@@ -87,8 +86,7 @@ const SingleBoard = () => {
 
         socket.on("hand results", (results) => {
 
-            console.log(results)
-
+            console.log("Llegan resultados")
             // Guardar resultados
             getResults(user._id, results, bank, setBank, player, setPlayer)
             
@@ -182,8 +180,8 @@ const SingleBoard = () => {
                                  !player.hands[numHand].stick ? (
                                     <div>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
+                                        <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
                                         
                                         {player.hands[hand0].active && 
                                         !player.hands[hand1].active &&
