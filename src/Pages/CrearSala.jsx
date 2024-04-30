@@ -28,7 +28,7 @@ const CrearSala = () => {
         };
 
         try {
-            const response = await axios.post('/api/publicBoardType/add', formData)
+            const response = await axios.post('/publicBoardType/add', formData)
             if (response.status == 200) {
                 history.push('/HomeAdmin');
             }
