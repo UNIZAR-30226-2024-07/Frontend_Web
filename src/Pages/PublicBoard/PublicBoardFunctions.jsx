@@ -215,6 +215,7 @@ export const initPlayers = (players, userId, setPlayer, restPlayers) => {
         const objPlayer = {
             playerId: player.player,
             playing: true,
+            currentCoins: 0,
             hands: [{ ...hand }, { ...hand }]
         }
         restPlayers.push(objPlayer)
@@ -223,6 +224,7 @@ export const initPlayers = (players, userId, setPlayer, restPlayers) => {
     const objPlayer = {
         playerId: userId,
         playing: true,
+        currentCoins: 0,
         hands: [
             {   cards: [], 
                 total: 0, 
@@ -299,7 +301,7 @@ export const getInitCards = (userId, initCards, setBank, player, setPlayer,
 //      - Si es el jugador: actualizar player si stick = true en dicha mano
 //      - Si es otro jugador: actualizar restPlayers[] si hay cartas en el results
 export const getResults = (userId, results, bank, setBank, 
-                           player, setPlayer, restPlayers) => {
+                           player, setPlayer, restPlayers, setCurrentCoins) => {
     // Guardar banca
     // Información de la banca
     const bankIndex = results.findIndex(res => res.userId === 'Bank')
@@ -317,7 +319,7 @@ export const getResults = (userId, results, bank, setBank,
     const infoPlayer = results.find(infoPlayer => infoPlayer.userId === userId);
 
     // storeResultPlayer (true = es el jugador)
-    updatedPlayer = storeResultPlayer(true, updatedPlayer, infoPlayer)
+    updatedPlayer = storeResultPlayer(true, updatedPlayer, infoPlayer, setCurrentCoins)
     setPlayer(updatedPlayer)
 
     // Asignar resto de jugadores
@@ -346,8 +348,11 @@ export const eliminatePlayers = (playersToDelete, restPlayers) => {
            
 
 /************************ Funciones *****************************************************/
-const storeResultPlayer = (isPlayer, updatedPlayer, infoPlayer) => {
+const storeResultPlayer = (isPlayer, updatedPlayer, infoPlayer, setCurrentCoins) => {
 
+    // Actualizar las monedas actuales
+    setCurrentCoins(infoPlayer.currentCoins)
+    
     // Mostrar primera mano si o si
     updatedPlayer.hands[hand0].active = true
     updatedPlayer.hands[hand0].show = true

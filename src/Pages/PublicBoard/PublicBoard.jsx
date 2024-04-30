@@ -67,6 +67,7 @@ const PublicBoard = () => {
 
     // Información usuario
     const [reverseCardUrl, setReverseCardUrl] = useState('')
+    const [currentCoins, getCurrentCoins] = useState(user.coins)
     // Función obtener reverso carta
     const getReverseCard = async(setReverseCardUrl) => {
         const response = await axios.get('/card/currentCard')
@@ -189,7 +190,7 @@ const PublicBoard = () => {
             console.log(results)
 
             // Guardar resultados
-            getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers)
+            getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers, getCurrentCoins)
             
             // Visionar las monedas ganadas
             setShowCoinsEarned(true)
@@ -328,7 +329,7 @@ const PublicBoard = () => {
 
             {/* Mostrar manos JUGADOR */}
             <div style={{ backgroundColor: 'white'}}>
-                <p>Jugador:</p>
+                <p>Jugador - CurrentCoins: {currentCoins}</p>
                 <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
                 <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
                 {[hand0, hand1].map(numHand => (
@@ -349,7 +350,6 @@ const PublicBoard = () => {
                                         <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
                                         <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
                                         
                                         {player.hands[hand0].active && 
                                         !player.hands[hand1].active &&
