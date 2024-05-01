@@ -10,6 +10,8 @@ import { Button } from "@nextui-org/react";
 import constants from '../constants';
 import { MyRanking } from "../Components/MyRanking";
 import { returnFriendsAvatar } from '../Context/FriendContext';
+import MyLoading from '../Components/MyLoading';
+
 import "./PageTrophyRanking.css";
 
 export function PageMoneyRanking() {
@@ -96,7 +98,7 @@ export function PageMoneyRanking() {
     }, [statsFetched, avatarsFetched]);
 
     if (loading) {
-        return <div>Cargando...</div>;
+        return <div> <MyLoading/> </div>;
     }
 
     return (
@@ -134,9 +136,9 @@ export function PageMoneyRanking() {
                 value={userData.statValue}
             />
         )}
-    </li>
-))}
-                </ul>
+        </li>
+    ))}
+                    </ul>
             </div>
         </div>
     );

@@ -26,7 +26,9 @@ export function PageLogin() {
         password: contrasena,
         rol: 'Null'   
       });
-      setError(res.data.message);
+
+      console.log("HOLAAA");
+      setError(res.message.message);
       if (res.data.user.rol === "admin") {
         navigate(constants.root + 'HomeAdmin');
       } else {
@@ -71,13 +73,16 @@ export function PageLogin() {
             />
           </div>
           <Button className="button-login" type="submit">Iniciar sesión</Button>
-          {error && <div className="error-login">{error}</div>}
           <h2 className="parrafado-centrado">Si no tienes cuenta pulsa aquí</h2>
           <Link to={constants.root + "PageRegister"}>
             <Button className="button-login">Registrarse</Button>
           </Link>
-
         </form>
+        {error && ( 
+          <div className="no-friends">
+            {error}
+          </div>
+        )}
       </div>
     </div>
   );
