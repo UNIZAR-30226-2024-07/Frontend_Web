@@ -27,12 +27,18 @@ const PublicBoard = () => {
     const [page, setPage] = useState(0)
     const [mensajeExpulsion, setMensajeExpulsion] = useState(false)
     const [mensajeFin, setMensajeFin] = useState(false)
-    const [seconds, setSeconds] = useState(timeOut);  // Intervalo de tiempo
-    const [showCoinsEarned, setShowCoinsEarned] = useState(false);  // Intervalo de tiempo
 
-    const [messages, setMessages] = useState([]) // Vector de mensajes de la partida
-    const [newMessage, setNewMessage] = useState("") // Mensaje a enviar
+    // Tiempo para ejecutar una partida o no
+    const [seconds, setSeconds] = useState(timeOut);  
+    // Para mostrar o no mostrar resultados en una partida
+    const [showResults, setShowResults] = useState(false);  
 
+    // Vector de mensajes de la partida
+    const [messages, setMessages] = useState([]) 
+    // Mensaje a enviar
+    const [newMessage, setNewMessage] = useState("") 
+
+    // Objetos para inicializar la información de banca y jugadores
     // Mano de un jugador
     const hand = {
         cards: [], // Cartas jugador
@@ -62,11 +68,14 @@ const PublicBoard = () => {
     const [player, setPlayer] = useState(objPlayer);   // Mano del jugador
     const [restPlayers, setRestPlayers] = useState([]);   // Mnos resto jugadores
 
-    const [partidasPublicas, setPartidasPublicas] = useState([]) // Lista de partidas públicas
+    // Lista de partidas públicas
+    const [partidasPublicas, setPartidasPublicas] = useState([]) 
     const [partidaPausada, setPartidaPausada] = useState("")
 
     // Información usuario
+    // Carta boca abajo
     const [reverseCardUrl, setReverseCardUrl] = useState('')
+    // Las monedas actuales. Se irán actualizando cuando lleguen los resultados
     const [currentCoins, getCurrentCoins] = useState(user.coins)
     // Función obtener reverso carta
     const getReverseCard = async(setReverseCardUrl) => {
@@ -91,11 +100,13 @@ const PublicBoard = () => {
     // Manejo de Socket.io
     ////////////////////////////////////////////////////////////////////////////
 
+    // Pedir api que quieres jugar
     const partidaPublica = (tipoPartida) => {
         socket.emit("enter public board", { body: { typeId: tipoPartida._id, userId: user._id }})
         setPage(1)
     }
 
+    // Enviar mensaje
     const sendMessage = async (event) => {
         event.preventDefault()
         socket.emit("new public message", { body: { boardId: boardId,
@@ -105,50 +116,47 @@ const PublicBoard = () => {
     }
 
     useEffect(() => {
-
-    })
-
-    useEffect(() => {
         socket = io(constants.dirApi)
 
-        //// Evento
+        // Esperar api nos conteste para empezar partida
         socket.on("starting public board", async (boardId) => {
-            console.log("Que empieza la partida")
             setBoardId(boardId)
 
             // Obtener reverso carta
             await getReverseCard(setReverseCardUrl)
             
-            // Si eres el guest, se envía el evento 'players public ready'
+            
+            // Obtener información board
             const response = await axios.get('/publicBoard/boardById/' + boardId)
             if (response.status !== 200){
                 console.log("Fallo: ", response);
                 throw new Error('Error', response);
             }
             const board = response.data.board
-
-            // Inicializar los useState de los jugadores
-            initPlayers(board.players, user._id, setPlayer, restPlayers)
             
+            // Inicializar los useState de los jugadores
+            // En el "documento json" de cada jugador, se pone su playerId
+            // De tal manera que cada "documento json" va asociado a un jugador
+            initPlayers(board.players, user._id, setPlayer, restPlayers)
+
+            // Si eres el guest, se envía el evento 'players public ready'
             if (board && board.players && board.players.length > 0) {
                 const player = board.players.find(player => player.player === user._id);
-
-                // Si se encontró al jugador, actualizar el estado de guestStatus con su valor
                 if (player.guest) {
                     const req = { body: {boardId: boardId}}
                     socket.emit("players public ready", req)
-
-                    console.log("Emitir: players public ready")///////////////////////////////////////////////////////////////////////
                 }
             }
         })
 
+        // Recibir play hand (se pueden hacer jugadas)
         socket.on("play hand", (initCards) => {
-            console.log("Ha llegado: play hand")
-            console.log("initCards", initCards)
+
+            // Inicializar contador
             setSeconds(timeOut)
-            // Dejar visionar las monedas ganadas
-            setShowCoinsEarned(false)
+
+            // Dejar visionar resultados
+            setShowResults(false)
 
             // Inicializar la cartas
             // 1 carta del Bank
@@ -174,10 +182,12 @@ const PublicBoard = () => {
             return () => clearInterval(intervalId);
         })
 
+        
+        // Al llegar este evento, se debe comprobar si el usuario ha sido
+        // expulsado. En tal caso, se abandonará la partida y se volverá al
+        // menú principal
         socket.on("players deleted", (playersToDelete) => {
-            // Al llegar este evento, se debe comprobar si el usuario ha sido
-            // expulsado. En tal caso, se abandonará la partida y se volverá al
-            // menú principal
+
             if (playersToDelete.includes(user._id)) {
                 setMensajeExpulsion(true)
                 setTimeout(() => {
@@ -186,40 +196,42 @@ const PublicBoard = () => {
             } else {
                 eliminatePlayers(playersToDelete, restPlayers)
             }
-            console.log("Jugadores eliminar: ", playersToDelete)
         })
 
+        // Recibir hand results (visionar resultados)
         socket.on("hand results", (results) => {
 
-            console.log(results)
+            // Visionar resultados
+            setShowResults(true)
 
             // Guardar resultados
             getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers, getCurrentCoins)
-            
-            // Visionar las monedas ganadas
-            setShowCoinsEarned(true)
         })
 
+        // Api acepta que reaunudes la partida
         socket.on("resume accepted", async () => {
-            console.log("Yeeeeeeee")
+            
+            // Vuelves a inicialiar 
             setBoardId(partidaPausada.id)
 
             // Obtener reverso carta
             await getReverseCard(setReverseCardUrl)
-            
-            // Si eres el guest, se envía el evento 'players public ready'
+        
+            // Obtener información board
             const response = await axios.get('/publicBoard/boardById/' + partidaPausada.id)
             if (response.status !== 200){
                 console.log("Fallo: ", response);
                 throw new Error('Error', response);
             }
             const board = response.data.board
-
+            
             // Inicializar los useState de los jugadores
+            // En el "documento json" de cada jugador, se pone su playerId
+            // De tal manera que cada "documento json" va asociado a un jugador
             initPlayers(board.players, user._id, setPlayer, restPlayers)
-
         })
 
+        // Api comunica que h terminado la partida
         socket.on("finish board", () => {
             setMensajeFin(true)
             setTimeout(() => {
@@ -227,8 +239,9 @@ const PublicBoard = () => {
             }, 3000)
         })
 
+        // Llega un mensaje al chat
         socket.on("new message", (args) => {
-            console.log("Llega nuevo mensaje")
+
             const message = args.message
             const name = args.name
             const userId = args.userId
@@ -239,18 +252,7 @@ const PublicBoard = () => {
                 { message, name, userId }
             ])
         })
-
-    }, [user, bank, player, restPlayers, navigate, partidaPausada]) // Se ejecuta solo una vez cuando el componente se monta
-
-
-    /************************************************************************************************** */
-    // Imprimir información de los jugadores
-    const imprimir = () => {
-        console.log('Bank: ', bank)
-        console.log('Player: ', player)
-        console.log('Rest Players: ', restPlayers)
-    }
-    /*************************************************************************************************** */
+    }, [user, bank, player, restPlayers, navigate, partidaPausada])
 
     return (
         <div>
@@ -341,7 +343,7 @@ const PublicBoard = () => {
                         { player && player.hands[numHand].active && (
                             <div>
                                 <p>Mano {numHand} / Total: {player.hands[numHand].total}</p>
-                                {showCoinsEarned && (
+                                {showResults && (
                                     <div key={numHand + 'player'}>
                                         <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
                                     </div>
@@ -402,7 +404,7 @@ const PublicBoard = () => {
                                 const restPlayerClassName = restPlayers[index].playing ? "rest-cards-playing" : "rest-cards-not-playing"
                                 const handJSX = (
                                     <div className={restPlayerClassName} key={restPlayers[index].playerId + "-" + numHand}>
-                                        {showCoinsEarned && (
+                                        {showResults && (
                                             <div key={'restPlayer' + numHand}>
                                                 <p>Mano {numHand} / Total: {restPlayers[index].hands[numHand].total}</p>
                                                 <p>CoinsEarned: {restPlayers[index].hands[numHand].coinsEarned}</p>
@@ -433,10 +435,6 @@ const PublicBoard = () => {
                     return jsxArray;
                 })()}
             </div>  
-
-            <button type="submit" className="imprimir" onClick={imprimir}>
-                Imprimir info jugadores
-            </button>
 
             <p>Time remaining: {seconds} seconds</p>
             <div>

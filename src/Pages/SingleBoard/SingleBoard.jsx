@@ -22,7 +22,7 @@ const SingleBoard = () => {
     // Para mostrar o no mostrar resultados
     const [showResults, setShowResults] = useState(false);
 
-    // Objetos para inicializar la información de la banca
+    // Objetos para inicializar la información de banca y jugadores
     // Mano de un jugador
     const hand = {
         cards: [], // Cartas jugador
