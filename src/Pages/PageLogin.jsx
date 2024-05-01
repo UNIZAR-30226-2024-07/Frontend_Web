@@ -27,7 +27,6 @@ export function PageLogin() {
         rol: 'Null'   
       });
 
-      console.log("HOLAAA");
       setError(res.message.message);
       if (res.data.user.rol === "admin") {
         navigate(constants.root + 'HomeAdmin');
@@ -79,7 +78,7 @@ export function PageLogin() {
           </Link>
         </form>
         {error && ( 
-          <div className="no-friends">
+          <div className="error-login">
             {error}
           </div>
         )}

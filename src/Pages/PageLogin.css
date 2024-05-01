@@ -10,6 +10,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh; /* Ajusta esto según tus necesidades */
+
 }
   
 .form-login {
@@ -20,6 +21,7 @@
     padding: 60px;
     padding-right: 150px !important;
     padding-left: 150px !important;
+    border-radius: 10% !important;
 }
 
   
@@ -31,6 +33,7 @@
     color: white !important; /* Definir el color del texto */
     padding: 30px 35px !important;
     border-radius: 25px;
+    margin-top:5% !important;
 }
 
 
@@ -54,16 +57,17 @@
 }
 
 
-
 .part-form{
         display: flex;
         align-items: center;
+        margin-top:9% !important;
 }
 
 .img-form{
-    font-size: 33px !important;
+    font-size: 35px !important;
     color:white;
     margin-right:20px;
+    margin-bottom:2% !important;
 }
   
 
@@ -99,19 +103,3 @@
     font-weight: bolder;
 }
 
-
-.no-friends{
-    background-color: black;
-    color: white;
-    padding: 40px; 
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    font-size: 30px; 
-    font-weight: bolder;
-  }
