@@ -28,6 +28,7 @@ import PartidaPublica from "../Pages/PartidaPublica"
 import PartidaPrivada from "../Pages/PantallaPrivada"
 import SingleBoard from "../Pages/SingleBoard/SingleBoard"
 import AgnadirTorneo from "../Pages/AgnadirTorneo"
+import AgnadirProducto from "../Pages/AgnadirProducto"
 
 const RouterPrincipal = () => {
     return (
@@ -71,6 +72,8 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'CrearCuentaAdmin'} element={<CrearCuentaAdmin/>}></Route>
                         <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
                         <Route path={constants.root + 'AgnadirTorneo'} element={<AgnadirTorneo/>}></Route>
+                        <Route path={constants.root + 'AgnadirProducto'} element={<AgnadirProducto/>}></Route>
+
 
 
                     </Route>
