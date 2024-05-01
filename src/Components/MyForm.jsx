@@ -7,7 +7,6 @@ export function MyForm({ typeForm, placeholderForm, labelText, value, onChange }
       <div className="form-input">{labelText}</div>
       <Input
         type={typeForm}
-        //label={<span className="form-input">{labelText}</span>}
         placeholder={placeholderForm}
         labelPlacement="outside"
         value={value}
