@@ -13,7 +13,7 @@ export const timeOut = 30  // Tiempo cada play hand
 export const drawCard = async (event, numHand, player, setPlayer, boardId) => {
     event.preventDefault()
     try {
-        const response = await axios.put('/publicBoard/drawCard', {
+        const response = await axios.put('/privateBoard/drawCard', {
             boardId: boardId,
             cardsOnTable: player.hands[numHand].cards,
             handIndex: numHand
@@ -46,7 +46,7 @@ export const drawCard = async (event, numHand, player, setPlayer, boardId) => {
 export const double = async (event, numHand, player, setPlayer, boardId) => {
     event.preventDefault()
     try {
-        const response = await axios.put('/publicBoard/double', {
+        const response = await axios.put('/privateBoard/double', {
             boardId: boardId,
             cardsOnTable: player.hands[numHand].cards,
             handIndex: numHand
@@ -73,7 +73,7 @@ export const double = async (event, numHand, player, setPlayer, boardId) => {
 export const stick = async (event, numHand, player, setPlayer, boardId) => {
     event.preventDefault()
     try {
-        const response = await axios.put('/publicBoard/stick', {
+        const response = await axios.put('/privateBoard/stick', {
             boardId: boardId,
             cardsOnTable: player.hands[numHand].cards,
             handIndex: numHand
@@ -94,7 +94,7 @@ export const stick = async (event, numHand, player, setPlayer, boardId) => {
 export const split = async (event, player, setPlayer, boardId) => {
     event.preventDefault()
     try {
-        const response = await axios.put('/publicBoard/split', {
+        const response = await axios.put('/privateBoard/split', {
             boardId: boardId,
             cardsOnTable: player.hands[hand0].cards
         })
@@ -152,7 +152,7 @@ export const leave = async(event, boardId, navigate) => {
     event.preventDefault()
     try {
         if (boardId !== "") {
-            const response = await axios.put('/publicBoard/leaveBoard/' + boardId)
+            const response = await axios.put('/privateBoard/leaveBoard/' + boardId)
             if (response.status !== 200) {
                 console.log("Fallo: ", response);
                 throw new Error('Error', response);
@@ -168,7 +168,7 @@ export const leave = async(event, boardId, navigate) => {
 export const pause = async (event, boardId, navigate) => {
     event.preventDefault()
     try {
-        const response = await axios.put('/publicBoard/pause/' + boardId)
+        const response = await axios.put('/privateBoard/pause/' + boardId)
         if (response.status !== 200) {
             console.log("Fallo: ", response);
             throw new Error('Error', response);
@@ -181,20 +181,6 @@ export const pause = async (event, boardId, navigate) => {
 }
 
 /********************** Funciones tratar useState ******************************/
-
-// Obtener todas las partidas públicas que hay
-export const getPartidasPublicas = async (setPartidasPublicas) => {
-    try {
-        const response = await axios.get('/publicBoardType/getAll')
-        if (response.status !== 200) {
-            return console.error(response.data)
-        }
-
-        setPartidasPublicas(response.data.publicBoardTypes)
-    } catch (e) {
-        console.error("Error al pedir las partidas. " + e.message)
-    }
-}
 
 // Inicializar los useState players y restPlayers
 // Se inicializan los campos por defecto y con el userId de los jugadores
@@ -312,8 +298,6 @@ export const getResults = (userId, results, bank, setBank,
     updatedBank.hand.active = true
     updatedBank.hand.show = true
     setBank(updatedBank)
-
-    console.log("Results: ", results)
     
     // Guardar resultados usuario
     let updatedPlayer = {...player}

@@ -57,16 +57,16 @@ export function PageDashboard() {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const handlePartidaPublica = () => {
-    // Lógica para navegar a la pantalla de cambio de nombre de usuario
     navigate(constants.root + 'PublicBoard');
   };
   const handlePartidaPrivada = () => {
-    // Lógica para navegar a la pantalla de cambio de nombre de usuario
-    navigate(constants.root + '/PartidaPrivada');
+    navigate(constants.root + 'PrivateBoard');
+  };
+  const handlePartidaTorneo = () => {
+    navigate(constants.root + 'TournamentBoard');
   };
   const handlePartidaSolitario = () => {
-    // Lógica para navegar a la pantalla de cambio de nombre de usuario
-    navigate(constants.root + 'PartidaSolitario');
+    navigate(constants.root + 'SingleBoard');
   };
   return (
     <>
@@ -78,7 +78,7 @@ export function PageDashboard() {
       <div className="option-dashboard">
           <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPublica()}>Partida Publica</MyButton>
           <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPrivada()}>Partida Privada</MyButton>
-          <MyButton color="midnightblue" size="xxl" variant="bordered">Torneo</MyButton>
+          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaTorneo()}>Torneo</MyButton>
           <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaSolitario()}>Partida Solitario</MyButton>
       </div>
 
@@ -94,4 +94,3 @@ export function PageDashboard() {
     </>
   );
 }
-8

@@ -29,6 +29,8 @@ import PartidaPrivada from "../Pages/PantallaPrivada"
 import SingleBoard from "../Pages/SingleBoard/SingleBoard"
 import AgnadirTorneo from "../Pages/AgnadirTorneo"
 import AgnadirProducto from "../Pages/AgnadirProducto"
+import TournamentBoard from "../Pages/TournamentBoard/TournamentBoard"
+import PrivateBoard from "../Pages/PrivateBoard/PrivateBoard"
 
 const RouterPrincipal = () => {
     return (
@@ -42,9 +44,11 @@ const RouterPrincipal = () => {
                     <Route element={<ProtectedRoute />}>
                         
                         <Route path={constants.root + 'pruebaMatch'} element={<PruebaMatch/>}></Route>
-                        <Route path={constants.root + 'PartidaSolitario'} element={<SingleBoard />}></Route>
-                        
+                        <Route path={constants.root + 'SingleBoard'} element={<SingleBoard />}></Route>
+                        <Route path={constants.root + 'TournamentBoard'} element={<TournamentBoard />}></Route>
                         <Route path={constants.root + 'PublicBoard'} element={<PublicBoard/>}></Route>
+                        <Route path={constants.root + 'PrivateBoard'} element={<PrivateBoard/>}></Route>
+                        
                         <Route path={constants.root + 'PageFriendFind'} element={<PageFriendFind/>}></Route>
                         <Route path={constants.root + 'PageFriendList'} element={<PageFriendList/>}></Route>
                         <Route path={constants.root + 'Ranking'} element={<PageTrophyRanking/>}></Route>
