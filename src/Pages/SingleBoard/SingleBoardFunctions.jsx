@@ -22,6 +22,7 @@ export const drawCard = async (event, numHand, player, setPlayer, boardId) => {
             throw new Error('Error', response);
         }
 
+        // Actualizar al jugador
         let updatedPlayer = {...player}
         updatedPlayer.hands[numHand].cards = response.data.cardsOnTable
         updatedPlayer.hands[numHand].total = response.data.totalCards
@@ -54,12 +55,15 @@ export const double = async (event, numHand, player, setPlayer, boardId) => {
             console.log("Fallo: ", response);
             throw new Error('Error', response);
         }
+
+        // Actualizar al jugador
         let updatedPlayer = {...player}
         updatedPlayer.hands[numHand].cards = response.data.cardsOnTable
         updatedPlayer.hands[numHand].total = response.data.totalCards
         updatedPlayer.hands[numHand].defeat = response.data.defeat
         updatedPlayer.hands[numHand].blackJack = response.data.blackJack    
         updatedPlayer.hands[numHand].active = true
+        // Marcar jugador se ha plantado (después de un double se confirma jugada)
         updatedPlayer.hands[numHand].stick = true
         setPlayer(updatedPlayer)
     } catch (error) {
@@ -81,7 +85,8 @@ export const stick = async (event, numHand, player, setPlayer, boardId) => {
             console.log("Fallo: ", response);
             throw new Error('Error', response);
         }
-        console.log('RESULTADO GUARDADO CORRECTAMENTE');
+
+        // Actualizar el jugador. Marchar ha confirmado jugada
         let updatedPlayer = {...player}
         updatedPlayer.hands[numHand].stick = true
         setPlayer(updatedPlayer)
@@ -102,8 +107,11 @@ export const split = async (event, player, setPlayer, boardId) => {
             console.log("Fallo: ", response);
             throw new Error('Error', response);
         }
+
+        // Actualizar jugador
         let updatedPlayer = {...player}
 
+        // Actualizar mano 1
         updatedPlayer.hands[hand0].cards = response.data.cardsOnTableFirst
         updatedPlayer.hands[hand0].total = response.data.totalCardsFirst
         updatedPlayer.hands[hand0].defeat = response.data.defeatFirst
@@ -114,6 +122,7 @@ export const split = async (event, player, setPlayer, boardId) => {
             updatedPlayer.hands[hand0].stick = true
         }
 
+        // Actualizar mano 2
         updatedPlayer.hands[hand1].cards = response.data.cardsOnTableSecond
         updatedPlayer.hands[hand1].total = response.data.totalCardsSecond
         updatedPlayer.hands[hand1].defeat = response.data.defeatSecond
@@ -131,6 +140,8 @@ export const split = async (event, player, setPlayer, boardId) => {
     }
 }
 
+// Función para abandonar la partida
+// Redirige a la pantalla home del usuario (PageDashboard)
 export const leave = async(event, boardId, navigate) => {
     event.preventDefault()
     try {
@@ -176,9 +187,7 @@ export const getInitCards = (userId, initCards, setBank, player, setPlayer) => {
 }
 
 // Obtener la información de los resultados
-// Actualizar la información del jugador solo si se ha confirmado dicha mano
-//      - Si es el jugador: actualizar player si stick = true en dicha mano
-//      - Si es otro jugador: actualizar restPlayers[] si hay cartas en el results
+// Actualizar la información del jugador 
 export const getResults = (userId, results, bank, setBank, player, setPlayer) => {
     // Guardar banca
     // Información de la banca

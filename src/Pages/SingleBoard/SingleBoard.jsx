@@ -12,19 +12,17 @@ import { hand0, hand1,
 
 // Variable que se usará para la gestión de la conexión
 let socket
+const bankLevels = ["beginner", "medium", "expert"]   // Niveles de la banca
 
 const SingleBoard = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const [boardId, setBoardId] = useState("") // BoardId
 
-    const [showCoinsEarned, setShowCoinsEarned] = useState(false);  // Intervalo de tiempo
-    // Para ganar:
-    //   - si se ha hecho double: coinsEarned > betFicticio * 2 para ganar a la banca
-    //   - si no se ha hecho double: coinsEarned > betFicticio para ganar a la banca
+    // Para mostrar o no mostrar resultados
+    const [showResults, setShowResults] = useState(false);
 
-    const bankLevels = ["beginner", "medium", "expert"]
-
+    // Objetos para inicializar la información de la banca
     // Mano de un jugador
     const hand = {
         cards: [], // Cartas jugador
@@ -48,15 +46,16 @@ const SingleBoard = () => {
         hand: {...hand}
     }
 
+    // Inicialización useState información jugadores
     // Información todos los jugadores
     const [bank, setBank] = useState(objBank)   // Mano de la banca
     const [player, setPlayer] = useState(objPlayer);   // Mano del jugador
-
 
     ////////////////////////////////////////////////////////////////////////////
     // Manejo de Socket.io
     ////////////////////////////////////////////////////////////////////////////
 
+    // Función entrar una partida solitario
     const partidaSingle = (bankLevel) => {
         socket.emit("enter single board", { body: { bankLevel: bankLevel, userId: user._id }})
     }
@@ -64,19 +63,20 @@ const SingleBoard = () => {
     useEffect(() => {
         socket = io(constants.dirApi)
 
-        //// Evento
+        // Esperar api nos conteste par empezar partida
         socket.on("starting single board", async (boardId) => {
-            console.log("Que empieza la partida")
             setBoardId(boardId)
 
+            // Emitir que estamos listos
             const req = { body: {boardId: boardId}}
             socket.emit("players single ready", req)
         })
 
+        // Recibir play hand (se pueden hacer jugadas)
         socket.on("play hand", (initCards) => {
-            // Dejar visionar las monedas ganadas
-            setShowCoinsEarned(false)
-            console.log("Ha llegado: play hand")
+            
+            // Dejar ver resultados
+            setShowResults(false)
 
             // Inicializar la cartas
             // 1 carta del Bank
@@ -84,30 +84,20 @@ const SingleBoard = () => {
             getInitCards(user._id, initCards, setBank, player, setPlayer)
         })
 
+        // Recibir hand results (visionar resultados)
         socket.on("hand results", (results) => {
 
-            console.log("Llegan resultados")
             // Guardar resultados
             getResults(user._id, results, bank, setBank, player, setPlayer)
             
-            // Visionar las monedas ganadas
-            setShowCoinsEarned(true)
+            // Visionar resultados
+            setShowResults(true)
         })
-
-    }, [user, bank, player, navigate]) // Se ejecuta solo una vez cuando el componente se monta
-
-
-    /************************************************************************************************** */
-    // Imprimir información de los jugadores
-    const imprimir = () => {
-        console.log('Bank: ', bank)
-        console.log('Player: ', player)
-    }
-    /*************************************************************************************************** */
+    }, [user, bank, player, navigate])
 
     return (
         <div>
-            {/* Listado partidas publicas para unirse */}
+            {/* Si no hay un boardId asignado: mostrar los niveles de banca para unirse */}
             {boardId === "" ? (
                 <>
                 <button type="submit" className="matchPublic">
@@ -120,102 +110,94 @@ const SingleBoard = () => {
                         </button>
                     ))}
                 </div>
-
-                <hr/>     {/* Linea separación */}
                 </>
             ) : (
-                <>
-                
-            {/* Mostrar mano BANCA */}
-            <div style={{ backgroundColor: 'white'}}>
-                <p>Banca / Total: {bank.hand.total}</p>
-                <div key={'Bank'} style={{ backgroundColor: 'yellow' }}>
-                    {bank.hand.active && (
-                        <div className="cartas">
-                            {/* Renderizar las cartas */}
-                            {bank.hand.cards.map((card, cardIndex) => (
-                                <img
-                                    className="carta"
-                                    key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
-                                    src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
+            <>
+                {/* Mostrar la pantalla del juego */}
 
-            <hr/>     {/* Linea separación */}
-
-            {/* Mostrar manos JUGADOR */}
-            <div style={{ backgroundColor: 'white'}}>
-                <p>Jugador:</p>
-                <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
-                {[hand0, hand1].map(numHand => (
-                    <div key={numHand} style={{ backgroundColor: 'brown' }}>
-                        { player && player.hands[numHand].active && (
-                            <div>
-                                <p>Mano {numHand} / Total: {player.hands[numHand].total}</p>
-                                {showCoinsEarned && (
-                                    <div key={numHand + 'player'}>
-                                        {   // Banca mayor que 21 y jugador menor que 21
-                                            ((player.hands[numHand].total <= 21) &&
-                                            (bank.hand.total > 21 ))
-                                            ||
-                                            // Mayor que banca siendo los dos menor que 21
-                                            ((player.hands[numHand].total <= 21) &&
-                                            (bank.hand.total <= 21 ) &&
-                                            (player.hands[numHand].total > bank.hand.total))
-
-                                        ? (
-                                            <p>¡¡ GANADOR !!</p>
-                                        ) : (
-                                            <p>DERROTA :(</p>
-                                        )} 
-                                    </div>
-                                )}
-                                {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
-                                {!player.hands[numHand].defeat && 
-                                 !player.hands[numHand].blackJack &&
-                                 !player.hands[numHand].stick ? (
-                                    <div>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
-                                        <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
-                                        
-                                        {player.hands[hand0].active && 
-                                        !player.hands[hand1].active &&
-                                        player.hands[hand0].cards.length === 2 &&
-                                        player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
-                                            // Split solo si no se ha hecho split y son dos cartas
-                                            <button style={{ marginRight: '10px' }} onClick={(e) => split(e, player, setPlayer, boardId)}>Split</button>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <p>No puede realizar más jugadas. Se ha plantado.</p>
-                                    </div>
-                                )}
-                                <div className="cartas">
-                                    {/* Renderizar las cartas */}
-                                    {player.hands[numHand].cards.map((card, cardIndex) => (
-                                        <img
-                                            className="carta"
-                                            key={numHand + '-' + cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
-                                            src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}
-                                        />
-                                    ))}
-                                </div>
+                {/* Mostrar mano BANCA */}
+                <div style={{ backgroundColor: 'white'}}>
+                    <p>Banca / Total: {bank.hand.total}</p>
+                    <div key={'Bank'} style={{ backgroundColor: 'yellow' }}>
+                        {bank.hand.active && (
+                            <div className="cartas">
+                                {bank.hand.cards.map((card, cardIndex) => (
+                                    <img
+                                        className="carta"
+                                        key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
+                                        src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}
+                                    />
+                                ))}
                             </div>
                         )}
                     </div>
-                ))}
-            </div>
+                </div>
 
-            <button type="submit" className="imprimir" onClick={imprimir}>
-                Imprimir info jugadores
-            </button>
-                </>
+                {/* Mostrar manos JUGADOR */}
+                <div style={{ backgroundColor: 'white'}}>
+                    <p>Jugador:</p>
+                    <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
+                    {[hand0, hand1].map(numHand => (
+                        <div key={numHand} style={{ backgroundColor: 'brown' }}>
+                            { player && player.hands[numHand].active && (
+                                <div>
+                                    <p>Mano {numHand} / Total: {player.hands[numHand].total}</p>
+                                    {showResults && (
+                                        <div key={numHand + 'player'}>
+                                            {   // Banca mayor que 21 y jugador menor que 21
+                                                ((player.hands[numHand].total <= 21) &&
+                                                (bank.hand.total > 21 ))
+                                                ||
+                                                // Mayor que banca siendo los dos menor que 21
+                                                ((player.hands[numHand].total <= 21) &&
+                                                (bank.hand.total <= 21 ) &&
+                                                (player.hands[numHand].total > bank.hand.total))
+
+                                            ? (
+                                                <p>¡¡ GANADOR !!</p>
+                                            ) : (
+                                                <p>DERROTA :(</p>
+                                            )} 
+                                        </div>
+                                    )}
+                                    {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
+                                    {!player.hands[numHand].defeat && 
+                                    !player.hands[numHand].blackJack &&
+                                    !player.hands[numHand].stick ? (
+                                        <div>
+                                            <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
+                                            <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
+                                            <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
+                                            
+                                            {player.hands[hand0].active && 
+                                            !player.hands[hand1].active &&
+                                            player.hands[hand0].cards.length === 2 &&
+                                            player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
+                                                // Split solo si no se ha hecho split y son dos cartas
+                                                <button style={{ marginRight: '10px' }} onClick={(e) => split(e, player, setPlayer, boardId)}>Split</button>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <p>No puede realizar más jugadas. Se ha plantado.</p>
+                                        </div>
+                                    )}
+                                    <div className="cartas">
+                                        {/* Renderizar las cartas */}
+                                        {player.hands[numHand].cards.map((card, cardIndex) => (
+                                            <img
+                                                className="carta"
+                                                key={numHand + '-' + cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
+                                                src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </>
             )}
         </div>
     )
