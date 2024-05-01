@@ -105,6 +105,10 @@ const PublicBoard = () => {
     }
 
     useEffect(() => {
+
+    })
+
+    useEffect(() => {
         socket = io(constants.dirApi)
 
         //// Evento
@@ -441,7 +445,7 @@ const PublicBoard = () => {
                     {messages.map((message, index) => (
                         <div className="message" key={index}>
                             <p className="emitter">{message.userId === user._id ? 'Yo' : message.name }</p>
-                            <p className="content">{message.message}</p>
+                            <p className="msg-text">{message.message}</p>
                         </div>
                     ))}
                 </div>
@@ -450,9 +454,10 @@ const PublicBoard = () => {
                     <input
                         type="text"
                         value={newMessage}
+                        className="input-text"
                         onChange={(e) => setNewMessage(e.target.value)}
                     />
-                    <button onClick={(e) => sendMessage(e)}> Enviar </button>
+                    <button className="enviar" onClick={(e) => sendMessage(e)}> Enviar </button>
                 </form>
             </div>
         </div>

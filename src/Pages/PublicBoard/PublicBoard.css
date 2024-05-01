@@ -51,7 +51,9 @@
 }
 
 
-/* Listado de mesas públicas */
+/*******************************************************************************
+** Listado de mesas públicas 
+*******************************************************************************/
 
 .container {
     display: inline-block; /* Para que el contenedor se ajuste al contenido */
@@ -113,4 +115,38 @@
 /* Estilos para el nivel Expert */
 .expert {
     color: rgb(0, 255, 255);
+}
+
+/*******************************************************************************
+** Chat partida 
+*******************************************************************************/
+.message {
+    background-color: #8b0000;
+    font-weight: bold;
+    color: white;
+}
+
+.emitter {
+    background-color:#3F497FFF;
+    font-weight: bold;
+    color: white;
+}
+
+.msg-txt {
+    background-color: #8b0000;
+    font-weight: bold;
+    color: white;
+}
+
+.input-text {
+    border-color: black;
+    border-width: 2px;
+    border-radius: 10px;
+}
+
+.enviar {
+    background-color: #3F497FFF;
+    border-radius: 10px;
+    font-weight: bold;
+    color: white;
 }
