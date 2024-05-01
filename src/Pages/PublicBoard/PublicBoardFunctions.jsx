@@ -152,12 +152,14 @@ export const getPartidaPausada = async (setPartidaPausada) => {
 export const leave = async(event, boardId, navigate) => {
     event.preventDefault()
     try {
-        const response = await axios.put('/publicBoard/leaveBoard/' + boardId)
-        if (response.status !== 200) {
-            console.log("Fallo: ", response);
-            throw new Error('Error', response);
-        } else {
-            navigate(constants.root + 'PageDashboard')
+        if (boardId !== "") {
+            const response = await axios.put('/publicBoard/leaveBoard/' + boardId)
+            if (response.status !== 200) {
+                console.log("Fallo: ", response);
+                throw new Error('Error', response);
+            } else {
+                navigate(constants.root + 'PageDashboard')
+            }
         }
     } catch (e) {
         console.error("Error:", e)
@@ -330,7 +332,7 @@ export const getResults = (userId, results, bank, setBank,
             const index = results.findIndex(res => res.userId === restPlayers[i].playerId);
             if (index !== -1) {
                 // storeResultPlayer (false = es otro jugador)
-                storeResultPlayer(false, restPlayers[i], results[index])
+                storeResultPlayer(false, restPlayers[i], results[index], setCurrentCoins)
             }
         }
     }
@@ -350,15 +352,16 @@ export const eliminatePlayers = (playersToDelete, restPlayers) => {
 /************************ Funciones *****************************************************/
 const storeResultPlayer = (isPlayer, updatedPlayer, infoPlayer, setCurrentCoins) => {
 
-    // Actualizar las monedas actuales
-    setCurrentCoins(infoPlayer.currentCoins)
     
     // Mostrar primera mano si o si
     updatedPlayer.hands[hand0].active = true
     updatedPlayer.hands[hand0].show = true
-
+    
     // Si es el jugador
     if (isPlayer) {
+        // Actualizar las monedas actuales
+        setCurrentCoins(infoPlayer.currentCoins)
+        
         // Si ha confirmado la jugada
         if(updatedPlayer.hands[hand0].stick) {
             updatedPlayer.hands[hand0].cards = infoPlayer.cards[hand0]

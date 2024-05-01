@@ -76,7 +76,7 @@ const PublicBoard = () => {
     // Carta boca abajo
     const [reverseCardUrl, setReverseCardUrl] = useState('')
     // Las monedas actuales. Se irán actualizando cuando lleguen los resultados
-    const [currentCoins, getCurrentCoins] = useState(user.coins)
+    const [currentCoins, setCurrentCoins] = useState(user.coins)
     // Función obtener reverso carta
     const getReverseCard = async(setReverseCardUrl) => {
         const response = await axios.get('/card/currentCard')
@@ -205,7 +205,7 @@ const PublicBoard = () => {
             setShowResults(true)
 
             // Guardar resultados
-            getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers, getCurrentCoins)
+            getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers, setCurrentCoins)
         })
 
         // Api acepta que reaunudes la partida
