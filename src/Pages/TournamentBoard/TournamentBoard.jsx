@@ -11,9 +11,9 @@ import { useAuth } from "../../Context/AuthContext"
 import "./TournamentBoard.css"
 import { startLives, timeOut,
          drawCard, stick, pause, leave,
-         getPartidasPublicas, eliminatePlayers,
+         getTorneos, eliminatePlayers,
          initPlayers, getInitCards, getResults,
-         getPartidaPausada
+         getPartidaPausada, enterTournament, isInTournament
         } from './TournamentBoardFunctions'
 
 // Variable que se usará para la gestión de la conexión
@@ -27,6 +27,10 @@ const TournamentBoard = () => {
     const [page, setPage] = useState(0)
     const [mensajeExpulsion, setMensajeExpulsion] = useState(false)
     const [mensajeFin, setMensajeFin] = useState(false)
+
+    const [mensajeEnter, setMensajeEnter] = useState(false)
+    const [tournament, setTournament] = useState()
+    const [round, setRound] = useState("")
 
     // Tiempo para ejecutar una partida o no
     const [seconds, setSeconds] = useState(timeOut);  
@@ -70,7 +74,7 @@ const TournamentBoard = () => {
     const [restPlayers, setRestPlayers] = useState([]);   // Mnos resto jugadores
 
     // Lista de partidas públicas
-    const [partidasPublicas, setPartidasPublicas] = useState([]) 
+    const [torneos, setTorneos] = useState([]) 
     const [partidaPausada, setPartidaPausada] = useState("")
 
     // Información usuario
@@ -91,7 +95,7 @@ const TournamentBoard = () => {
     ////////////////////////////////////////////////////////////////////////////
 
     useEffect(() => {
-        getPartidasPublicas(setPartidasPublicas)
+        getTorneos(setTorneos)
         getPartidaPausada(setPartidaPausada)
     }, [])
 
@@ -100,9 +104,9 @@ const TournamentBoard = () => {
     ////////////////////////////////////////////////////////////////////////////
 
     // Pedir api que quieres jugar
-    const partidaTorneo = (tipoPartida) => {  // Tipo partida debe ser tournamentId
-        socket.emit("enter tournament board", { body: { tournamentId: tipoPartida._id, userId: user._id }})
-        setPage(1)
+    const partidaTorneo = (torneo) => {  // Tipo partida debe ser tournamentId
+        socket.emit("enter tournament board", { body: { tournamentId: torneo._id, userId: user._id }})
+        setPage(2)
     }
 
     // Enviar mensaje
@@ -259,39 +263,72 @@ const TournamentBoard = () => {
             <div className='page-publica'>
             <MyNav isLoggedIn={false} isDashboard={false} monedas={true}/> 
                 <div className='titulo'>
-                    Partidas publicas
+                    Torneos
                 </div>
+                { (mensajeEnter && tournament) &&
+                <div className="mensaje-enter">
+                    <p> El jugador no se encuentra dentro del torneo "{tournament.name}". </p>
+                    <p> Precio de entrada: {tournament.price} </p>
+                    <div className="botones-c-a">
+                        <button className="cancelar"
+                                onClick={() => {setMensajeEnter(false); setTournament("");}}>
+                            Cancelar
+                        </button>
+                        <button className="aceptar"
+                                onClick={() => enterTournament(tournament, setPage)}>
+                            Aceptar
+                        </button>
+                    </div>
+                </div>
+                }
                 <div className="lista">
-                {Array.isArray(partidasPublicas) && partidasPublicas.length > 0 ? (
-                    partidasPublicas.map((tipoPartida) => (
-                        <div key={tipoPartida._id}>
+                {Array.isArray(torneos) && torneos.length > 0 ? (
+                    torneos.map((torneo) => (
+                        <div key={torneo._id}>
                         <div className="container">
                         <div className="containerr">
-                          <div className='primero'>{tipoPartida.name} <hr/> </div>
+                          <div className='primero'>{torneo.name} <hr/> </div>
                           <div className="description">
                             <div className="dif-bet">
-                                <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
-                                <p> Apuesta por mano: {tipoPartida.bet} coins</p>
+                                <p className="dificultad">Dificultad: <span className={torneo.bankLevel}>{torneo.bankLevel}</span></p>
+                                <p> Precio de entrada: {torneo.price} </p>
+                                <p className="premios"> 
+                                    {torneo.coins_winner} 
+                                    <img className="medalla" 
+                                         key={'winner' + torneo._id}
+                                         style={{marginRight: '20px'}}
+                                         src={constants.root + "Imagenes/medalla_ganador.png"}/>
+                                    {torneo.coins_subwinner}
+                                    <img className="medalla" 
+                                         key={'subwinner' + torneo._id} 
+                                         src={constants.root + "Imagenes/medalla_segundo.png"}/>
+                                </p>
                             </div>
                             <MyButton 
-                              className="jugar" 
-                              color="midnightblue" 
-                              size="xxl" 
-                              type="submit" 
-                              onClick={() => partidaTorneo(tipoPartida)}>
+                              className="jugar"
+                              color="midnightblue"
+                              size="xxl"
+                              type="submit"
+                              onClick={() => isInTournament(torneo._id, setPage, setMensajeEnter, setTournament, setRound)}>
                                 Jugar
                             </MyButton>
                           </div>
                         </div>
-                        </div>                    
+                        </div>
                         </div>
                     ))
                 ) : (
-                    <p>No se encontraron tipos de partidas públicas.</p>
+                    <p>No se encontraron torneos.</p>
                 )}
                 </div>
             </div>
-      ) : (
+        ) : page == 1 ? (
+            <div>
+                <p> HACED LA INTERFAZ TAL Y COMO SE DISEÑÓ Y COMO LO HAN HECHO EN MÓVIL </p>
+                <p> Ronda en la que se encuentra el usuario: {round} </p>
+                <button className="jugar" onClick={() => partidaTorneo(tournament)}> Jugar </button>
+            </div>
+        ) : (
             <div>
             {/* Mensaje en caso de ser expulsado de la partida */}
             { mensajeExpulsion &&

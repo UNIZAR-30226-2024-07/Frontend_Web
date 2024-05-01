@@ -114,16 +114,15 @@ export const pause = async (event, boardId, navigate) => {
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Cambiar getTorneos    O ALGO ASI
 // Obtener todas las partidas públicas que hay
-export const getPartidasPublicas = async (setPartidasPublicas) => {
+export const getTorneos = async (setPartidasPublicas) => {
     try {
-        const response = await axios.get('/publicBoardType/getAll')
+        const response = await axios.get('/tournament/getAll')
         if (response.status !== 200) {
             return console.error(response.data)
         }
 
-        setPartidasPublicas(response.data.publicBoardTypes)
+        setPartidasPublicas(response.data.tournaments)
     } catch (e) {
         console.error("Error al pedir las partidas. " + e.message)
     }
@@ -309,3 +308,51 @@ const storeInitCardsPlayer = (isPlayer, updatedPlayer, infoPlayer) => {
     return updatedPlayer
 }
 
+export const isInTournament = async (torneoId, setPage, setMensajeEnter, setTournament, setRound) => {
+    try {
+        const resIsIn = await axios.get('/tournament/isUserInTournament/' + torneoId)
+        if (resIsIn.status !== 200) {
+            console.log("Fallo: ", resIsIn);
+            throw new Error('Error', resIsIn);
+        } else if (resIsIn.data.status === "success") {
+            setTournament(resIsIn.data.tournament)
+            setPage(1)
+
+            const resRound = await axios.get('/tournament/roundInTournament/' + torneoId)
+            if (resRound.status !== 200) {
+                console.log("Fallo: ", resRound);
+                throw new Error('Error', resRound);
+            } else {
+                setRound(resRound.data.round)
+            }
+        } else {
+            setRound(8)
+
+            const resId = await axios.get('/tournament/tournamentById/' + torneoId)
+            if (resId.status !== 200) {
+                console.log("Fallo: ", resId);
+                throw new Error('Error', resId);
+            } else {
+                setTournament(resId.data.tournament)
+                setMensajeEnter(true)    
+            }
+        }
+
+    } catch (e) {
+        console.error(e.message)
+    }
+}
+
+export const enterTournament = async (torneo, setPage) => {
+    try {
+        const response = await axios.put('/tournament/enterTournament/' + torneo._id)
+        if (response.status !== 200) {
+            console.log("Fallo: ", response);
+            throw new Error('Error', response);
+        } else {
+            setPage(1)
+        }
+    } catch (e) {
+        console.error(e.message)
+    }
+}
