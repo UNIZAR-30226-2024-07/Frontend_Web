@@ -5,7 +5,7 @@ import axios from '../api/axios'
 import './CrearSala.css';
 import constants from '../constants';
 import { MyForm } from '../Components/MyForm';
-
+import {DropdownForm} from '../Components/DropdownForm';
 const CrearSala = () => {
 
     //const { signup } = useAuth();
@@ -63,14 +63,18 @@ const CrearSala = () => {
                     onChange={(e) => setNombre(e.target.value)}
                 />
 
-                <MyForm
-                    typeForm="nivelBot"
-                    placeholderForm="Enter the level of the bot"
+                <DropdownForm
+                    options={[
+                        { label: "Beginner", value: "beginner" },
+                        { label: "Medium", value: "medium" },
+                        { label: "Expert", value: "expert" }
+                    ]}
                     labelText="Bot level"
-                    className="form-element"
+                    placeholderForm="Enter the level of the bot"
                     value={nivel}
                     onChange={(e) => setNivel(e.target.value)}
                 />
+
 
                 <MyForm
                     typeForm="apuesta"
@@ -81,11 +85,14 @@ const CrearSala = () => {
                     onChange={(e) => setApuesta(e.target.value)}
                 />
 
-                <MyForm
-                    typeForm="numJugadores"
-                    placeholderForm="Enter the number of players"
+                <DropdownForm
+                    options={[
+                        { label: "2", value: "2" },
+                        { label: "3", value: "3" },
+                        { label: "4", value: "4" }
+                    ]}
                     labelText="Number of players"
-                    className="form-element"
+                    placeholderForm="Enter the number of players"
                     value={jugadores}
                     onChange={(e) => setJugadores(e.target.value)}
                 />

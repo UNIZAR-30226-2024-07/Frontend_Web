@@ -1,0 +1,22 @@
+.my-form-container {
+  width: 350px;
+  margin-bottom: 30px;
+}
+
+.custom-input input {
+  font-size: 15px;
+  color: #333;
+  font-family: "Homer Simpson UI";
+}
+
+.custom-input input::placeholder {
+  font-family: 'Homer Simpson UI';
+}
+
+.form-input {
+  font-size: 18px;
+  color: white;
+  font-family: 'Homer Simpson UI';
+  font-weight: bold;
+  margin-top: 0;
+}
