@@ -11,7 +11,7 @@ export const timeOut = 30  // Tiempo cada play hand
 export const drawCard = async (event, player, setPlayer, boardId) => {
     event.preventDefault()
     try {
-        const response = await axios.put('/publicBoard/drawCard', {
+        const response = await axios.put('/tournamentBoard/drawCard', {
             boardId: boardId,
             cardsOnTable: player.hand.cards,
             handIndex: 0
@@ -43,7 +43,7 @@ export const drawCard = async (event, player, setPlayer, boardId) => {
 export const stick = async (event, player, setPlayer, boardId) => {
     event.preventDefault()
     try {
-        const response = await axios.put('/publicBoard/stick', {
+        const response = await axios.put('/tournamentBoard/stick', {
             boardId: boardId,
             cardsOnTable: player.hand.cards,
             handIndex: 0
@@ -115,14 +115,14 @@ export const pause = async (event, boardId, navigate) => {
 
 /////////////////////////////////////////////////////////////////////////////
 // Obtener todas las partidas públicas que hay
-export const getTorneos = async (setPartidasPublicas) => {
+export const getTorneos = async (setTorneos) => {
     try {
         const response = await axios.get('/tournament/getAll')
         if (response.status !== 200) {
             return console.error(response.data)
         }
 
-        setPartidasPublicas(response.data.tournaments)
+        setTorneos(response.data.tournaments)
     } catch (e) {
         console.error("Error al pedir las partidas. " + e.message)
     }

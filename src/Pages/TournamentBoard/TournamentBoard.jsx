@@ -206,6 +206,7 @@ const TournamentBoard = () => {
 
             // Visionar resultados
             setShowResults(true)
+            console.log(results)
 
             // Guardar resultados
             getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers)
