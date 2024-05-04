@@ -24,9 +24,21 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  
+
   .option-dashboard > * {
     width: 100%;
-    margin-top: 10%;
-  }
-  
+    margin-top: 5%; /* Reduciendo un poco el margen superior */
+    font-size: 25px; /* Ajustando el tamaño del texto de los botones */
+}
+
+.recompensa {
+  position: absolute;
+  bottom: 200px;
+  right: 300px;
+}
+
+.moneda-icono {
+  width: 20px; /* Ancho deseado */
+  height: 20px; /* Altura deseada */
+  margin-right: -10px; /* Espacio entre el icono y el texto */
+}

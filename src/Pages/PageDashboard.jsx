@@ -7,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "../api/axios";
 import constants from "../constants";
+import { CustomButton } from "../Components/CustomButton";
 export function PageDashboard() {
   const navigate = useNavigate();
 
   // Añadido por flavio para probar recompensa diaria////////////////////////////////////////////////////////////////
   const [getReward, setGetReward] = useState(true)
   const [reward, setReward] = useState(0)
+  const [pageKey, setPageKey] = useState(false); // Estado para forzar la actualización del MyNav
 
   const updateStateReward = async() => {
     try {
@@ -44,6 +46,9 @@ export function PageDashboard() {
         }
         setReward(response.data.coins)
         setGetReward(response.data.rewardDisponible)
+        setTimeout(() => {
+          resetPage();
+        }, 1000); // 1000 milisegundos = 1 segundo
       }
     } catch (error) {
         console.error("Error:", error);
@@ -68,27 +73,35 @@ export function PageDashboard() {
   const handlePartidaSolitario = () => {
     navigate(constants.root + 'SingleBoard');
   };
+
+  // Función para reiniciar PageDashboard
+  const resetPage = () => {
+    setPageKey((prevKey) => prevKey + 1);
+  };
+
   return (
     <>
-    <div className="page-dashboard">
+    <div key={pageKey} className="page-dashboard">
       <MyNav isLoggedIn={false} isDashboard={true}/>
       <div className="avatar-dashboard">
           <MyAvatar/>
       </div>
       <div className="option-dashboard">
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPublica()}>Partida Publica</MyButton>
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaPrivada()}>Partida Privada</MyButton>
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaTorneo()}>Torneo</MyButton>
-          <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handlePartidaSolitario()}>Partida Solitario</MyButton>
+          <CustomButton text="Partida Publica" onClick={handlePartidaPublica} />
+          <CustomButton text="Partida Privada" onClick={handlePartidaPrivada} />
+          <CustomButton text="Torneo" onClick={handlePartidaTorneo} />
+          <CustomButton text="Partida Solitario" onClick={handlePartidaSolitario} />
+          
       </div>
 
-      {/* Añadido por flavio para probar coinsReward *************************************************************/}
-      <div>
+      {getReward &&
+        <div className="recompensa">
         <MyButton color="midnightblue" size="xxl" variant="bordered" onClick={() => handleGetReward(getReward)}>
-          Reclamar recompensa diaria: {reward} : ¿Es posible obtenerla?: {getReward ? ("TRUE") : ("FALSE")}
+          Reclamar Recompensa: {reward} 
+          <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
         </MyButton>
       </div>
-      {/* ******************************************************************************************************* */}
+        }
 
     </div>
     </>
