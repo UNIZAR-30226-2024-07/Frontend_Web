@@ -18,7 +18,7 @@ export function MyAvatar() {
         const nameResponse = await returnMyName();
         if (nameResponse.status === "success") {
           console.log("Mi nombre es: ", nameResponse.data.name);
-          setUserName(nameResponse.data.name);
+          setUserName(nameResponse.data.nick);
         } else {
           throw new Error(nameResponse.message || 'No se pudo obtener el nombre del usuario');
         }
