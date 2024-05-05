@@ -31,6 +31,9 @@ import AgnadirTorneo from "../Pages/AgnadirTorneo"
 import AgnadirProducto from "../Pages/AgnadirProducto"
 import TournamentBoard from "../Pages/TournamentBoard/TournamentBoard"
 import PrivateBoard from "../Pages/PrivateBoard/PrivateBoard"
+import AgnadirAvatar from "../Pages/AgnadirAvatar"
+import AgnadirBaraja from "../Pages/AgnadirBaraja"
+import AgnadirTapete from "../Pages/AgnadirTapete"
 
 const RouterPrincipal = () => {
     return (
@@ -77,6 +80,9 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'CrearSala'} element={<CrearSala/>}></Route>
                         <Route path={constants.root + 'AgnadirTorneo'} element={<AgnadirTorneo/>}></Route>
                         <Route path={constants.root + 'AgnadirProducto'} element={<AgnadirProducto/>}></Route>
+                        <Route path={constants.root + 'AgnadirAvatar'} element={<AgnadirAvatar/>}></Route>
+                        <Route path={constants.root + 'AgnadirBaraja'} element={<AgnadirBaraja/>}></Route>
+                        <Route path={constants.root + 'AgnadirTapete'} element={<AgnadirTapete/>}></Route>
 
 
 

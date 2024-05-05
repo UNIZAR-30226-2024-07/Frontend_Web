@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios'
 
 import './CrearSala.css';
@@ -9,7 +9,7 @@ import {DropdownForm} from '../Components/DropdownForm';
 const CrearSala = () => {
 
     //const { signup } = useAuth();
-
+    const navigate = useNavigate();
     // Estados para los campos de entrada
     const [nombre, setNombre] = useState('');
     const [apuesta, setApuesta] = useState('');
@@ -30,7 +30,8 @@ const CrearSala = () => {
         try {
             const response = await axios.post('/publicBoardType/add', formData)
             if (response.status == 200) {
-                history.push('/HomeAdmin');
+                //history.push('/HomeAdmin');
+                navigate(constants.root + 'HomeAdmin');
             }
             else {
                 console.log("Fallo al añadir la sala: ", response.data);

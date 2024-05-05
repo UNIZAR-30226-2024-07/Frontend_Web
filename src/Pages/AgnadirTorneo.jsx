@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios'
 
 import './AgnadirTorneo.css';
@@ -9,7 +9,7 @@ import {DropdownForm} from '../Components/DropdownForm';
 const AgnadirTorneo = () => {
 
     //const { signup } = useAuth();
-
+    const navigate = useNavigate();
     // Estados para los campos de entrada
     const [nombre, setNombre] = useState('');
     const [precio, setPrecio] = useState('');
@@ -28,7 +28,7 @@ const AgnadirTorneo = () => {
         try {
             const response = await axios.post('/tournament/add', formData)
             if (response.status == 200) {
-                history.push('/HomeAdmin');
+                navigate(constants.root + 'HomeAdmin');
             }
             else {
                 console.log("Fallo al crear el torneo: ", response.data);
