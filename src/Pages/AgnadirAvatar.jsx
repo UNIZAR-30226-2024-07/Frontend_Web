@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import './AgnadirAvatar.css';
 import constants from '../constants';
- import { Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 
 const AgnadirAvatar = () => {
 
@@ -104,6 +104,7 @@ const AgnadirAvatar = () => {
               value={newAvatar.price}
               onChange={handleChange}
               required
+              className="custom-input"
           />
 
           <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>

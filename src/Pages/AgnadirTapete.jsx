@@ -61,7 +61,7 @@ const AgnadirTapete = () => {
           <img src="/Frontend_Web/Imagenes/logoprincipal.png" alt="Logo" className="corner-image" />
       </div>
       <form  encType="multipart/form-data" className="questionnaire-container">
-        <h2 className="questionnaire-tittle"> Añadir nueva baraja</h2>
+        <h2 className="questionnaire-tittle"> Añadir nuevo tapete</h2>
           <label htmlFor="upload-button">
           {newRug.preview ? (
               <img
