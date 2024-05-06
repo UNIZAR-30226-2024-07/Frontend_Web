@@ -6,6 +6,8 @@ import './CrearSala.css';
 import constants from '../constants';
 import { MyForm } from '../Components/MyForm';
 import {DropdownForm} from '../Components/DropdownForm';
+import { MyNavAdmin } from '../Components/MyNavAdmin'
+
 const CrearSala = () => {
 
     //const { signup } = useAuth();
@@ -50,9 +52,7 @@ const CrearSala = () => {
 
     return (
         <div className="CrearSala">
-            <div className="rectangle">
-                <img src="/Frontend_Web/Imagenes/logoprincipal.png" alt="Logo" className="corner-image" />
-            </div>
+            <MyNavAdmin></MyNavAdmin>
             <form className="questionnaire-container" onSubmit={handleSubmit}>
                 <h2 className="questionnaire-title">Creación de nueva sala</h2>
                 <MyForm

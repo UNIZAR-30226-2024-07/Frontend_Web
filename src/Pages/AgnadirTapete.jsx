@@ -4,6 +4,7 @@ import axios from '../api/axios';
 import './AgnadirTapete.css';
 import constants from '../constants';
 import { Input } from "@nextui-org/react";
+import { MyNavAdmin } from '../Components/MyNavAdmin'
 
 const AgnadirTapete = () => {
 
@@ -57,9 +58,7 @@ const AgnadirTapete = () => {
 
   return (
     <div className="AgnadirTapete">
-      <div className="rectangle">
-          <img src="/Frontend_Web/Imagenes/logoprincipal.png" alt="Logo" className="corner-image" />
-      </div>
+      <MyNavAdmin></MyNavAdmin>
       <form  encType="multipart/form-data" className="questionnaire-container">
         <h2 className="questionnaire-tittle"> Añadir nuevo tapete</h2>
           <label htmlFor="upload-button">

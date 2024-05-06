@@ -6,6 +6,8 @@ import './AgnadirTorneo.css';
 import constants from '../constants';
 import { MyForm } from '../Components/MyForm';
 import {DropdownForm} from '../Components/DropdownForm';
+import { MyNavAdmin } from '../Components/MyNavAdmin'
+
 const AgnadirTorneo = () => {
 
     //const { signup } = useAuth();
@@ -46,9 +48,7 @@ const AgnadirTorneo = () => {
 
     return (
         <div className="AgnadirTorneo">
-            <div className="rectangle">
-                <img src="/Frontend_Web/Imagenes/logoprincipal.png" alt="Logo" className="corner-image" />
-            </div>
+            <MyNavAdmin></MyNavAdmin>
             <form className="questionnaire-container" onSubmit={handleSubmit}>
                 <h2 className="questionnaire-title">Creación de nuevo torneo</h2>
                 <MyForm
