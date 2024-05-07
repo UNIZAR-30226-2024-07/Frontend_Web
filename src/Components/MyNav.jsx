@@ -17,13 +17,12 @@ export function MyNav({ isLoggedIn, isDashboard, monedas }) {
   const navigate = useNavigate(); // Obtiene la función navigate de react-router-dom
   const destino = isLoggedIn ? constants.root  : constants.root + "PageDashboard" ;
 
-
-
   const menuItems = [
     { text: "Amigos", path: constants.root + "PageFriendList" },
     { text: "Ranking", path: constants.root + "Ranking" },
     { text: "Skins", path: constants.root + "SelectAvatar" },
-    { text: "Log out", onClick: handleLogout } // Asigna la función handleLogout al botón "Log out"
+    { text: "Log out", onClick: handleLogout }, // Asigna la función handleLogout al botón "Log out"
+    { text: "Partidas pausadas", path: constants.root + "PartidasPausadas" }
   ];
 
 
@@ -48,7 +47,6 @@ export function MyNav({ isLoggedIn, isDashboard, monedas }) {
     navigate(constants.root); // Redirige a la página de inicio después de cerrar sesión
   }
   
-
   return (
     <Navbar isBordered onMenuOpenChange={setIsMenuOpen} className="custom-navbar" maxWidth="2xl">
       <NavbarContent justify="start" className="navbar-start">

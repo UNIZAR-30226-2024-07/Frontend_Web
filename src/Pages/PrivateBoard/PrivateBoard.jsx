@@ -147,7 +147,7 @@ const PrivateBoard = () => {
     // Enviar mensaje
     const sendMessage = async (event) => {
         event.preventDefault()
-        socket.emit("new public message", { body: { boardId: boardId,
+        socket.emit("new private message", { body: { boardId: boardId,
                                                      userId: user._id,
                                                      message: newMessage }})
         setNewMessage("")

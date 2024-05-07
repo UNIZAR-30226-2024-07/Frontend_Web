@@ -34,6 +34,10 @@ import PrivateBoard from "../Pages/PrivateBoard/PrivateBoard"
 import AgnadirAvatar from "../Pages/AgnadirAvatar"
 import AgnadirBaraja from "../Pages/AgnadirBaraja"
 import AgnadirTapete from "../Pages/AgnadirTapete"
+import PausedPrivateBoard from "../Pages/PrivateBoard/PausedPrivateBoard"
+import PartidasPausadas from "../Pages/PartidasPausadas"
+import PausedPublicBoard from "../Pages/PublicBoard/PausedPublicBoard"
+import PausedTournamentBoard from "../Pages/TournamentBoard/PausedTournamentBoard"
 
 const RouterPrincipal = () => {
     return (
@@ -51,7 +55,11 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'TournamentBoard'} element={<TournamentBoard />}></Route>
                         <Route path={constants.root + 'PublicBoard'} element={<PublicBoard/>}></Route>
                         <Route path={constants.root + 'PrivateBoard'} element={<PrivateBoard/>}></Route>
-                        
+                        <Route path={constants.root + 'PausedTournamentBoard/:id'} element={<PausedTournamentBoard/>}></Route>
+                        <Route path={constants.root + 'PausedPublicBoard/:id'} element={<PausedPublicBoard/>}></Route>
+                        <Route path={constants.root + 'PausedPrivateBoard/:id'} element={<PausedPrivateBoard/>}></Route>
+                        <Route path={constants.root + 'PartidasPausadas'} element={<PartidasPausadas/>}></Route>
+
                         <Route path={constants.root + 'PageFriendFind'} element={<PageFriendFind/>}></Route>
                         <Route path={constants.root + 'PageFriendList'} element={<PageFriendList/>}></Route>
                         <Route path={constants.root + 'Ranking'} element={<PageTrophyRanking/>}></Route>
