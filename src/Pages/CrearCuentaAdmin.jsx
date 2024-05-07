@@ -7,6 +7,7 @@ import './CrearCuentaAdmin.css';
 import constants from '../constants';
 import { MyForm } from '../Components/MyForm';
 import { MyFormPasswd } from '../Components/MyFormPasswd';
+import { MyNavAdmin } from '../Components/MyNavAdmin'
 
 const CrearCuentaAdmin = () => {
 
@@ -46,7 +47,7 @@ const CrearCuentaAdmin = () => {
     ) {
       setError('La contraseña debe contener al menos una mayúscula, una minúscula, un número y tener al menos 6 caracteres');
       return;
-    }
+        }
 
         try {
             const response = await axios.post('/user/add', formData)
@@ -70,11 +71,10 @@ const CrearCuentaAdmin = () => {
         setContrasena('');
     };
 
+
     return (
         <div className="CrearCuentaAdmin">
-            <div className="rectangle">
-                <img src="/Frontend_Web/Imagenes/logoprincipal.png" alt="Logo" className="corner-image" />
-            </div>
+            <MyNavAdmin></MyNavAdmin>
             <form className="questionnaire-container" onSubmit={handleSubmit}>
                 <h2 className="questionnaire-title">Creación de nuevo usuario</h2>
                 <MyForm

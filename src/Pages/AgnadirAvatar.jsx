@@ -4,6 +4,7 @@ import axios from '../api/axios';
 import './AgnadirAvatar.css';
 import constants from '../constants';
 import { Input } from "@nextui-org/react";
+import { MyNavAdmin } from '../Components/MyNavAdmin'
 
 const AgnadirAvatar = () => {
 
@@ -57,9 +58,7 @@ const AgnadirAvatar = () => {
 
   return (
     <div className="AgnadirAvatar">
-      <div className="rectangle">
-          <img src="/Frontend_Web/Imagenes/logoprincipal.png" alt="Logo" className="corner-image" />
-      </div>
+      <MyNavAdmin></MyNavAdmin>
       <form  encType="multipart/form-data" className="questionnaire-container">
         <h2 className="questionnaire-tittle"> Añadir nuevo avatar</h2>
           <label htmlFor="upload-button">
@@ -108,10 +107,6 @@ const AgnadirAvatar = () => {
           />
 
           <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
-          {/* <input 
-              className="submit-button"
-              type="submit"  
-          /> */}
 
       </form>
       </div>
