@@ -7,6 +7,10 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import constants from '../../constants'
 import io from "socket.io-client"
+import { GoTrophy } from "react-icons/go";
+import { TfiMenuAlt } from "react-icons/tfi";
+import { Button } from "@nextui-org/react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext"
 import "./PublicBoard.css"
 import { hand0, hand1, timeOut,
@@ -334,6 +338,8 @@ const PublicBoard = () => {
 
             {/* Mostrar manos JUGADOR */}
             <div className="cartas-jugador">
+                {/* <button onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
+                <button onClick={(e) => leave(e, boardId, navigate)}> Leave </button> */}
                 {[hand0, hand1].map(numHand => (
                     <div key={numHand}>
                         { player && player.hands[numHand].active && (
@@ -378,6 +384,18 @@ const PublicBoard = () => {
                                         />
                                     ))}
                                 </div>
+                                <div>
+                                <Link to={constants.root + 'PageTrophyRanking'}>
+                                    <Button className="button-friend">
+                                        <GoTrophy className="emote-friend" />
+                                    </Button>
+                                </Link>
+                                <Link to={constants.root + 'PageMoneyRanking'}>
+                                    <Button className="button-friend">
+                                        <TfiMenuAlt className="emote-friend" />
+                                    </Button>
+                                </Link>
+                                </div>
                             </div>
                         )}
                     </div>
@@ -385,53 +403,52 @@ const PublicBoard = () => {
             </div>
 
             {/* Mostrar resto JUGADORES */}
-            <div>
+            <div className="cards-enemys">
                 {/* Iterar sobre los jugadores */}
-                <p>Resto jugadores:</p>
-                {(() => {
-                    const jsxArray = [];
-                    for (let index = 0; index < restPlayers.length; index++) {
-                        const playerHands = [];
-                        [hand0, hand1].forEach(numHand => {
-                            if ( restPlayers[index] && restPlayers[index].hands[numHand].active) {
-                                const restPlayerClassName = restPlayers[index].playing ? "rest-cards-playing" : "rest-cards-not-playing"
-                                const handJSX = (
-                                    <div className={restPlayerClassName} key={restPlayers[index].playerId + "-" + numHand}>
-                                        {showResults && (
-                                            <div key={'restPlayer' + numHand}>
-                                                <p>Mano {numHand} / Total: {restPlayers[index].hands[numHand].total}</p>
-                                                <p>CoinsEarned: {restPlayers[index].hands[numHand].coinsEarned}</p>
+            
+                    {(() => {
+                        const jsxArray = [];
+                        for (let index = 0; index < restPlayers.length; index++) {
+                            const playerHands = [];
+                            [hand0, hand1].forEach(numHand => {
+                                if ( restPlayers[index] && restPlayers[index].hands[numHand].active) {
+                                    const restPlayerClassName = restPlayers[index].playing ? "rest-cards-playing" : "rest-cards-not-playing"
+                                    const handJSX = (
+                                        <div className={restPlayerClassName} key={restPlayers[index].playerId + "-" + numHand}>
+                                            {showResults && (
+                                                <div key={'restPlayer' + numHand}>
+                                                    <p>Mano {numHand} / Total: {restPlayers[index].hands[numHand].total}</p>
+                                                    <p>CoinsEarned: {restPlayers[index].hands[numHand].coinsEarned}</p>
+                                                </div>
+                                            )}
+                                            <div className="cartas" 
+                                                key={restPlayers[index].playerId + "-" + numHand}
+                                            >  
+                                                {/* Renderizar las cartas */}
+                                                {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
+                                                    <img
+                                                        className="carta"
+                                                        key={numHand + '-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
+                                                        src={restPlayers[index].hands[numHand].show 
+                                                            ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                            : reverseCardUrl}
+                                                    />
+                                                ))}
                                             </div>
-                                        )}
-                                        <div className="cartas" 
-                                             key={restPlayers[index].playerId + "-" + numHand}
-                                        >  
-                                            {/* Renderizar las cartas */}
-                                            {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
-                                                <img
-                                                    className="carta"
-                                                    key={numHand + '-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
-                                                    src={restPlayers[index].hands[numHand].show 
-                                                        ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
-                                                        : reverseCardUrl}
-                                                />
-                                            ))}
                                         </div>
-                                    </div>
-                                );
-                                playerHands.push(handJSX);
-                            }
-                        });
-                        jsxArray.push(playerHands);
-                    }
-                    return jsxArray;
-                })()}
+                                    );
+                                    playerHands.push(handJSX);
+                                }
+                            });
+                            jsxArray.push(playerHands);
+                        }
+                        return jsxArray;
+                    })()}
             </div>  
 
             <p>Time remaining: {seconds} seconds</p>
-            <div>
+            {/* <div>
                 <div>
-                    {/* Renderizar cada mensaje */}
                     {messages.map((message, index) => (
                         <div className="message" key={index}>
                             <p className="emitter">{message.userId === user._id ? 'Yo' : message.name }</p>
@@ -449,7 +466,7 @@ const PublicBoard = () => {
                     />
                     <button className="enviar" onClick={(e) => sendMessage(e)}> Enviar </button>
                 </form>
-            </div>
+            </div> */}
         </div>
     </div>
 

@@ -19,11 +19,16 @@
 
 .cartas-jugador {
     display: flex;
-    align-items: flex-end; /* Cambiado de 'center' a 'flex-end' para alinear a la derecha */
-    margin-top: 100px; /* Puedes ajustar este valor según necesites */
-    margin-right: -100px;
+    align-items: flex-center; /* Cambiado de 'center' a 'flex-end' para alinear a la derecha */
     justify-content: center;
     align-items: center;
+    margin-top: 5%;
+}
+
+.cards-enemys {
+    display: flex;
+    margin-top: -30% !important;
+    margin-left: 5%;
 }
 
 

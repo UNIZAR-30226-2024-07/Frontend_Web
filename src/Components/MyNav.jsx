@@ -10,8 +10,11 @@ import { Link } from "react-router-dom";
 import constants from '../constants';
 import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { FaPause } from "react-icons/fa6";
+import { MdChat } from "react-icons/md";
+import { RxExit } from "react-icons/rx";
 
-export function MyNav({ isLoggedIn, isDashboard, monedas }) {
+export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useAuth(); // Obtiene la función logout del contexto de autenticación
   const navigate = useNavigate(); // Obtiene la función navigate de react-router-dom
@@ -111,6 +114,28 @@ export function MyNav({ isLoggedIn, isDashboard, monedas }) {
                 <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
                 {coins}
               </div>
+            </div>
+            </NavbarContent>
+          </>
+        )}
+        {isBoard && (
+          <>
+            <NavbarContent justify="end">
+            <div className='partida-icon'>
+              <div className='moned'>
+                <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
+                {coins}
+              </div>
+              <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
+                <FaPause className="icon-pause" />
+              </Link>
+              <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
+                <MdChat className="icon-pause" />
+              </Link>
+              <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
+                <RxExit className="icon-pause" />
+              </Link>
+              
             </div>
             </NavbarContent>
           </>
