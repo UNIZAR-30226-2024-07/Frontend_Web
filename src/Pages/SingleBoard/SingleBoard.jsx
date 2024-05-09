@@ -9,10 +9,16 @@ import { hand0, hand1,
          drawCard, split, double, stick, leave,
          getInitCards, getResults
         } from './SingleBoardFunctions'
+import { MyNav } from "../../Components/MyNav"
 
-// Variable que se usará para la gestión de la conexión
 let socket
-const bankLevels = ["beginner", "medium", "expert"]   // Niveles de la banca
+const bankLevels = [
+    { level: "beginner", image: "./../../../Frontend_Web/Imagenes/cards/Ace-Clubs.png"},
+    { level: "medium", image: "./../../../Frontend_Web/Imagenes/cards/2-Clubs.png"},
+    { level: "expert", image: "./../../../Frontend_Web/Imagenes/cards/3-Clubs.png"}
+
+];
+
 
 const SingleBoard = () => {
     const { user } = useAuth()
@@ -96,17 +102,21 @@ const SingleBoard = () => {
     }, [user, bank, player, navigate])
 
     return (
-        <div>
+        <div className="single-board">
+            <MyNav isLoggedIn={false} isDashboard={false} />
             {/* Si no hay un boardId asignado: mostrar los niveles de banca para unirse */}
             {boardId === "" ? (
                 <>
-                <button type="submit" className="matchPublic">
-                    Solicitar partida solitario
-                </button>
-                <div>
+                <div className="info-square">
+                    <span className="content">Elige nivel de banca</span>
+                </div>
+
+
+                <div className="container">
                     {bankLevels.map(bankLevel => (
-                        <button style={{ marginRight: '10px' }} key={bankLevel} onClick={() => partidaSingle(bankLevel)}>
-                            {bankLevel.toUpperCase()}
+                        <button key={bankLevel} onClick={() => partidaSingle(bankLevel.level)}>
+                             <img src={bankLevel.image} alt={bankLevel.level} className="level-image" />
+                             {bankLevel.level.toUpperCase()}
                         </button>
                     ))}
                 </div>

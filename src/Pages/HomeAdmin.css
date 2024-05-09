@@ -7,17 +7,6 @@
     background-color: #820300;
   }
 
-  .rectangle {
-    background-color: #539165;
-    position: fixed;
-    top: 0;
-    height: 10%;
-    width: 100%;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
   
   .button-row {
     display: flex;
@@ -47,11 +36,4 @@
     justify-content: center;
   }
 
-
-  .corner-image {
-    width: 80px; /* Ancho deseado de la imagen */
-    position: absolute;
-    top: 10px; /* Ajusta la posición verticalmente según sea necesario */
-    left: 10px; /* Ajusta la posición horizontalmente según sea necesario */
-  }
   

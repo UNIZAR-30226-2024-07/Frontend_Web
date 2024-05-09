@@ -208,7 +208,7 @@ const PublicBoard = () => {
             getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers, setCurrentCoins)
         })
 
-        // Api acepta que reaunudes la partida
+        // Api acepta que reanudes la partida
         socket.on("resume accepted", async () => {
             
             // Vuelves a inicialiar 

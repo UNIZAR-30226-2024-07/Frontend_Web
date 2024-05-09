@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios'
 
 import './AgnadirTorneo.css';
 import constants from '../constants';
 import { MyForm } from '../Components/MyForm';
 import {DropdownForm} from '../Components/DropdownForm';
+import { MyNavAdmin } from '../Components/MyNavAdmin'
+
 const AgnadirTorneo = () => {
 
     //const { signup } = useAuth();
-
+    const navigate = useNavigate();
     // Estados para los campos de entrada
     const [nombre, setNombre] = useState('');
     const [precio, setPrecio] = useState('');
@@ -28,7 +30,7 @@ const AgnadirTorneo = () => {
         try {
             const response = await axios.post('/tournament/add', formData)
             if (response.status == 200) {
-                history.push('/HomeAdmin');
+                navigate(constants.root + 'HomeAdmin');
             }
             else {
                 console.log("Fallo al crear el torneo: ", response.data);
@@ -46,9 +48,7 @@ const AgnadirTorneo = () => {
 
     return (
         <div className="AgnadirTorneo">
-            <div className="rectangle">
-                <img src="/Frontend_Web/Imagenes/logoprincipal.png" alt="Logo" className="corner-image" />
-            </div>
+            <MyNavAdmin></MyNavAdmin>
             <form className="questionnaire-container" onSubmit={handleSubmit}>
                 <h2 className="questionnaire-title">Creación de nuevo torneo</h2>
                 <MyForm

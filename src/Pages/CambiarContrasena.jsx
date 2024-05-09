@@ -26,6 +26,23 @@ export function CambiarContrasena() {
       return;
     }
 
+
+    // Validar que la contraseña cumpla con los requisitos
+    const regexUpperCase = /[A-Z]/; // al menos una mayúscula
+    const regexLowerCase = /[a-z]/; // al menos una minúscula
+    const regexNumber = /[0-9]/; // al menos un número
+    const regexLength = /.{6,}/; // al menos 6 caracteres
+  
+    if (
+      !regexUpperCase.test(nuevaContrasena) ||
+      !regexLowerCase.test(nuevaContrasena) ||
+      !regexNumber.test(nuevaContrasena) ||
+      !regexLength.test(nuevaContrasena)
+    ) {
+      setError('La contraseña debe contener al menos una mayúscula, una minúscula, un número y tener al menos 6 caracteres');
+      return;
+    }
+
     try {
       // Llamar a la función para cambiar la contraseña
       const response = await axios.put(`/user/update`, {password: nuevaContrasena})

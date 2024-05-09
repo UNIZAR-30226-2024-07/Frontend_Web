@@ -1,4 +1,6 @@
-.estadisticas-user{
+
+
+.estadisticas-user {
     min-height: 100vh;
     background-color: #539165;
     margin: 0;
@@ -8,42 +10,26 @@
 .container-stats {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 1000px; /* Ancho máximo ajustable */
+    max-width: 1000px;
     margin: auto;
     padding: 20px;
-    background-color: #993f2b;
+    margin-top: 90px;
+}
+
+.rectangulo-rojo {
+    background-color: #8b0000;
+    width: 600px;
+    text-align: left;
+    color: white;
+    font-size: 25px; /* Aumenta el tamaño del texto del h2 */
+    font-weight:bold ;
+    padding: 10px;
+    margin: 10px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    margin-top: 250px;
 }
+  
 
-.stat-pair {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    width: 100%; /* Asegura que cada par ocupe todo el ancho del contenedor */
+.avatar {
+    margin-top: 20px; /* Ajusta el valor según sea necesario para alinear el avatar correctamente */
 }
-
-.stat-item {
-    font-weight: bold; /* Opcional: resalta el nombre de la estadística */
-    text-align: left; /* Alinea el nombre de la estadística a la izquierda */
-    background-color: white;
-    padding: 20px 30px; /* Ajusta el padding según sea necesario */
-    border-radius: 10px; 
-    font-size: 25px;
-    margin-right: 50px; /* Ajusta el margen derecho según sea necesario */
-}
-
-.stat-value {
-    font-size: 20px;
-    color: black;
-    background-color: #3F497F;
-    padding: 20px 26px;
-    border-radius: 5px;
-}
-
-
 

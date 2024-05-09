@@ -1,13 +1,15 @@
 .custom-button {
-    background-color: #3F497FFF;
-    color: white;
+    color: #fff; /* Texto blanco */
+    background-color: #3F497FFF; /* Fondo azul transparente */
     font-weight: bold;
     font-size: 22px;
     padding: 22px 42px;
     margin-bottom: 10px;
-    border: none;
     cursor: pointer;
     border-radius: 20px; /* Agrega bordes redondeados al formulario */
+    border-width: 2px; /* Ancho del borde */
+    border-style: solid; /* Estilo del borde */
+    border-color: black; /* Color del borde */
 }
   
   

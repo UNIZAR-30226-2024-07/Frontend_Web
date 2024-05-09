@@ -16,6 +16,12 @@ import { hand0, hand1, timeOut,
          getPartidaPausada
         } from './PrivateBoardFunctions'
 
+import { MyForm } from '../../Components/MyForm';
+import { FaUser } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { MyButton } from "../../Components/MyButton";
+import { FaUserFriends } from "react-icons/fa";
+import { FaCoins } from "react-icons/fa"; 
 // Variable que se usará para la gestión de la conexión
 let socket
 
@@ -26,7 +32,9 @@ const PrivateBoard = () => {
 
     // Use state crear partida privada
     const [namePriv, setNamePriv] = useState("") // Nombre de la mesa privada
+    const [namePrivada, setNamePrivada] = useState("") // Nombre de la mesa privada
     const [passwdPriv, setPasswdPriv] = useState("") // Contraseña de la mesa privada
+    const [passwdPrivada, setPasswdPrivada] = useState("") // Contraseña de la mesa privada
     const [bankLevel, setBankLevel] = useState("beginner") // Nombre del nivel de la banca de la partida privada
     const [numPlayers, setNumPlayers] = useState("2") // Número de jugadores de la partida privada
     const [bet, setBet] = useState("") // Apuesta fija de la partida privada
@@ -130,8 +138,8 @@ const PrivateBoard = () => {
     // Comunicar api quieres unirte partida privada
     const joinPrivada = async (event) => {
         event.preventDefault(); // Evitar que el formulario se envíe
-        socket.emit("enter private board", { body: { name: namePriv, 
-                                                     password: passwdPriv,
+        socket.emit("enter private board", { body: { name: namePrivada, 
+                                                     password: passwdPrivada,
                                                      userId: user._id}})
         setPage(1)
     }
@@ -139,7 +147,7 @@ const PrivateBoard = () => {
     // Enviar mensaje
     const sendMessage = async (event) => {
         event.preventDefault()
-        socket.emit("new public message", { body: { boardId: boardId,
+        socket.emit("new private message", { body: { boardId: boardId,
                                                      userId: user._id,
                                                      message: newMessage }})
         setNewMessage("")
@@ -289,53 +297,99 @@ const PrivateBoard = () => {
         { page == 0 ? (
             <div className='page-publica'>
             <MyNav isLoggedIn={false} isDashboard={false} monedas={true}/> 
-                <div className='titulo'>
-                    Partida privada
-                </div>
-
-                <button onClick={() => imprimir()}>Imprimir</button>
-                <form>
-                    <p> Nombre de la partida privada </p>
-                    <input
-                        type="text"
+            <div className="forma-duplicado">
+                <div className='forma-container'>
+                <form className='forma-login'>
+                    <h1 className="tituloa-form">Crear Partida Privada</h1>
+                    <div className="parta-form">
+                        <FaUser className="imga-form"/>
+                        <MyForm
+                        typeForm="nickname"
+                        placeholderForm="Nombre de la partida privada"
                         value={namePriv}
                         onChange={(e) => setNamePriv(e.target.value)}
-                    />
-                    <p> Contraseña de la partida privada </p>
-                    <input
-                        type="text"
+                        />
+                    </div>
+                    <div className="parta-form">
+                        <RiLockPasswordFill className="imga-form"/>
+                        <MyForm
+                        typeForm="nickname"
+                        placeholderForm="Contraseña de la partida"
+                        className="forma-element"
                         value={passwdPriv}
                         onChange={(e) => setPasswdPriv(e.target.value)}
-                    />
-                    <p> Nivel de la banca </p>
-                    <select
+                        />
+                    </div>
+                    <div className="parta-form" style={{ margin: "10px", marginLeft: "60px" }}> {/* Añadir espacio alrededor del campo */}
+                        <select
+                        className="forma-element"
                         value={bankLevel}
                         onChange={(e) => setBankLevel(e.target.value)}
-                    >
-                        <option value="beginner">Beginner</option>
-                        <option value="medium">Medium</option>
-                        <option value="expert">Expert</option>
-                    </select>
-                    <p> Número de jugadores </p>
-                    <select
+                        style={{ width: "315px", height: "35px", borderRadius: "10px", textAlign: "center" }} // Estilos CSS para el select
+                        >
+                        <option value="beginner"> Beginner</option>
+                        <option value="medium"> Medium</option>
+                        <option value="expert"> Expert</option>
+                        </select>
+                    </div>
+                    <div className="parta-form" style={{ margin: "10px" }}> {/* Añadir espacio alrededor del campo */}
+                        <FaUserFriends className='imga-form' style={{ marginRight: "-30px" }}/>
+                        <select
+                        className="forma-element"
                         value={numPlayers}
                         onChange={(e) => setNumPlayers(e.target.value)}
-                    >
+                        style={{ width: "315px", height: "35px", borderRadius: "10px", textAlign: "center",  marginLeft: "50px" }} // Estilos CSS para el select
+                        >
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
-                    </select>
-                    <p> Apuesta fija </p>
-                    <input
-                        type="text"
+                        </select>
+                    </div>
+                    <div className="parta-form">
+                        <FaCoins className="imga-form"/>
+                        <MyForm
+                        typeForm="text"
+                        placeholderForm="Apuesta fija de la partida"
+                        className="forma-element"
                         value={bet}
-                        onChange={(e) => setBet(e.target.value)}
-                    />
-                    
-                    <button onClick={(e) => crearPriv(e)}>Crear Partida</button>
-                    <button onClick={(e) => joinPrivada(e)}>Entrar Partida</button>
+                        onChange={(e) => {const val = e.target.value;
+                            if (!isNaN(val)) {
+                                setBet(val);
+                            }}}
+                        />
+                    </div>
+                    <MyButton className="buttona-login" color="midnightblue" size="xl" onClick={(e) => crearPriv(e)}>Crear Privada</MyButton>
                 </form>
+                <div className='forma-container'>
+                <form className='forma-login'>
+                    <h1 className="tituloa-form">Unirse Partida Privada</h1>
+                    <div className="parta-form">
+                        <FaUser className="imga-form"/>
+                        <MyForm
+                        typeForm="nickname"
+                        placeholderForm="Nombre de la partida privada"
+                        className="forma-element"
+                        value={namePrivada}
+                        onChange={(e) => setNamePrivada(e.target.value)}
+                        />
+                    </div>
+                    <div className="parta-form">
+                        <RiLockPasswordFill className="imga-form"/>
+                        <MyForm
+                        typeForm="nickname"
+                        placeholderForm="Contraseña de la partida"
+                        className="forma-element"
+                        value={passwdPrivada}
+                        onChange={(e) => setPasswdPrivada(e.target.value)}
+                        />
+                    </div>
+                    <MyButton className="buttona-login" color="midnightblue" size="xl" onClick={(e) => joinPrivada(e)}>Unirse Partida </MyButton>
+                </form>
+                </div>
             </div>
+
+            </div>
+        </div>
       ) : (
             <div>
             {/* Mensaje en caso de ser expulsado de la partida */}

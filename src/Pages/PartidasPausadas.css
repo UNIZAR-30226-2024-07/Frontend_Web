@@ -1,0 +1,69 @@
+.lista-pausadas {
+    margin-top: 12%;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    justify-self: center;
+    display: grid;
+    grid-template-areas: "tipo-partida";
+}
+
+.tipo-partida {
+    justify-content: start;
+    justify-items: start;
+    margin-left: 60px;
+    grid-area: tipo-partida;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.cont-partida {
+    padding: 10px;
+    grid-area: cont-partida;
+    margin-left: 50px;
+    display: flex;
+}
+
+.partida {
+    grid-area: partida;
+    justify-content: end;
+    width: max-content;
+    height: fit-content;
+    background-color: #3F497FFF;
+    padding: 10px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.partida-pausada {
+    grid-area: partida-pausada;
+    background-color: #8b0000;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-self: end;
+}
+
+.reanudar {
+    background-color: #3F497FFF;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.no-partida-pausada {
+    background-color: gray;
+    font-weight: bold;
+    font-size: 20px;
+    align-items: center;
+    align-content: center;
+    border-radius: 10px;
+    padding: 10px;
+}

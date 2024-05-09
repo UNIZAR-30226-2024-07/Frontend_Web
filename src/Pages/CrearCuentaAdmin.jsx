@@ -7,6 +7,7 @@ import './CrearCuentaAdmin.css';
 import constants from '../constants';
 import { MyForm } from '../Components/MyForm';
 import { MyFormPasswd } from '../Components/MyFormPasswd';
+import { MyNavAdmin } from '../Components/MyNavAdmin'
 
 const CrearCuentaAdmin = () => {
 
@@ -18,6 +19,7 @@ const CrearCuentaAdmin = () => {
     const [apellido, setApellido] = useState('');
     const [nombreCorreo, setNombreCorreo] = useState('');
     const [contrasena, setContrasena] = useState('');
+    const [error, setError] = useState(null);
 
     // Manejador para el envío del formulario
     const handleSubmit = async (e) => {
@@ -30,6 +32,22 @@ const CrearCuentaAdmin = () => {
             password: contrasena,
             rol: 'admin'
         };
+
+        // Validar que la contraseña cumpla con los requisitos
+    const regexUpperCase = /[A-Z]/; // al menos una mayúscula
+    const regexLowerCase = /[a-z]/; // al menos una minúscula
+    const regexNumber = /[0-9]/; // al menos un número
+    const regexLength = /.{6,}/; // al menos 6 caracteres
+  
+    if (
+      !regexUpperCase.test(contrasena) ||
+      !regexLowerCase.test(contrasena) ||
+      !regexNumber.test(contrasena) ||
+      !regexLength.test(contrasena)
+    ) {
+      setError('La contraseña debe contener al menos una mayúscula, una minúscula, un número y tener al menos 6 caracteres');
+      return;
+        }
 
         try {
             const response = await axios.post('/user/add', formData)
@@ -53,15 +71,14 @@ const CrearCuentaAdmin = () => {
         setContrasena('');
     };
 
+
     return (
         <div className="CrearCuentaAdmin">
-            <div className="rectangle">
-                <img src="/Frontend_Web/Imagenes/logoprincipal.png" alt="Logo" className="corner-image" />
-            </div>
+            <MyNavAdmin></MyNavAdmin>
             <form className="questionnaire-container" onSubmit={handleSubmit}>
                 <h2 className="questionnaire-title">Creación de nuevo usuario</h2>
                 <MyForm
-                    typeForm="nickname"
+                    typeForm="text"
                     placeholderForm="Enter your nickname"
                     labelText="Nickname"
                     className="form-element"
@@ -69,7 +86,7 @@ const CrearCuentaAdmin = () => {
                     onChange={(e) => setNick(e.target.value)}
                 />
                 <MyForm
-                    typeForm="name"
+                    typeForm="text"
                     placeholderForm="Enter your name"
                     labelText="Name"
                     className="form-element"
@@ -77,7 +94,7 @@ const CrearCuentaAdmin = () => {
                     onChange={(e) => setNombre(e.target.value)}
                 />
                 <MyForm
-                    typeForm="surname"
+                    typeForm="text"
                     placeholderForm="Enter your surname"
                     labelText="Surname"
                     className="form-element"
@@ -102,6 +119,7 @@ const CrearCuentaAdmin = () => {
                 <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
                 
             </form>
+            {error && <div className="error-login">{error}</div>}
         </div>
     );
 }
