@@ -334,9 +334,6 @@ const PublicBoard = () => {
 
             {/* Mostrar manos JUGADOR */}
             <div className="cartas-jugador">
-                <p>Jugador - CurrentCoins: {currentCoins}</p>
-                <button onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
-                <button onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
                 {[hand0, hand1].map(numHand => (
                     <div key={numHand}>
                         { player && player.hands[numHand].active && (
