@@ -9,6 +9,9 @@ import constants from '../../constants'
 import io from "socket.io-client"
 import { GoTrophy } from "react-icons/go";
 import { TfiMenuAlt } from "react-icons/tfi";
+import { RxCross2 } from "react-icons/rx";
+import { MdExposurePlus1 } from "react-icons/md";
+import { FaHandPaper } from "react-icons/fa";
 import { Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext"
@@ -262,7 +265,7 @@ const PublicBoard = () => {
         <div>
         { page == 0 ? (
             <div className='page-publica'>
-            <MyNav isLoggedIn={false} isDashboard={false} monedas={true}/> 
+            <MyNav isLoggedIn={false} isDashboard={false} isBoard={false}/> 
                 <div className='titulo'>
                     Partidas publicas
                 </div>
@@ -315,7 +318,7 @@ const PublicBoard = () => {
             {/* <hr/>     Linea separación */}
 
         <div className="fondo-juego">
-           <MyNav/>
+        <MyNav isLoggedIn={false} isDashboard={false} isBoard={true}/> 
             <div className="cartas-banca">  {/* Mostrar mano BANCA */}
                 <p>Banca / Total: {bank.hand.total}</p>
                 <div key={'Bank'}> {/*cartas banco*/}
@@ -383,19 +386,46 @@ const PublicBoard = () => {
                                                 : reverseCardUrl}
                                         />
                                     ))}
-                                </div>
-                                <div>
-                                <Link to={constants.root + 'PageTrophyRanking'}>
-                                    <Button className="button-friend">
-                                        <GoTrophy className="emote-friend" />
+                                </div> 
+                                            
+                                <div className="actions-container">
+                                <div className="action-game">
+                                    <Button onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                        <MdExposurePlus1 className="emote-game" />
                                     </Button>
-                                </Link>
-                                <Link to={constants.root + 'PageMoneyRanking'}>
-                                    <Button className="button-friend">
-                                        <TfiMenuAlt className="emote-friend" />
+                                    <p>Otra carta</p>
+                                </div> 
+
+                                <div className="action-game">
+                                    <Button onClick={(e) => stick(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                        <FaHandPaper className="emote-game" />
                                     </Button>
-                                </Link>
+                                    <p>Plantar</p>
                                 </div>
+
+                                <div className="action-game">
+                                    <Button  onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                        <RxCross2 className="emote-game" />
+                                    </Button>
+                                    <p>
+                                    Doblar
+                                    </p>
+                                </div>
+
+                                {player.hands[hand0].active && 
+                                    !player.hands[hand1].active &&
+                                    player.hands[hand0].cards.length === 2 &&
+                                    player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
+                                        <div className="action-game">
+                                            <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
+                                                <GoTrophy className="emote-game" />
+                                            </Button>
+                                            <p>Split</p>
+                                        </div>
+                                    )}
+                            </div>
+
+
                             </div>
                         )}
                     </div>
@@ -445,6 +475,8 @@ const PublicBoard = () => {
                         return jsxArray;
                     })()}
             </div>  
+          
+
 
             <p>Time remaining: {seconds} seconds</p>
             {/* <div>
@@ -468,10 +500,10 @@ const PublicBoard = () => {
                 </form>
             </div> */}
         </div>
-    </div>
-
+        </div>
         )}
         </div>
+        
        
     )
 }

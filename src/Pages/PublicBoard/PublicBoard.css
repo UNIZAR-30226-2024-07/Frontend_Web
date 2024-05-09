@@ -27,7 +27,7 @@
 
 .cards-enemys {
     display: flex;
-    margin-top: -30% !important;
+    margin-top: -34% !important;
     margin-left: 5%;
 }
 
@@ -78,6 +78,45 @@
     margin-top: 60px;
 
 }
+
+
+.button-game {
+    background-color: #3F497F !important;
+    color: white !important;
+    width: 120px !important;
+    height:70px !important;
+    margin-right: 20px !important;
+    border-radius: 25px !important;
+    font-size: 50px !important;
+    margin-top: 8%;
+  }
+  
+  .actions-container {
+    display: flex;
+    justify-content: space-around; /* Para distribuir los elementos de manera equitativa */
+    align-items: center; /* Para alinear verticalmente los elementos */
+}
+
+.action-game {
+    text-align: center; /* Alinea el texto al centro dentro del div */
+    margin: 0 10px; /* Espacio entre los elementos */
+    flex-direction: column !important; /* Para apilar los elementos uno encima del otro */
+    align-items: center !important; /* Para centrar horizontalmente los elementos dentro de action-game */
+    justify-content: center !important;
+}
+
+.button-game {
+    margin-bottom: 5px; /* Espacio entre el botón y el texto */
+    margin-top: 20px;
+}
+
+.action-game p {
+    margin-right: 17px;
+    color: white;
+    font-size:18px;
+    font-weight: bold;
+}
+
 
 
 /*******************************************************************************
