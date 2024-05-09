@@ -1,3 +1,58 @@
+.single-board {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+}
+
+.info-square {
+    background-color: #3F497F;
+    color: white;
+    padding: 25px;
+    border-radius: 20px; 
+    display: inline-flex;
+    align-items: center;
+    width: 430px;
+    height: 90px;
+    margin: 0 auto; 
+    margin-top:1%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    position: sticky;
+  }
+
+
+  .container {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    margin-bottom: 15px;
+}
+
+.level-image {
+    height: 350px;
+    width: 350px; /* La propiedad correcta es "width", no "weight" */
+}
+
+.container button {
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    color: #333;
+    font-weight: bold;
+    font-size: 40px;
+    border: none;
+    transition: color 0.3s, background-color 0.3s; /* Agrega transición para el cambio de color y fondo */
+}
+
+.container button:hover {
+    color: white;
+}
+
+
 .cartas {
     overflow-x: auto; /* Agrega una barra de desplazamiento horizontal si las imágenes no caben */
     white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
