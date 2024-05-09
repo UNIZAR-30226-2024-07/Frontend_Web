@@ -1,12 +1,36 @@
+.fondo-juego {
+    min-height: 100vh;
+    background-color: #539165 !important;
+    margin: 0;
+    padding: 0;
+  }
+
 .cartas {
     overflow-x: auto; /* Agrega una barra de desplazamiento horizontal si las imágenes no caben */
     white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
-    display: flex;
 }
 
+.cartas-banca{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+}
+
+.cartas-jugador {
+    display: flex;
+    align-items: flex-end; /* Cambiado de 'center' a 'flex-end' para alinear a la derecha */
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+    margin-right: -100px;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .carta {
-    width: 100px; /* Establece el ancho deseado para las imágenes */
+    width: 140px !important; /* Establece el ancho deseado para las imágenes */
     margin-right: 10px; /* Espacio entre cada imagen */
+    
 }
 
 .rest-cards-not-playing {

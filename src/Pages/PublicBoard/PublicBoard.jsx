@@ -190,9 +190,9 @@ const PublicBoard = () => {
 
             if (playersToDelete.includes(user._id)) {
                 setMensajeExpulsion(true)
-                setTimeout(() => {
-                    navigate(constants.root + "PageDashboard")
-                }, 3000)
+                // setTimeout(() => {
+                //     navigate(constants.root + "PageDashboard")
+                // }, 3000)
             } else {
                 eliminatePlayers(playersToDelete, restPlayers)
             }
@@ -234,9 +234,9 @@ const PublicBoard = () => {
         // Api comunica que h terminado la partida
         socket.on("finish board", () => {
             setMensajeFin(true)
-            setTimeout(() => {
-                navigate(constants.root + "PageDashboard")
-            }, 3000)
+            // setTimeout(() => {
+            //     navigate(constants.root + "PageDashboard")
+            // }, 3000)
         })
 
         // Llega un mensaje al chat
@@ -295,7 +295,7 @@ const PublicBoard = () => {
       ) : (
             <div>
             {/* Mensaje en caso de ser expulsado de la partida */}
-            { mensajeExpulsion &&
+            {/* { mensajeExpulsion &&
                 <div className="mensaje-expulsion">
                     <p className="titulo-mensaje-expulsion"> Expulsado por inactividad </p>
                     <p className="cuerpo-mensaje-expulsion"> Has sido expulsado de la partida por inactividad durante dos jugadas </p>
@@ -306,14 +306,15 @@ const PublicBoard = () => {
                     <p className="titulo-mensaje-fin"> FIN </p>
                     <p className="cuerpo-mensaje-fin"> La partida finalizó. Cargando...</p>
                 </div>
-            }
+            } */}
 
-            <hr/>     {/* Linea separación */}
+            {/* <hr/>     Linea separación */}
 
-            {/* Mostrar mano BANCA */}
-            <div style={{ backgroundColor: 'white'}}>
+        <div className="fondo-juego">
+           <MyNav/>
+            <div className="cartas-banca">  {/* Mostrar mano BANCA */}
                 <p>Banca / Total: {bank.hand.total}</p>
-                <div key={'Bank'} style={{ backgroundColor: 'yellow' }}>
+                <div key={'Bank'}> {/*cartas banco*/}
                     {bank.hand.active && (
                         <div className="cartas">
                             {/* Renderizar las cartas */}
@@ -331,15 +332,13 @@ const PublicBoard = () => {
                 </div>
             </div>
 
-            <hr/>     {/* Linea separación */}
-
             {/* Mostrar manos JUGADOR */}
-            <div style={{ backgroundColor: 'white'}}>
+            <div className="cartas-jugador">
                 <p>Jugador - CurrentCoins: {currentCoins}</p>
-                <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
-                <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
+                <button onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
+                <button onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
                 {[hand0, hand1].map(numHand => (
-                    <div key={numHand} style={{ backgroundColor: 'brown' }}>
+                    <div key={numHand}>
                         { player && player.hands[numHand].active && (
                             <div>
                                 <p>Mano {numHand} / Total: {player.hands[numHand].total}</p>
@@ -388,11 +387,8 @@ const PublicBoard = () => {
                 ))}
             </div>
 
-            <hr/>     {/* Linea separación */}
-
             {/* Mostrar resto JUGADORES */}
-
-            <div style={{ backgroundColor: 'blue' }}>
+            <div>
                 {/* Iterar sobre los jugadores */}
                 <p>Resto jugadores:</p>
                 {(() => {
@@ -411,8 +407,7 @@ const PublicBoard = () => {
                                             </div>
                                         )}
                                         <div className="cartas" 
-                                             key={restPlayers[index].playerId + "-" + numHand} 
-                                             style={{ backgroundColor: 'green' }}
+                                             key={restPlayers[index].playerId + "-" + numHand}
                                         >  
                                             {/* Renderizar las cartas */}
                                             {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
@@ -459,6 +454,7 @@ const PublicBoard = () => {
                 </form>
             </div>
         </div>
+    </div>
 
         )}
         </div>
