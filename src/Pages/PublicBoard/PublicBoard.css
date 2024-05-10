@@ -33,8 +33,8 @@
 
 .cards-enemys {
     display: flex;
-    margin-top: -39% !important;
-    margin-left: 5%;
+    margin-top: -34% !important;
+    margin-left: 5% !important;
 }
 
 
@@ -119,17 +119,28 @@
 .action-game p {
     margin-right: 17px;
     color: white;
-    font-size:18px;
+    font-size:20px;
     font-weight: bold;
 }
 
 .texto{
     margin-right: 17px;
     color: white;
-    font-size:18px;
+    font-size:20px;
     font-weight: bold;    
 }
 
+/*******************
+    CHAT
+*******************/
+.cuadrado-derecha {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 450px; /* ajusta el ancho según sea necesario */
+    height: 100%; /* ajusta la altura según sea necesario */
+    background-color: #ccc; /* color de fondo del cuadrado */
+}
 
 
 /*******************************************************************************
