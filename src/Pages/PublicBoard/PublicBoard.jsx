@@ -9,6 +9,7 @@ import constants from '../../constants'
 import io from "socket.io-client"
 import { GoTrophy } from "react-icons/go";
 import { TfiMenuAlt } from "react-icons/tfi";
+import { FaRegPaperPlane } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { MdExposurePlus1 } from "react-icons/md";
 import { FaHandPaper } from "react-icons/fa";
@@ -184,6 +185,8 @@ const PublicBoard = () => {
                 }, 1000);
             };
             startTimer()
+            messages.current.scrollTop = messages.current.scrollHeight;
+            
 
             // Limpiar el intervalo cuando el componente se desmonte o el temporizador se detenga
             return () => clearInterval(intervalId);
@@ -480,7 +483,26 @@ const PublicBoard = () => {
                             })()}
                     </div>  
           
-                    <div className="cuadrado-derecha"></div>
+                    <div className="cuadrado-derecha">
+                        <div className="lista-mensajes">
+                            {messages.map((message, index) => (
+                            <div className="message" key={index}>
+                                <p className="msg-text">{message.userId === user._id ? 'Yo' : message.name}</p>
+                                <p className="msg-text">{message.message}</p>
+                            </div>
+                        ))}
+                        </div>
+                        <form className="formulario-mensaje" onSubmit={(e) => sendMessage(e)}>
+                            <input
+                                type="text"
+                                value={newMessage}
+                                className="input-text"
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                placeholder="Escribe tu mensaje aquí"
+                            />
+                            <button type="submit" className="icono-enviar"><FaRegPaperPlane/></button>
+                        </form>
+                    </div>
 
             {/* <p>Time remaining: {seconds} seconds</p> */}
             {/* <div>
