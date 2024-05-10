@@ -273,71 +273,72 @@ const PublicBoard = () => {
                 {Array.isArray(partidasPublicas) && partidasPublicas.length > 0 ? (
                     partidasPublicas.map((tipoPartida) => (
                         <div key={tipoPartida._id}>
-                        <div className="container">
-                        <div className="containerr">
-                          <div className='primero'>{tipoPartida.name} <hr/> </div>
-                          <div className="description">
-                            <div className="dif-bet">
-                                <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
-                                <p> Apuesta por mano: {tipoPartida.bet} coins</p>
+                            <div className="container">
+                                <div className="containerr">
+                                    <div className='primero'>{tipoPartida.name} <hr/> </div>
+                                        <div className="description">
+                                            <div className="dif-bet">
+                                                <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
+                                                <p> Apuesta por mano: {tipoPartida.bet} coins</p>
+                                            </div>
+                                            <MyButton 
+                                            className="jugar" 
+                                            color="midnightblue" 
+                                            size="xxl" 
+                                            type="submit" 
+                                            onClick={() => partidaPublica(tipoPartida)}>
+                                                Jugar
+                                            </MyButton>
+                                        </div>
+                                    </div>
+                                </div>                    
                             </div>
-                            <MyButton 
-                              className="jugar" 
-                              color="midnightblue" 
-                              size="xxl" 
-                              type="submit" 
-                              onClick={() => partidaPublica(tipoPartida)}>
-                                Jugar
-                            </MyButton>
-                          </div>
+                            ))
+                            ) : (
+                                <p>No se encontraron tipos de partidas públicas.</p>
+                            )}
                         </div>
-                        </div>                    
-                        </div>
-                    ))
+                </div>
                 ) : (
-                    <p>No se encontraron tipos de partidas públicas.</p>
-                )}
-                </div>
-            </div>
-      ) : (
-            <div>
-            {/* Mensaje en caso de ser expulsado de la partida */}
-            {/* { mensajeExpulsion &&
-                <div className="mensaje-expulsion">
-                    <p className="titulo-mensaje-expulsion"> Expulsado por inactividad </p>
-                    <p className="cuerpo-mensaje-expulsion"> Has sido expulsado de la partida por inactividad durante dos jugadas </p>
-                </div>
-            }
-            { mensajeFin &&
-                <div className="mensaje-fin">
-                    <p className="titulo-mensaje-fin"> FIN </p>
-                    <p className="cuerpo-mensaje-fin"> La partida finalizó. Cargando...</p>
-                </div>
-            } */}
-
-            {/* <hr/>     Linea separación */}
-
-        <div className="fondo-juego">
-        <MyNav isLoggedIn={false} isDashboard={false} isBoard={true}/> 
-            <div className="cartas-banca">  {/* Mostrar mano BANCA */}
-                <p>Banca / Total: {bank.hand.total}</p>
-                <div key={'Bank'}> {/*cartas banco*/}
-                    {bank.hand.active && (
-                        <div className="cartas">
-                            {/* Renderizar las cartas */}
-                            {bank.hand.cards.map((card, cardIndex) => (
-                                <img
-                                    className="carta"
-                                    key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
-                                    src={bank.hand.show 
-                                        ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
-                                        : reverseCardUrl}
-                                />
-                            ))}
+                // para el juego en si mismo (no se sale de aqui)
+                <div className="fondo-juego">
+                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={true}/> 
+                    {/* Mensaje en caso de ser expulsado de la partida */}
+                    {/* { mensajeExpulsion &&
+                        <div className="mensaje-expulsion">
+                            <p className="titulo-mensaje-expulsion"> Expulsado por inactividad </p>
+                            <p className="cuerpo-mensaje-expulsion"> Has sido expulsado de la partida por inactividad durante dos jugadas </p>
                         </div>
-                    )}
-                </div>
-            </div>
+                    }
+                    { mensajeFin &&
+                        <div className="mensaje-fin">
+                            <p className="titulo-mensaje-fin"> FIN </p>
+                            <p className="cuerpo-mensaje-fin"> La partida finalizó. Cargando...</p>
+                        </div>
+                    } */}
+
+                    {/* <hr/>     Linea separación */}
+
+                    
+                    <div className="cartas-banca">  {/* Mostrar mano BANCA */}
+                        <p>Banca: {bank.hand.total}</p>
+                        <div key={'Bank'}> {/*cartas banco*/}
+                            {bank.hand.active && (
+                                <div className="cartas">
+                                    {/* Renderizar las cartas */}
+                                    {bank.hand.cards.map((card, cardIndex) => (
+                                        <img
+                                            className="carta"
+                                            key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
+                                            src={bank.hand.show 
+                                                ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                : reverseCardUrl}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
             {/* Mostrar manos JUGADOR */}
             <div className="cartas-jugador">
@@ -347,9 +348,9 @@ const PublicBoard = () => {
                     <div key={numHand}>
                         { player && player.hands[numHand].active && (
                             <div>
-                                <p>Mano {numHand} / Total: {player.hands[numHand].total}</p>
+                                <p className="texto">Total: {player.hands[numHand].total}</p>
                                 {showResults && (
-                                    <div key={numHand + 'player'}>
+                                    <div className="texto" key={numHand + 'player'}>
                                         <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
                                     </div>
                                 )}
@@ -387,45 +388,50 @@ const PublicBoard = () => {
                                         />
                                     ))}
                                 </div> 
-                                            
-                                <div className="actions-container">
-                                <div className="action-game">
-                                    <Button onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)} className="button-game">
-                                        <MdExposurePlus1 className="emote-game" />
-                                    </Button>
-                                    <p>Otra carta</p>
-                                </div> 
-
-                                <div className="action-game">
-                                    <Button onClick={(e) => stick(e, numHand, player, setPlayer, boardId)} className="button-game">
-                                        <FaHandPaper className="emote-game" />
-                                    </Button>
-                                    <p>Plantar</p>
-                                </div>
-
-                                <div className="action-game">
-                                    <Button  onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
-                                        <RxCross2 className="emote-game" />
-                                    </Button>
-                                    <p>
-                                    Doblar
-                                    </p>
-                                </div>
-
-                                {player.hands[hand0].active && 
-                                    !player.hands[hand1].active &&
-                                    player.hands[hand0].cards.length === 2 &&
-                                    player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
+                                {!player.hands[numHand].defeat && 
+                                 !player.hands[numHand].blackJack &&
+                                 !player.hands[numHand].stick && 
+                                         
+                                    <div className="actions-container">
                                         <div className="action-game">
-                                            <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
-                                                <GoTrophy className="emote-game" />
+                                            <Button onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                                <MdExposurePlus1 className="emote-game" />
                                             </Button>
-                                            <p>Split</p>
+                                            <p>Otra carta</p>
+                                        </div> 
+
+                                        <div className="action-game">
+                                            <Button onClick={(e) => stick(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                                <FaHandPaper className="emote-game" />
+                                            </Button>
+                                            <p>Plantar</p>
                                         </div>
-                                    )}
-                            </div>
 
+                                        <div className="action-game">
+                                            <Button  onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                                <RxCross2 className="emote-game" />
+                                            </Button>
+                                            <p>
+                                            Doblar
+                                            </p>
+                                        </div>
 
+                                        {player.hands[hand0].active && 
+                                            !player.hands[hand1].active &&
+                                            player.hands[hand0].cards.length === 2 &&
+                                            player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
+                                                <div className="action-game">
+                                                    <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
+                                                        <GoTrophy className="emote-game" />
+                                                    </Button>
+                                                    <p>Split</p>
+                                                </div>
+                                            )
+                                        }
+                                
+                                    </div>
+                                }
+                            
                             </div>
                         )}
                     </div>
@@ -478,7 +484,7 @@ const PublicBoard = () => {
           
 
 
-            <p>Time remaining: {seconds} seconds</p>
+            {/* <p>Time remaining: {seconds} seconds</p> */}
             {/* <div>
                 <div>
                     {messages.map((message, index) => (
@@ -499,7 +505,6 @@ const PublicBoard = () => {
                     <button className="enviar" onClick={(e) => sendMessage(e)}> Enviar </button>
                 </form>
             </div> */}
-        </div>
         </div>
         )}
         </div>
