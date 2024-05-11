@@ -364,27 +364,6 @@ const PublicBoard = () => {
                                             </div>
                                         )}
                                         {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
-                                        {!player.hands[numHand].defeat && 
-                                        !player.hands[numHand].blackJack &&
-                                        !player.hands[numHand].stick ? (
-                                            <div>
-                                                <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
-                                                <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
-                                                <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
-                                                
-                                                {player.hands[hand0].active && 
-                                                !player.hands[hand1].active &&
-                                                player.hands[hand0].cards.length === 2 &&
-                                                player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
-                                                    // Split solo si no se ha hecho split y son dos cartas
-                                                    <button style={{ marginRight: '10px' }} onClick={(e) => split(e, player, setPlayer, boardId)}>Split</button>
-                                                )}
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                <p>No puede realizar más jugadas. Se ha plantado.</p>
-                                            </div>
-                                        )}
                                         <div className="cartas">
                                             {/* Renderizar las cartas */}
                                             {player.hands[numHand].cards.map((card, cardIndex) => (
@@ -451,48 +430,89 @@ const PublicBoard = () => {
                     <div className="cards-enemys">
                         {/* Iterar sobre los jugadores */}
                     
-                            {(() => {
+                            {/* {(() => {
                                 const jsxArray = [];
                                 for (let index = 0; index < restPlayers.length; index++) {
                                     const playerHands = [];
                                     [hand0, hand1].forEach(numHand => {
-                                        if ( restPlayers[index] && restPlayers[index].hands[numHand].active) {
-                                            const restPlayerClassName = restPlayers[index].playing ? "rest-cards-playing" : "rest-cards-not-playing"
-                                            const handJSX = (
-                                                <div className={restPlayerClassName} key={restPlayers[index].playerId + "-" + numHand}>
-                                                    {showResults && (
-                                                        <div key={'restPlayer' + numHand}>
-                                                            <p>Mano {numHand} / Total: {restPlayers[index].hands[numHand].total}</p>
-                                                            <p>CoinsEarned: {restPlayers[index].hands[numHand].coinsEarned}</p>
-                                                        </div>
-                                                    )}
-                                                    <div className="cartas" 
-                                                        key={restPlayers[index].playerId + "-" + numHand}
-                                                    >  
-                                                        {/* Renderizar las cartas */}
-                                                        {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
-                                                            <img
-                                                                className="carta"
-                                                                key={numHand + '-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
-                                                                src={restPlayers[index].hands[numHand].show 
-                                                                    ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
-                                                                    : reverseCardUrl}
-                                                            />
-                                                        ))}
+                                        const restPlayerClassName = restPlayers[index].playing ? "rest-cards-playing" : "rest-cards-not-playing"
+                                        const handJSX = (
+                                            <div className={restPlayerClassName} key={restPlayers[index].playerId + "-" + numHand}>
+                                                {/* {showResults && (
+                                                    <div key={'restPlayer' + hand0}>
+                                                        <p>Mano {hand0} / Total: {restPlayers[index].hands[hand0].total}</p>
+                                                        <p>CoinsEarned: {restPlayers[index].hands[hand0].coinsEarned}</p>
                                                     </div>
+                                                )} 
+                                                <div className="cartas-pequeñas" key={restPlayers[index].playerId + "-" + numHand}>  
+                                                    {/* Renderizar las cartas }
+                                                    {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
+                                                        <img
+                                                            className="carta-peq"
+                                                            key={numHand + '-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
+                                                            src={restPlayers[index].hands[numHand].show 
+                                                                ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                                : reverseCardUrl}
+                                                        />
+                                                    ))}
                                                 </div>
-                                            );
-                                            playerHands.push(handJSX);
-                                        }
+                                            </div>
+                                        );
+                                        playerHands.push(handJSX);
                                     });
                                     jsxArray.push(playerHands);
                                 }
                                 return jsxArray;
-                            })()}
+                            })()} */}
+                        {/* Iterar sobre los jugadores */}
+                        {restPlayers.map(player => {
+                            const playerHands = []; // Array para almacenar las manos activas del jugador
+                            // Iterar sobre las manos del jugador
+                            //Verificar si la mano está activa
+                            if (player.hands[hand0].active) {
+                                const restPlayerClassName = player.playing ? "rest-cards-playing" : "rest-cards-not-playing";
+                                // JSX para la mano
+                                const handJSX = (
+                                    <div className={restPlayerClassName} key={`${player.playerId}-${hand0}`}>
+                                        {/* Mostrar resultados si showResults es verdadero */}
+                                        {showResults && (
+                                            <p className="texto">CoinsEarned: {player.hands[hand0].coinsEarned + player.hands[hand1].coinsEarned}</p>
+                                        )}
+                                        <div className="cartas-pequeñas-container">
+                                            <div className="cartas-pequeñas">
+                                                {/* Renderizar las cartas de la mano0 */} 
+                                                {player.hands[hand0].cards.map((card, cardIndex) => (
+                                                    <img
+                                                        className={player.hands[hand1].cards.length > 0 ? "carta-peq" : "carta-gran"}
+                                                        key={`${hand0}-${cardIndex}-${player.playerId}-${card.value}-${card.suit}`}
+                                                        src={player.hands[hand0].show 
+                                                            ? `${constants.root}Imagenes/cards/${card.value}-${card.suit}.png` 
+                                                            : reverseCardUrl}
+                                                    />
+                                                ))}
+                                                <div style={{ width: '30px' }}></div> {/* Espacio entre manos */}
+                                                {/* Renderizar las cartas de la mano1 */}
+                                                {player.hands[hand1].cards.map((card, cardIndex) => (
+                                                    <img
+                                                        className="carta-peq"
+                                                        key={`${hand1}-${cardIndex}-${player.playerId}-${card.value}-${card.suit}`}
+                                                        src={player.hands[hand1].show 
+                                                            ? `${constants.root}Imagenes/cards/${card.value}-${card.suit}.png` 
+                                                            : reverseCardUrl}
+                                                    />
+                                                ))} 
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                                playerHands.push(handJSX);
+                            }
+                        return playerHands;
+                        })} 
                     </div>  
           
                     <div className="cuadrado-derecha">
-                        <div className="lista-mensajes">
+                        <div className="lista-mensajesa">
                             {messages.map((message, index) => (
                             <div className="messagea" key={index}>
                                 <div className="msg-contenta">
@@ -518,27 +538,9 @@ const PublicBoard = () => {
                         </form>
                     </div>
 
-            {/* <p>Time remaining: {seconds} seconds</p> */}
-            {/* <div>
-                <div>
-                    {messages.map((message, index) => (
-                        <div className="message" key={index}>
-                            <p className="emitter">{message.userId === user._id ? 'Yo' : message.name }</p>
-                            <p className="msg-text">{message.message}</p>
-                        </div>
-                    ))}
-                </div>
-                
-                <form>
-                    <input
-                        type="text"
-                        value={newMessage}
-                        className="input-text"
-                        onChange={(e) => setNewMessage(e.target.value)}
-                    />
-                    <button className="enviar" onClick={(e) => sendMessage(e)}> Enviar </button>
-                </form>
-            </div> */}
+            <p>Time remaining: {seconds} seconds</p> 
+            
+            
         </div>
         )}
         </div>

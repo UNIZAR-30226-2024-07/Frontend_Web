@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { returnMyName } from "../Context/AuthContext";
 import "./AvatarId.css"
 import axios from '../api/axios';
 import constants from '../constants';
@@ -35,7 +34,7 @@ export function AvatarId({user}) {
 
     fetchData();
 
-  }, []);
+  }, [user]);
 
   return (
     <div className="my-avatar-containera">

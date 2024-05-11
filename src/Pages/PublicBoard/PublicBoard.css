@@ -9,6 +9,27 @@
     overflow-x: auto; /* Agrega una barra de desplazamiento horizontal si las imágenes no caben */
     white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
 }
+/* Estilos para el contenedor de las cartas pequeñas */
+.cartas-pequeñas-container {
+    overflow-x: auto; /* Permitir desplazamiento horizontal */
+    white-space: nowrap; /* Evitar el ajuste automático de líneas */
+}
+/* Estilos para las cartas pequeñas */
+.cartas-pequeñas {
+    display: flex; /* Mostrar las cartas horizontalmente */
+}
+
+/* Estilos para las imágenes de las cartas */
+.carta-peq {
+    width: 5%; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
+.carta-gran {
+    width: 12%; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
 
 .cartas-banca {
     display: flex;
@@ -221,7 +242,7 @@
     
 }
 
-.lista-mensajes {
+.lista-mensajesa {
     justify-content: center;
     word-wrap: break-word; /* Permite que el texto se ajuste automáticamente al ancho del contenedor */
     margin-bottom: 20px; /* Añade margen inferior para dejar espacio para el formulario */
