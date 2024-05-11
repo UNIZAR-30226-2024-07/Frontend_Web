@@ -1,0 +1,17 @@
+.my-avatar-containera {
+  display: inline-block;
+  vertical-align: middle; /* Alinea verticalmente con respecto a los elementos vecinos */
+}
+
+.avatar-descriptiona {
+  color: white;
+  font-size: 20px;
+  margin-left: 50px; /* Ajusta el espacio entre la imagen del avatar y el texto */
+  margin-top: -35px;
+}
+
+.avatar-imagea {
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%;
+}

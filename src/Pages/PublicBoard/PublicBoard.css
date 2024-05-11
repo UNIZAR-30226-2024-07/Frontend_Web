@@ -218,6 +218,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    
 }
 
 .lista-mensajes {
@@ -229,24 +230,33 @@
     overflow-y: scroll; /* Habilita el scroll horizontal */
 }
 
-.message {
-    word-wrap: break-word; /* Permite que el texto se ajuste automáticamente al ancho del contenedor */
-    background-color: #8b0000;
-    font-weight: bold;
-    color: white;
-    border-radius: 10px;
-    width: 95%;
+.messagea {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos al principio */
     margin-top: 10px;
+    width: 95%;
 }
 
-.msg-txt {
+.msg-contenta {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos en columna */
+    align-items: flex-start; /* Alinea los elementos al principio */
     background-color: #8b0000;
-    font-weight: bold;
+    border-radius: 20px !important;
+    padding: 10px;
+    width: 100%;
+}
+
+.msg-avatara {
+    flex-shrink: 0;
+    margin-bottom: 10px; /* Ajusta el espacio entre el avatar y el mensaje */
+}
+
+
+.msg-texta {
     color: white;
-    width: 100%; /* Asegura que el texto se ajuste al ancho del contenedor */
-    overflow-wrap: break-word; /* Permite que el texto se ajuste automáticamente al ancho del contenedor */
+    font-weight: bold;
 }
 
 

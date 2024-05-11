@@ -9,6 +9,7 @@ import constants from '../../constants'
 import io from "socket.io-client"
 import { GoTrophy } from "react-icons/go";
 import { TfiMenuAlt } from "react-icons/tfi";
+import {AvatarId} from "../../Components/AvatarId"
 import { FaRegPaperPlane } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { MdExposurePlus1 } from "react-icons/md";
@@ -123,6 +124,8 @@ const PublicBoard = () => {
         setNewMessage("")
     }
 
+    
+    
     useEffect(() => {
         socket = io(constants.dirApi)
 
@@ -248,21 +251,26 @@ const PublicBoard = () => {
             //     navigate(constants.root + "PageDashboard")
             // }, 3000)
         })
-
+        
         // Llega un mensaje al chat
         socket.on("new message", (args) => {
 
             const message = args.message
             const name = args.name
             const userId = args.userId
+            
             // Se añade al messages el mensaje message junto con su emisor
             // 'userId' si no es el mismo usuario
-            setMessages(prevMessages => [
-                ...prevMessages,
-                { message, name, userId }
-            ])
+            setTimeout(() => {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    { message, name, userId }
+                ])
+            }, 3000)
+            
+
         })
-    }, [user, bank, player, restPlayers, navigate, partidaPausada])
+    }, [user, bank, player, restPlayers, navigate, partidaPausada, messages])
 
     return (
         <div>
@@ -486,9 +494,15 @@ const PublicBoard = () => {
                     <div className="cuadrado-derecha">
                         <div className="lista-mensajes">
                             {messages.map((message, index) => (
-                            <div className="message" key={index}>
-                                <p className="msg-text">{message.userId === user._id ? 'Yo' : message.name}</p>
-                                <p className="msg-text">{message.message}</p>
+                            <div className="messagea" key={index}>
+                                <div className="msg-contenta">
+                                    <div className="msg-avatara">
+                                        <AvatarId user={message.userId}/>
+                                    </div>
+                                    <div className="msg-texta">
+                                        <p>{message.message}</p>
+                                    </div>
+                                </div>
                             </div>
                         ))}
                         </div>
