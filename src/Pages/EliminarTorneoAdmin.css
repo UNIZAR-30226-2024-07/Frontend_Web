@@ -1,0 +1,116 @@
+.EliminarTorneo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #820300;
+}
+
+.lista {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    flex-wrap: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
+    white-space: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
+    margin: auto; /* Centra horizontalmente el contenedor */
+    margin-top: 170px;
+    position: relative; /* Establecer la posición relativa para el contenedor */
+    width: 90%;
+}
+
+.titulo {
+    background-color: #3F497FFF;
+    color: white;
+    font-weight: bold;
+    font-size: 50px;
+    margin-left: 50px; /* Margen izquierdo */
+    width: 500px; /* Ancho del cuadrado */
+    height: 100px; /* Altura del cuadrado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* Radio de los bordes */
+    margin-left: 650px; /* Mueve el cuadrado hacia la derecha */
+    margin-top: 60px;
+
+}
+
+/*******************************************************************************
+** Listado de mesas públicas 
+*******************************************************************************/
+
+.container {
+    display: inline-block; /* Para que el contenedor se ajuste al contenido */
+    align-items: center;
+    justify-content: center;
+}
+
+.containerr {
+    padding: 16px;
+    width: 420px;
+    height: 320px;
+    background-color: #539165;
+    color: white;
+    text-align: center;
+    border-radius: 10px; /* Añade bordes redondeados */
+    margin-left: 15px; /* Espacio entre elementos */
+    display: grid;
+    grid-template-areas: "primero" "description";
+    grid-template-rows: 35% auto;
+}
+
+.primero {
+    grid-area: primero;
+    font-weight: bold;
+    font-size: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.description {
+    grid-area: "description";
+    display: grid;
+    grid-template-areas: "dif-bet" "jugar";
+    align-items: center;
+    justify-content: center;
+}
+
+.dif-bet {
+    grid-area: "dif-bet";
+    font-size: 20px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+}
+
+.premios {
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+.medalla {
+    width: 20px;
+}
+
+.jugar {
+    align-self: end;
+}
+
+/* Estilos para el nivel Beginner */
+.beginner {
+    color: rgb(0, 255, 0);
+}
+
+/* Estilos para el nivel Medium */
+.medium {
+    color: yellow;
+}
+
+/* Estilos para el nivel Expert */
+.expert {
+    color: rgb(0, 255, 255);
+}
+
