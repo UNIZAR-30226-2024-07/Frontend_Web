@@ -20,9 +20,7 @@ function EliminarSalaAdmin() {
             name: sala.name
         };
         try{
-            console.log("Sala: ", body.name);
-            //const response =  await axios.delete(`/publicBoardType/eliminate`, body);
-            const response = axios.delete(`/publicBoardType/eliminate`, { data: body });
+            const response = await axios.delete(`/publicBoardType/eliminate`, { data: body });
             if(response.status != 200){
                 console.log("Fallo al eliminar sala: ", response.data);
                 throw new Error('Error al eliminar sala');
