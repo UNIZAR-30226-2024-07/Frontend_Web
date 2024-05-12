@@ -125,27 +125,25 @@ const PublicBoard = () => {
         setHecho(0);
     }
 
-    // Función para reiniciar PageDashboard
-    const resetPage = () => {
-        setPageKey((prevKey) => prevKey + 1);
-    };
 
     useEffect(() => {
-        const saberMonedas = async () => {
-            try {
-              const response = await axios.get('/user/verify');
-              setCurrentCoins(response.data.user.coins);
-            } catch (error) {
-              console.error('Failed to load cards:', error);
-            }
-        };
-        saberMonedas();
+        // const saberMonedas = async () => {
+        //     try {
+        //       const response = await axios.get('/user/verify');
+        //       setCurrentCoins(response.data.user.coins);
+        //     } catch (error) {
+        //       console.error('Failed to load cards:', error);
+        //     }
+        // };
+        // saberMonedas(); 
 
         if(primero === 0 && hecho === 0 && bet !== 800) { // 800 es lo que hay por defecto Verifica que bet haya sido actualizado
             console.log(bet, "", currentCoins);
             if(bet > currentCoins) {
                 setError("No tienes suficientes monedas");
                 setHecho(1);
+                console.log(bet, " 1 ", currentCoins);
+
             } else {
                 console.log("Hay más monedas");
                 socket.emit("enter public board", { body: { typeId: tipoPartida._id, userId: user._id }})
@@ -156,7 +154,7 @@ const PublicBoard = () => {
                 }
             }
         }
-    }, [bet, currentCoins, hecho, tipoPartida, user, primero, primera]);
+    }, [bet, hecho, tipoPartida, user, primero, primera]);
 
     // Enviar mensaje
     const sendMessage = async (event) => {
@@ -206,10 +204,15 @@ const PublicBoard = () => {
         // Recibir play hand (se pueden hacer jugadas)
         socket.on("play hand", (initCards) => {
             setPrimero(2);
-            resetPage();
+            setPageKey(prevKey => prevKey + 1);
             if(primera === 0){
                 setListo(false);
             }
+            if(bet > currentCoins) {
+                setError("No tienes suficientes monedas");
+                console.log(bet, "", currentCoins);
+            }
+            setError("");
             // Inicializar contador
             setSeconds(timeOut)
 
@@ -236,8 +239,10 @@ const PublicBoard = () => {
                 }, 1000);
             };
             startTimer()
-            messages.current.scrollTop = messages.current.scrollHeight;
-            
+            if (messages.current) {
+                // Acción que involucra messages.current
+                messages.current.scrollTop = messages.current.scrollHeight;
+            }
             // Limpiar el intervalo cuando el componente se desmonte o el temporizador se detenga
             return () => clearInterval(intervalId);
         
@@ -319,7 +324,7 @@ const PublicBoard = () => {
         })
         
 
-    }, [user, bank, player, restPlayers, navigate, partidaPausada, messages])
+    }, [user, bank, player, restPlayers,primera, currentCoins, bet, navigate, partidaPausada, messages])
     
     // por si la pantalla de cargando dura mucho rato
     useEffect(() => {
@@ -335,7 +340,7 @@ const PublicBoard = () => {
                 timeoutId = setTimeout(() => {
                     navigate(constants.root + "PageDashboard")
                 }, 2000); // 40 segundos en milisegundos
-            }, 45000); // 45 segundos en milisegundos
+            }, 100000); // 45 segundos en milisegundos
         }
     
         return () => {
@@ -344,7 +349,6 @@ const PublicBoard = () => {
         };
     }, [navigate, listo]);
 
-     
     return (
         <div>
         {listo && 
@@ -355,7 +359,7 @@ const PublicBoard = () => {
         { !listo && page == 0 ? (
             <div className='page-publica'>
                 <div key={pageKey}>
-                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={false}/> 
+                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={currentCoins} /> 
                 </div>
                 <div className='titulo'>
                     Partidas publicas
@@ -392,7 +396,11 @@ const PublicBoard = () => {
                 ) : (
                 // para el juego en si mismo (no se sale de aqui)
                 <div className="fondo-juego">
-                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={true}/> 
+                    <div key={pageKey}>
+                        <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={currentCoins} 
+                        pausa={(e) => pause(e, boardId, navigate)}
+                        salir={(e) => leave(e, boardId, navigate)}/> 
+                    </div>
                     <div className="cartas-banca">  {/* Mostrar mano BANCA */}
                         <p>Banca: {bank.hand.total}</p>
                         <div key={'Bank'}> {/*cartas banco*/}
@@ -423,6 +431,7 @@ const PublicBoard = () => {
                                         {showResults && (
                                             <div className="texto" key={numHand + 'player'}>
                                                 <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
+                                                <p>Jugador - CurrentCoins: {currentCoins}</p>
                                             </div>
                                         )}
                                         {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
@@ -438,6 +447,8 @@ const PublicBoard = () => {
                                                 />
                                             ))}
                                         </div> 
+                                        <div style={{ width: '30px' }}></div> {/* Espacio entre manos */}
+
                                         {!player.hands[numHand].defeat && 
                                         !player.hands[numHand].blackJack &&
                                         !player.hands[numHand].stick && 

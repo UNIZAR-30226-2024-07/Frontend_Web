@@ -37,7 +37,6 @@ const ProgressBar = () => {
 const MyLoading = () => {
   return (
     <div>
-      <MyNav/>
       <div className='loading'>
         <div className="flex items-center justify-center min-h-screen">
         <ProgressBar />

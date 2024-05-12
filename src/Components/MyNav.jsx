@@ -14,7 +14,7 @@ import { FaPause } from "react-icons/fa6";
 import { MdChat } from "react-icons/md";
 import { RxExit } from "react-icons/rx";
 
-export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard }) {
+export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent, pausa, salir}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useAuth(); // Obtiene la función logout del contexto de autenticación
   const navigate = useNavigate(); // Obtiene la función navigate de react-router-dom
@@ -124,17 +124,10 @@ export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard }) {
             <div className='partida-icon'>
               <div className='moned'>
                 <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
-                {coins}
+                {coinsCurrent}
               </div>
-              <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
-                <FaPause className="icon-pause" />
-              </Link>
-              <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
-                <MdChat className="icon-pause" />
-              </Link>
-              <Link to={constants.root + "AjustesUser"} style={{ color: 'white', cursor: 'pointer', marginRight: '20px' }}>
-                <RxExit className="icon-pause" />
-              </Link>
+              <FaPause className="icon-pause" onClick={pausa}/>
+              <RxExit className="icon-pause" onClick={salir}/>
               
             </div>
             </NavbarContent>
