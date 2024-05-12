@@ -24,6 +24,7 @@ import { hand0, hand1, timeOut,
          initPlayers, getInitCards, getResults,
          getPartidaPausada
         } from './PublicBoardFunctions'
+import MyLoading from "../../Components/MyLoading"
 
 // Variable que se usará para la gestión de la conexión
 let socket
@@ -34,8 +35,6 @@ const PublicBoard = () => {
     const [boardId, setBoardId] = useState("") // BoardId
 
     const [page, setPage] = useState(0)
-    const [mensajeExpulsion, setMensajeExpulsion] = useState(false)
-    const [mensajeFin, setMensajeFin] = useState(false)
 
     // Tiempo para ejecutar una partida o no
     const [seconds, setSeconds] = useState(timeOut);  
@@ -71,9 +70,17 @@ const PublicBoard = () => {
         playerId: 'Bank',
         hand: {...hand}
     }
+    const [primero, setPrimero] = useState(0)   // Mano de la banca
+    const [primera, setPrimera] = useState(0)   // Mano de la banca
+    const [listo, setListo] = useState(false)   // Mano de la banca
+    const [tipoPartida, setTipoPartida] = useState(null)   // Mano de la banca
+    const [hecho, setHecho] = useState(1)   // Mano de la banca
+    const [error, setError] = useState(null)   // Mano de la banca
+    const [bet, setBet] = useState(800)   // Mano de la banca
+    const [pageKey, setPageKey] = useState(false); // Estado para forzar la actualización del MyNav
 
     // Información todos los jugadores
-    const [bank, setBank] = useState(objBank)   // Mano de la banca
+    const [bank, setBank] = useState(objBank);   // Mano de la banca
     const [player, setPlayer] = useState(objPlayer);   // Mano del jugador
     const [restPlayers, setRestPlayers] = useState([]);   // Mnos resto jugadores
 
@@ -85,7 +92,7 @@ const PublicBoard = () => {
     // Carta boca abajo
     const [reverseCardUrl, setReverseCardUrl] = useState('')
     // Las monedas actuales. Se irán actualizando cuando lleguen los resultados
-    const [currentCoins, setCurrentCoins] = useState(user.coins)
+    const [currentCoins, setCurrentCoins] = useState(user.coins);
     // Función obtener reverso carta
     const getReverseCard = async(setReverseCardUrl) => {
         const response = await axios.get('/card/currentCard')
@@ -100,6 +107,7 @@ const PublicBoard = () => {
     // Lógica juego partidas
     ////////////////////////////////////////////////////////////////////////////
 
+
     useEffect(() => {
         getPartidasPublicas(setPartidasPublicas)
         getPartidaPausada(setPartidaPausada)
@@ -109,11 +117,46 @@ const PublicBoard = () => {
     // Manejo de Socket.io
     ////////////////////////////////////////////////////////////////////////////
 
-    // Pedir api que quieres jugar
-    const partidaPublica = (tipoPartida) => {
-        socket.emit("enter public board", { body: { typeId: tipoPartida._id, userId: user._id }})
-        setPage(1)
+    // Pedir api que quieres jugar y comprobar que tienes suficientes monedas
+    const partidaPublica = async (tipoPartida) => {
+        console.log("monedas", currentCoins);
+        setBet(tipoPartida.bet); 
+        setTipoPartida(tipoPartida);
+        setHecho(0);
     }
+
+    // Función para reiniciar PageDashboard
+    const resetPage = () => {
+        setPageKey((prevKey) => prevKey + 1);
+    };
+
+    useEffect(() => {
+        const saberMonedas = async () => {
+            try {
+              const response = await axios.get('/user/verify');
+              setCurrentCoins(response.data.user.coins);
+            } catch (error) {
+              console.error('Failed to load cards:', error);
+            }
+        };
+        saberMonedas();
+
+        if(primero === 0 && hecho === 0 && bet !== 800) { // 800 es lo que hay por defecto Verifica que bet haya sido actualizado
+            console.log(bet, "", currentCoins);
+            if(bet > currentCoins) {
+                setError("No tienes suficientes monedas");
+                setHecho(1);
+            } else {
+                console.log("Hay más monedas");
+                socket.emit("enter public board", { body: { typeId: tipoPartida._id, userId: user._id }})
+                setPage(1);
+                if(primera === 0){
+                    setListo(true);
+                    setPrimera(1);
+                }
+            }
+        }
+    }, [bet, currentCoins, hecho, tipoPartida, user, primero, primera]);
 
     // Enviar mensaje
     const sendMessage = async (event) => {
@@ -162,13 +205,18 @@ const PublicBoard = () => {
 
         // Recibir play hand (se pueden hacer jugadas)
         socket.on("play hand", (initCards) => {
-
+            setPrimero(2);
+            resetPage();
+            if(primera === 0){
+                setListo(false);
+            }
             // Inicializar contador
             setSeconds(timeOut)
 
             // Dejar visionar resultados
             setShowResults(false)
 
+            
             // Inicializar la cartas
             // 1 carta del Bank
             // 2 cartas por jugador
@@ -190,9 +238,10 @@ const PublicBoard = () => {
             startTimer()
             messages.current.scrollTop = messages.current.scrollHeight;
             
-
             // Limpiar el intervalo cuando el componente se desmonte o el temporizador se detenga
             return () => clearInterval(intervalId);
+        
+            
         })
 
         
@@ -202,10 +251,10 @@ const PublicBoard = () => {
         socket.on("players deleted", (playersToDelete) => {
 
             if (playersToDelete.includes(user._id)) {
-                setMensajeExpulsion(true)
-                // setTimeout(() => {
-                //     navigate(constants.root + "PageDashboard")
-                // }, 3000)
+                setError("Adios")
+                setTimeout(() => {
+                    navigate(constants.root + "PageDashboard")
+                }, 3000)
             } else {
                 eliminatePlayers(playersToDelete, restPlayers)
             }
@@ -246,10 +295,10 @@ const PublicBoard = () => {
 
         // Api comunica que h terminado la partida
         socket.on("finish board", () => {
-            setMensajeFin(true)
-            // setTimeout(() => {
-            //     navigate(constants.root + "PageDashboard")
-            // }, 3000)
+            setError("Se termino la partida")
+            setTimeout(() => {
+                navigate(constants.root + "PageDashboard");
+            }, 3000)
         })
         
         // Llega un mensaje al chat
@@ -267,70 +316,83 @@ const PublicBoard = () => {
                     { message, name, userId }
                 ])
             }, 3000)
-            
-
         })
-    }, [user, bank, player, restPlayers, navigate, partidaPausada, messages])
+        
 
+    }, [user, bank, player, restPlayers, navigate, partidaPausada, messages])
+    
+    // por si la pantalla de cargando dura mucho rato
+    useEffect(() => {
+        let timeoutId;
+        if (listo) {
+            // Si loading está activado, configuramos un temporizador para 40 segundos
+            timeoutId = setTimeout(() => {
+                // Aquí se ejecuta la acción cuando loading ha estado activo durante 40 segundos
+                // Por ejemplo, puedes hacer algo como:
+                console.log("Han pasado 40 segundos con loading activado. Realizando acción X.");
+                // Realiza la acción que necesitas aquí
+                setError("El usuario ya tiene una partida guardada MAL");
+                timeoutId = setTimeout(() => {
+                    navigate(constants.root + "PageDashboard")
+                }, 2000); // 40 segundos en milisegundos
+            }, 45000); // 45 segundos en milisegundos
+        }
+    
+        return () => {
+            // Si loading se desactiva antes de que pasen los 40 segundos, limpiamos el temporizador
+            clearTimeout(timeoutId);
+        };
+    }, [navigate, listo]);
+
+     
     return (
         <div>
-        { page == 0 ? (
+        {listo && 
+            <div className="page-publica">
+                <MyLoading/>
+            </div>
+        }
+        { !listo && page == 0 ? (
             <div className='page-publica'>
-            <MyNav isLoggedIn={false} isDashboard={false} isBoard={false}/> 
+                <div key={pageKey}>
+                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={false}/> 
+                </div>
                 <div className='titulo'>
                     Partidas publicas
                 </div>
                 <div className="lista">
                 {Array.isArray(partidasPublicas) && partidasPublicas.length > 0 ? (
                     partidasPublicas.map((tipoPartida) => (
-                        <div key={tipoPartida._id}>
-                            <div className="container">
-                                <div className="containerr">
-                                    <div className='primero'>{tipoPartida.name} <hr/> </div>
-                                        <div className="description">
-                                            <div className="dif-bet">
-                                                <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
-                                                <p> Apuesta por mano: {tipoPartida.bet} coins</p>
-                                            </div>
-                                            <MyButton 
-                                            className="jugar" 
-                                            color="midnightblue" 
-                                            size="xxl" 
-                                            type="submit" 
-                                            onClick={() => partidaPublica(tipoPartida)}>
-                                                Jugar
-                                            </MyButton>
+                    <div key={tipoPartida._id}>
+                        <div className="container">
+                            <div className="containerr">
+                                <div className='primero'>{tipoPartida.name} <hr/> </div>
+                                    <div className="description">
+                                        <div className="dif-bet">
+                                            <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
+                                            <p> Apuesta por mano: {tipoPartida.bet} coins</p>
                                         </div>
+                                        <MyButton 
+                                        className="jugar" 
+                                        color="midnightblue" 
+                                        size="xxl" 
+                                        onClick={() => partidaPublica(tipoPartida)}>
+                                            Jugar
+                                        </MyButton>
                                     </div>
-                                </div>                    
-                            </div>
-                            ))
-                            ) : (
-                                <p>No se encontraron tipos de partidas públicas.</p>
-                            )}
+                                </div>
+                            </div>                    
                         </div>
+                        ))
+                        ) : (
+                            <p>No se encontraron tipos de partidas públicas.</p>
+                        )}
+                    </div>
                 </div>
                 ) : (
                 // para el juego en si mismo (no se sale de aqui)
                 <div className="fondo-juego">
                     <MyNav isLoggedIn={false} isDashboard={false} isBoard={true}/> 
-                    {/* Mensaje en caso de ser expulsado de la partida */}
-                    {/* { mensajeExpulsion &&
-                        <div className="mensaje-expulsion">
-                            <p className="titulo-mensaje-expulsion"> Expulsado por inactividad </p>
-                            <p className="cuerpo-mensaje-expulsion"> Has sido expulsado de la partida por inactividad durante dos jugadas </p>
-                        </div>
-                    }
-                    { mensajeFin &&
-                        <div className="mensaje-fin">
-                            <p className="titulo-mensaje-fin"> FIN </p>
-                            <p className="cuerpo-mensaje-fin"> La partida finalizó. Cargando...</p>
-                        </div>
-                    } */}
-
-                    {/* <hr/>     Linea separación */}
-
-                    
                     <div className="cartas-banca">  {/* Mostrar mano BANCA */}
                         <p>Banca: {bank.hand.total}</p>
                         <div key={'Bank'}> {/*cartas banco*/}
@@ -429,42 +491,6 @@ const PublicBoard = () => {
                     {/* Mostrar resto JUGADORES */}
                     <div className="cards-enemys">
                         {/* Iterar sobre los jugadores */}
-                    
-                            {/* {(() => {
-                                const jsxArray = [];
-                                for (let index = 0; index < restPlayers.length; index++) {
-                                    const playerHands = [];
-                                    [hand0, hand1].forEach(numHand => {
-                                        const restPlayerClassName = restPlayers[index].playing ? "rest-cards-playing" : "rest-cards-not-playing"
-                                        const handJSX = (
-                                            <div className={restPlayerClassName} key={restPlayers[index].playerId + "-" + numHand}>
-                                                {/* {showResults && (
-                                                    <div key={'restPlayer' + hand0}>
-                                                        <p>Mano {hand0} / Total: {restPlayers[index].hands[hand0].total}</p>
-                                                        <p>CoinsEarned: {restPlayers[index].hands[hand0].coinsEarned}</p>
-                                                    </div>
-                                                )} 
-                                                <div className="cartas-pequeñas" key={restPlayers[index].playerId + "-" + numHand}>  
-                                                    {/* Renderizar las cartas }
-                                                    {restPlayers[index].hands[numHand].cards.map((card, cardIndex) => (
-                                                        <img
-                                                            className="carta-peq"
-                                                            key={numHand + '-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
-                                                            src={restPlayers[index].hands[numHand].show 
-                                                                ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
-                                                                : reverseCardUrl}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        );
-                                        playerHands.push(handJSX);
-                                    });
-                                    jsxArray.push(playerHands);
-                                }
-                                return jsxArray;
-                            })()} */}
-                        {/* Iterar sobre los jugadores */}
                         {restPlayers.map(player => {
                             const playerHands = []; // Array para almacenar las manos activas del jugador
                             // Iterar sobre las manos del jugador
@@ -511,7 +537,7 @@ const PublicBoard = () => {
                         })} 
                     </div>  
           
-                    <div className="cuadrado-derecha">
+                    { !listo && <div className="cuadrado-derecha">
                         <div className="lista-mensajesa">
                             {messages.map((message, index) => (
                             <div className="messagea" key={index}>
@@ -536,17 +562,19 @@ const PublicBoard = () => {
                             />
                             <button type="submit" className="icono-enviar"><FaRegPaperPlane/></button>
                         </form>
-                    </div>
-
-            <p>Time remaining: {seconds} seconds</p> 
-            
-            
-        </div>
-        )}
+                    </div>}
+                {/*IMPORTANTE QUITARLO*/}
+                {/* <p>Time remaining: {seconds} seconds</p>  */}
+            </div>
+            )}
+        {error &&  
+        <div className="error-login">
+            {error}
+        </div>}
         </div>
         
        
     )
 }
 
-export default PublicBoard
+export default PublicBoard;
