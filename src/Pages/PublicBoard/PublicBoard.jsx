@@ -8,14 +8,12 @@ import { useNavigate } from "react-router-dom"
 import constants from '../../constants'
 import io from "socket.io-client"
 import { GoTrophy } from "react-icons/go";
-import { TfiMenuAlt } from "react-icons/tfi";
 import {AvatarId} from "../../Components/AvatarId"
 import { FaRegPaperPlane } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { MdExposurePlus1 } from "react-icons/md";
 import { FaHandPaper } from "react-icons/fa";
 import { Button } from "@nextui-org/react";
-import { Link } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext"
 import "./PublicBoard.css"
 import { hand0, hand1, timeOut,
@@ -127,16 +125,17 @@ const PublicBoard = () => {
 
 
     useEffect(() => {
-        // const saberMonedas = async () => {
-        //     try {
-        //       const response = await axios.get('/user/verify');
-        //       setCurrentCoins(response.data.user.coins);
-        //     } catch (error) {
-        //       console.error('Failed to load cards:', error);
-        //     }
-        // };
-        // saberMonedas(); 
-
+        if(primero==0){
+            const saberMonedas = async () => {
+                try {
+                const response = await axios.get('/user/verify');
+                setCurrentCoins(response.data.user.coins);
+                } catch (error) {
+                console.error('Failed to load cards:', error);
+                }
+            };
+            saberMonedas(); 
+        }
         if(primero === 0 && hecho === 0 && bet !== 800) { // 800 es lo que hay por defecto Verifica que bet haya sido actualizado
             console.log(bet, "", currentCoins);
             if(bet > currentCoins) {
