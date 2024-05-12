@@ -431,7 +431,6 @@ const PublicBoard = () => {
                                         {showResults && (
                                             <div className="texto" key={numHand + 'player'}>
                                                 <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
-                                                <p>Jugador - CurrentCoins: {currentCoins}</p>
                                             </div>
                                         )}
                                         {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}

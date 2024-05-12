@@ -10,7 +10,13 @@ import { hand0, hand1,
          getInitCards, getResults
         } from './SingleBoardFunctions'
 import { MyNav } from "../../Components/MyNav"
+import { GoTrophy } from "react-icons/go";
 
+import { RxCross2 } from "react-icons/rx";
+import { MdExposurePlus1, MdSecurityUpdateGood } from "react-icons/md";
+import { FaHandPaper } from "react-icons/fa";
+import { Button } from "@nextui-org/react";
+import MyLoading from "../../Components/MyLoading"
 let socket
 const bankLevels = [
     { level: "beginner", image: "./../../../Frontend_Web/Imagenes/cards/Ace-Clubs.png"},
@@ -27,6 +33,8 @@ const SingleBoard = () => {
 
     // Para mostrar o no mostrar resultados
     const [showResults, setShowResults] = useState(false);
+    const [page, setPage] = useState(0);
+    const [listo, setListo] = useState(false);
 
     // Objetos para inicializar la información de banca y jugadores
     // Mano de un jugador
@@ -39,6 +47,7 @@ const SingleBoard = () => {
         stick: false,   // Indica si se ha plantado o no el jugador con stick
         show: false,  // Mostrar carta o no
     }
+
     // Información de un jugador
     const objPlayer = {
         playerId: '',
@@ -64,6 +73,8 @@ const SingleBoard = () => {
     // Función entrar una partida solitario
     const partidaSingle = (bankLevel) => {
         socket.emit("enter single board", { body: { bankLevel: bankLevel, userId: user._id }})
+        setListo(true);
+
     }
 
     useEffect(() => {
@@ -80,10 +91,10 @@ const SingleBoard = () => {
 
         // Recibir play hand (se pueden hacer jugadas)
         socket.on("play hand", (initCards) => {
-            
             // Dejar ver resultados
             setShowResults(false)
-
+            setPage(1);
+            setListo(false);
             // Inicializar la cartas
             // 1 carta del Bank
             // 2 cartas por jugador
@@ -102,11 +113,14 @@ const SingleBoard = () => {
     }, [user, bank, player, navigate])
 
     return (
-        <div className="single-board">
-            <MyNav isLoggedIn={false} isDashboard={false} />
-            {/* Si no hay un boardId asignado: mostrar los niveles de banca para unirse */}
-            {boardId === "" ? (
-                <>
+        <div>
+            {listo && 
+            <div className="page-publica">
+                <MyLoading/>
+            </div>
+            }
+            {page === 0 && <div className="single-board">
+                <MyNav isLoggedIn={false} isDashboard={false} />
                 <div className="info-square">
                     <span className="content">Elige nivel de banca</span>
                 </div>
@@ -115,45 +129,44 @@ const SingleBoard = () => {
                 <div className="container">
                     {bankLevels.map(bankLevel => (
                         <button key={bankLevel} onClick={() => partidaSingle(bankLevel.level)}>
-                             <img src={bankLevel.image} alt={bankLevel.level} className="level-image" />
-                             {bankLevel.level.toUpperCase()}
+                            <img src={bankLevel.image} alt={bankLevel.level} className="level-image" />
+                            {bankLevel.level.toUpperCase()}
                         </button>
                     ))}
                 </div>
-                </>
-            ) : (
-            <>
-                {/* Mostrar la pantalla del juego */}
-
-                {/* Mostrar mano BANCA */}
-                <div style={{ backgroundColor: 'white'}}>
-                    <p>Banca / Total: {bank.hand.total}</p>
-                    <div key={'Bank'} style={{ backgroundColor: 'yellow' }}>
-                        {bank.hand.active && (
-                            <div className="cartas">
-                                {bank.hand.cards.map((card, cardIndex) => (
-                                    <img
-                                        className="carta"
-                                        key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
-                                        src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}
-                                    />
-                                ))}
-                            </div>
-                        )}
+            </div>}
+            {       
+                <div className="fondo-juego">
+                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={0} pausa={0}
+                        salir={(e) => leave(e, boardId, navigate)}/>                     
+                    <div className="cartas-banca">
+                        <p>Banca: {bank.hand.total}</p>
+                        <div key={'Bank'}> 
+                            {bank.hand.active && (
+                                <div className="cartas">
+                                    {bank.hand.cards.map((card, cardIndex) => (
+                                        <img
+                                            className="carta"
+                                            key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
+                                            src={bank.hand.show 
+                                                ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                : ""}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-
-                {/* Mostrar manos JUGADOR */}
-                <div style={{ backgroundColor: 'white'}}>
-                    <p>Jugador:</p>
-                    <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
-                    {[hand0, hand1].map(numHand => (
-                        <div key={numHand} style={{ backgroundColor: 'brown' }}>
-                            { player && player.hands[numHand].active && (
-                                <div>
-                                    <p>Mano {numHand} / Total: {player.hands[numHand].total}</p>
-                                    {showResults && (
-                                        <div key={numHand + 'player'}>
+                
+                
+                    <div className="cartas-jugador">
+                        {[hand0, hand1].map(numHand => (
+                            <div key={numHand}>
+                                { player && player.hands[numHand].active && (
+                                    <div>
+                                        <p className="texto">Total: {player.hands[numHand].total}</p>
+                                        {showResults && (
+                                            <div key={numHand + 'player'}>
                                             {   // Banca mayor que 21 y jugador menor que 21
                                                 ((player.hands[numHand].total <= 21) &&
                                                 (bank.hand.total > 21 ))
@@ -164,51 +177,73 @@ const SingleBoard = () => {
                                                 (player.hands[numHand].total > bank.hand.total))
 
                                             ? (
-                                                <p>¡¡ GANADOR !!</p>
+                                                <p className="texto"> Has ganado</p>
                                             ) : (
-                                                <p>DERROTA :(</p>
+                                                <p className="texto"> Has perdido</p>
                                             )} 
                                         </div>
                                     )}
-                                    {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
-                                    {!player.hands[numHand].defeat && 
-                                    !player.hands[numHand].blackJack &&
-                                    !player.hands[numHand].stick ? (
-                                        <div>
-                                            <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)}> DrawCard </button>
-                                            <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, numHand, player, setPlayer, boardId)}> Stick </button>
-                                            <button style={{ marginRight: '10px' }} onClick={(e) => double(e, numHand, player, setPlayer, boardId)}> Double </button>
-                                            
-                                            {player.hands[hand0].active && 
-                                            !player.hands[hand1].active &&
-                                            player.hands[hand0].cards.length === 2 &&
-                                            player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
-                                                // Split solo si no se ha hecho split y son dos cartas
-                                                <button style={{ marginRight: '10px' }} onClick={(e) => split(e, player, setPlayer, boardId)}>Split</button>
-                                            )}
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            <p>No puede realizar más jugadas. Se ha plantado.</p>
-                                        </div>
-                                    )}
-                                    <div className="cartas">
-                                        {/* Renderizar las cartas */}
-                                        {player.hands[numHand].cards.map((card, cardIndex) => (
-                                            <img
-                                                className="carta"
-                                                key={numHand + '-' + cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
-                                                src={constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png"}
-                                            />
-                                        ))}
+                                        <div className="cartas">
+                                            {player.hands[numHand].cards.map((card, cardIndex) => (
+                                                <img
+                                                    className="carta"
+                                                    key={numHand + '-' + cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
+                                                    src={player.hands[numHand].show ? `${constants.root}Imagenes/cards/${card.value}-${card.suit}.png` : ''}
+                                                />
+                                            ))}
+                                        </div> 
+
+                                        {!player.hands[numHand].defeat && 
+                                        !player.hands[numHand].blackJack &&
+                                        !player.hands[numHand].stick && 
+                                                
+                                            <div className="actions-container">
+                                                <div className="action-game">
+                                                    <Button onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                                        <MdExposurePlus1 className="emote-game" />
+                                                    </Button>
+                                                    <p>Otra carta</p>
+                                                </div> 
+
+                                                <div className="action-game">
+                                                    <Button onClick={(e) => stick(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                                        <FaHandPaper className="emote-game" />
+                                                    </Button>
+                                                    <p>Plantar</p>
+                                                </div>
+
+                                                <div className="action-game">
+                                                    <Button  onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                                        <RxCross2 className="emote-game" />
+                                                    </Button>
+                                                    <p>
+                                                    Doblar
+                                                    </p>
+                                                </div>
+
+                                                {player.hands[hand0].active && 
+                                                    !player.hands[hand1].active &&
+                                                    player.hands[hand0].cards.length === 2 &&
+                                                    player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
+                                                        <div className="action-game">
+                                                            <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
+                                                                <GoTrophy className="emote-game" />
+                                                            </Button>
+                                                            <p>Split</p>
+                                                        </div>
+                                                    )
+                                                }
+                                        
+                                            </div>
+                                        }
+                                    
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </>
-            )}
+            }
         </div>
     )
 }

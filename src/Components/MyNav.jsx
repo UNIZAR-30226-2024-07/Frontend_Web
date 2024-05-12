@@ -122,11 +122,12 @@ export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent,
           <>
             <NavbarContent justify="end">
             <div className='partida-icon'>
+              {coinsCurrent !==0 &&
               <div className='moned'>
                 <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
                 {coinsCurrent}
-              </div>
-              <FaPause className="icon-pause" onClick={pausa}/>
+              </div>}
+              {pausa !== 0 && <FaPause className="icon-pause" onClick={pausa}/>}
               <RxExit className="icon-pause" onClick={salir}/>
               
             </div>
