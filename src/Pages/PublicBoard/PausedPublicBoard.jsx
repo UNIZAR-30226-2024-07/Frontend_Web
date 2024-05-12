@@ -41,7 +41,8 @@ const PausedPublicBoard = () => {
     const [tipoPartida, setTipoPartida] = useState(null)   // Mano de la banca
     const [hecho, setHecho] = useState(1)   // Mano de la banca
     const [primero, setPrimero] = useState(0)   // Mano de la banca
-
+    const [primera, setPrimera] = useState(0)   // Mano de la banca
+    
     const [page, setPage] = useState(0)
 
     // Tiempo para ejecutar una partida o no
@@ -106,44 +107,26 @@ const PausedPublicBoard = () => {
 
     // Reanudar Partida
     const reanudarPartida = () => {
-        setBet(tipoPartida.bet); 
-        setTipoPartida(tipoPartida);
+        console.log("Partida pausada id: ", id)
+        console.log("UserId", user._id)
+        socket.emit("resume public board", ({ body: { boardId: id, userId: user._id }}))
         setHecho(0);
     }
 
     useEffect(() => {
-        const saberMonedas = async () => {
-            try {
-              const response = await axios.get('/user/verify');
-              setCurrentCoins(response.data.user.coins);
-            } catch (error) {
-              console.error('Failed to load cards:', error);
-            }
-        };
-        saberMonedas();
-        if(primero === 0 && hecho === 0 && bet !== 800) { // 800 es lo que hay por defecto Verifica que bet haya sido actualizado
-
-            console.log(bet, "", currentCoins);
-            if(bet > currentCoins) {
-                setError("No tienes suficientes monedas");
-                setHecho(1);
-                setTimeout(() => {
-                    navigate(constants.root + "PageDashboard")
-                }, 3000)
-            } else {
-                console.log("Hay más monedas");
-                console.log("Partida pausada id: ", id)
-                console.log("UserId", user._id)
-                socket.emit("resume public board", ({ body: { boardId: id, userId: user._id }}))        
-                setPage(1);
-            }
+        if(primero==0){
+            const saberMonedas = async () => {
+                try {
+                const response = await axios.get('/user/verify');
+                setCurrentCoins(response.data.user.coins);
+                } catch (error) {
+                console.error('Failed to load cards:', error);
+                }
+            };
+            saberMonedas(); 
         }
-    }, [bet, currentCoins, hecho, tipoPartida, user, id, navigate]);
+    }, [bet, currentCoins, primera, hecho, tipoPartida, user, id, navigate]);
 
-    // Función para reiniciar PageDashboard
-    const resetPage = () => {
-        setPageKey((prevKey) => prevKey + 1);
-    };
     // Enviar mensaje
     const sendMessage = async (event) => {
         event.preventDefault()
@@ -159,23 +142,26 @@ const PausedPublicBoard = () => {
         socket.on("connect", (socket) => {
             console.log("hey")
             reanudarPartida();
-            setError("Se esperara a la siguiente ronda para unirse");
+            if(primero==0){
+                setError("Se esperara a la siguiente ronda para unirse");
+                setPrimero(1);
+            }
         })
 
         // Recibir play hand (se pueden hacer jugadas)
         socket.on("play hand", (initCards) => {
+            setError("");
             setPrimero(2);
-            setTimeout(() => {
-                resetPage();
-              }, 1000); // 1000 milisegundos = 1 segundo
-            setListo(false);
+            setPageKey(prevKey => prevKey + 1);
+            if(primera === 0){
+                setListo(false);
+            }
 
             console.log("page = ", page)
             if (page != 1) {
-                console.log("Hey2")
                 setPage(1)
             } 
-            
+
             // Inicializar contador
             setSeconds(timeOut)
 
@@ -201,7 +187,10 @@ const PausedPublicBoard = () => {
                 }, 1000);
             };
             startTimer()
-
+            if (messages.current) {
+                // Acción que involucra messages.current
+                messages.current.scrollTop = messages.current.scrollHeight;
+            }
             // Limpiar el intervalo cuando el componente se desmonte o el temporizador se detenga
             return () => clearInterval(intervalId);
         })
@@ -224,7 +213,7 @@ const PausedPublicBoard = () => {
 
         // Recibir hand results (visionar resultados)
         socket.on("hand results", (results) => {
-
+            setError("");
             // Visionar resultados
             setShowResults(true)
 
@@ -276,7 +265,7 @@ const PausedPublicBoard = () => {
                 { message, name, userId }
             ])
         })
-    }, [user, bank, player,page, restPlayers, navigate, id])
+    }, [user, bank, player,page, restPlayers, messages, primera, navigate, id])
 
      // por si la pantalla de cargando dura mucho rato
     useEffect(() => {
@@ -292,7 +281,7 @@ const PausedPublicBoard = () => {
                 timeoutId = setTimeout(() => {
                     navigate(constants.root + "PageDashboard")
                 }, 2000); // 40 segundos en milisegundos
-            }, 45000); // 45 segundos en milisegundos
+            }, 100000); // 45 segundos en milisegundos
         }
     
         return () => {
@@ -314,14 +303,15 @@ const PausedPublicBoard = () => {
             <div key={pageKey}>
                 <MyNav isLoggedIn={false} isDashboard={false} isBoard={false}/> 
             </div>
-            <div className='mensaje-esperando'>
-                <p> Será readmitido en la partida cuando la ronda actual finalice </p>
-            </div>
             </div>        
         ) : (
             <div>
                 <div className="fondo-juego">
-                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={true}/> 
+                    <div key={pageKey}>
+                        <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={currentCoins} 
+                        pausa={(e) => pause(e, boardId, navigate)}
+                        salir={(e) => leave(e, boardId, navigate)}/> 
+                    </div>
                     <div className="cartas-banca">  {/* Mostrar mano BANCA */}
                         <p>Banca: {bank.hand.total}</p>
                         <div key={'Bank'}> {/*cartas banco*/}

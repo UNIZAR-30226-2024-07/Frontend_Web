@@ -153,7 +153,7 @@ const PublicBoard = () => {
                 }
             }
         }
-    }, [bet, hecho, tipoPartida, user, primero, primera]);
+    }, [bet, hecho, currentCoins, tipoPartida, user, primero, primera]);
 
     // Enviar mensaje
     const sendMessage = async (event) => {
@@ -171,6 +171,7 @@ const PublicBoard = () => {
 
         // Esperar api nos conteste para empezar partida
         socket.on("starting public board", async (boardId) => {
+            setError("");
             setBoardId(boardId)
 
             // Obtener reverso carta
@@ -512,7 +513,10 @@ const PublicBoard = () => {
                                     <div className={restPlayerClassName} key={`${player.playerId}-${hand0}`}>
                                         {/* Mostrar resultados si showResults es verdadero */}
                                         {showResults && (
-                                            <p className="texto">CoinsEarned: {player.hands[hand0].coinsEarned + player.hands[hand1].coinsEarned}</p>
+                                            <div>
+                                                <AvatarId user={player.playerId}/>
+                                                <p className="texto">CoinsEarned: {player.hands[hand0].coinsEarned + player.hands[hand1].coinsEarned}</p>
+                                            </div>
                                         )}
                                         <div className="cartas-pequeñas-container">
                                             <div className="cartas-pequeñas">
