@@ -119,7 +119,7 @@ const SingleBoard = () => {
                 <MyLoading/>
             </div>
             }
-            {page === 0 && <div className="single-board">
+            {!listo && page === 0 && <div className="single-board">
                 <MyNav isLoggedIn={false} isDashboard={false} />
                 <div className="info-square">
                     <span className="content">Elige nivel de banca</span>

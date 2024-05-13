@@ -238,3 +238,125 @@
     font-weight: bold;
     color: white;
 }
+
+
+
+.cartas-pequeñas-container {
+    overflow-x: auto; /* Permitir desplazamiento horizontal */
+    white-space: nowrap; /* Evitar el ajuste automático de líneas */
+    width: 100%;
+}
+
+/* Estilos para las cartas pequeñas */
+.cartas-pequeñas {
+    display: flex; /* Mostrar las cartas horizontalmente */
+}
+
+
+.texto{
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;    
+}
+
+
+
+
+/* Estilos para las imágenes de las cartas */
+.carta-peq {
+    width: 6%; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
+.carta-gran {
+    width: 10%; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
+.carta-bien {
+    width: 20%; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
+.actions-container {
+    display: flex;
+    justify-content: space-around; /* Para distribuir los elementos de manera equitativa */
+    align-items: center; /* Para alinear verticalmente los elementos */
+}
+
+.action-game {
+    text-align: center; /* Alinea el texto al centro dentro del div */
+    margin: 0 10px; /* Espacio entre los elementos */
+    flex-direction: column !important; /* Para apilar los elementos uno encima del otro */
+    align-items: center !important; /* Para centrar horizontalmente los elementos dentro de action-game */
+    justify-content: center !important;
+}
+
+.action-game p {
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;
+}
+
+.button-game {
+    margin-bottom: 5px; /* Espacio entre el botón y el texto */
+    margin-top: 20px;
+}
+
+.fondo-juego {
+    min-height: 100vh;
+    background-color: #539165 !important;
+    margin: 0;
+    padding: 0;
+  }
+
+.espacio {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.cartas-banca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+}
+
+.cartas-banca p {
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;
+}
+
+.cartas-jugador {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alinear al final */
+    margin-top: 8%; /* Si lo prefieres en porcentaje */
+}
+
+.cartas-banca-resul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+    margin-left: 800px;
+}
+
+
+.cartas-jugador-resul {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alinear al final */
+    margin-top: 5%; /* Si lo prefieres en porcentaje */
+    margin-left: 800px;
+}
+
+
+.cards-enemys {
+    display: flex;
+    margin-top: -34% !important;
+    margin-left: 5% !important;
+}

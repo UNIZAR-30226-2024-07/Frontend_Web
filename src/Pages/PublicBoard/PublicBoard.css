@@ -21,12 +21,12 @@
 
 /* Estilos para las imágenes de las cartas */
 .carta-peq {
-    width: 5%; /* Reducir el tamaño de las imágenes al 60% */
+    width: 6%; /* Reducir el tamaño de las imágenes al 60% */
     margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
 }
 
 .carta-gran {
-    width: 10%; /* Reducir el tamaño de las imágenes al 60% */
+    width: 11%; /* Reducir el tamaño de las imágenes al 60% */
     margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
 }
 
@@ -36,6 +36,13 @@
     flex-direction: column;
     align-items: center;
     margin-top: 100px; /* Puedes ajustar este valor según necesites */
+}
+.cartas-banca-resul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+    margin-left: 800px;
 }
 
 .cartas-banca p {
@@ -50,6 +57,14 @@
     justify-content: center;
     align-items: flex-end; /* Alinear al final */
     margin-top: 5%; /* Si lo prefieres en porcentaje */
+}
+
+.cartas-jugador-resul {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alinear al final */
+    margin-top: 5%; /* Si lo prefieres en porcentaje */
+    margin-left: 800px;
 }
 
 .cards-enemys {
