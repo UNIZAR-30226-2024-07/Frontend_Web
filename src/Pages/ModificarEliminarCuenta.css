@@ -1,0 +1,74 @@
+.modificar-eliminar-cuenta {
+    min-height: 100vh;
+    background-color: #820300;
+    margin: 0;
+    padding: 0;
+}
+
+.find-user{
+    background-color: white !important;
+    color: black;
+    padding: 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    width: 600px;
+    height: 80px;
+    margin: 0 auto;
+    position: fixed;
+    margin-top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: sticky;
+}
+
+.find {
+    font-size: 40px;
+    font-weight: bold;
+    color: black; /* Color de texto negro */
+    background-color: white; /* Fondo blanco */
+    border: none; /* Elimina el borde */
+    outline: none !important; /* Elimina el contorno al enfocar */
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 20px; /* Borde redondeado */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    padding-right: 50px; /* Agrega espacio a la derecha para acomodar el icono */
+}
+
+.glass {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    color: black;
+    transform: translateY(-50%);
+    width: 50px !important;
+    height: 100px !important;
+}
+
+.user-list-item {
+    margin-top: 20px;
+}
+
+.user {
+    margin-top: 3%;
+}
+
+.user-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.user-list-item {
+    margin-top: 20px;
+}
+
+.user {
+    margin-top: 3%;
+}
+
+.user-div {
+    display: flex;
+    justify-content: space-between;
+}

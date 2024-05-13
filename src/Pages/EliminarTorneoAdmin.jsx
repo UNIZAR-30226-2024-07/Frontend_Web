@@ -17,7 +17,8 @@ function EliminarTorneoAdmin() {
     }, [])
     const handleEliminateTorneo = async (torneo) => {
         try{
-            const response =  await axios.delete(`/tournament/eliminate${torneo._id}`);
+            console.log("ID DEL TORNEO A ELIMINAR: " + torneo._id);
+            const response =  await axios.delete('/tournament/eliminate/' + torneo._id);
             if(response.status != 200){
                 console.log("Fallo al eliminar torneo: ", response.data);
                 throw new Error('Error al eliminar torneo');

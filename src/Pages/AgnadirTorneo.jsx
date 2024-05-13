@@ -22,13 +22,12 @@ const AgnadirTorneo = () => {
         e.preventDefault()
         const formData = {
             name: nombre,
-            bankLevel: nivel,
-            bet: precio
-
+            price: precio,
+            bankLevel: nivel
         };
 
         try {
-            const response = await axios.post('/tournament/add', formData)
+            const response = await axios.post('/tournament/add', { data: formData })
             if (response.status == 200) {
                 navigate(constants.root + 'HomeAdmin');
             }
@@ -52,7 +51,7 @@ const AgnadirTorneo = () => {
             <form className="questionnaire-container" onSubmit={handleSubmit}>
                 <h2 className="questionnaire-title">Creación de nuevo torneo</h2>
                 <MyForm
-                    typeForm="nombreTorneo"
+                    typeForm="text"
                     placeholderForm="Enter the tournament name"
                     labelText="Tournament name"
                     className="form-element"
@@ -61,7 +60,7 @@ const AgnadirTorneo = () => {
                 />
 
                 <MyForm
-                    typeForm="precio"
+                    typeForm="number"
                     placeholderForm="Enter the entry price"
                     labelText="Price"
                     className="form-element"

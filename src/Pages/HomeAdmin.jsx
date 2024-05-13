@@ -14,7 +14,7 @@ function HomeAdmin() {
         <Link to={constants.root + "AgnadirTorneo"} className="button" >CREAR TORNEO</Link>
       </div>
       <div className="button-row">
-        <Link to='/InicioSesion' className="button" >MODIFICAR O ELIMINAR CUENTA</Link>
+        <Link to={constants.root + 'ModificarEliminarCuenta'} className="button" >ELIMINAR CUENTA</Link>
         <Link to='/InicioSesion' className="button" >MODIFICAR O ELIMINAR PRODUCTO</Link>
         <Link to={constants.root + "EliminarSalaAdmin"} className="button" >ELIMINAR SALA</Link>
         <Link to={constants.root + "EliminarTorneoAdmin"} className="button" >ELIMINAR TORNEO</Link>

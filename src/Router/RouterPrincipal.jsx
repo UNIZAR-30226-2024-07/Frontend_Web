@@ -40,6 +40,8 @@ import PausedPublicBoard from "../Pages/PublicBoard/PausedPublicBoard"
 import PausedTournamentBoard from "../Pages/TournamentBoard/PausedTournamentBoard"
 import EliminarTorneoAdmin from "../Pages/EliminarTorneoAdmin"
 import EliminarSalaAdmin from "../Pages/EliminarSalaAdmin"
+import ModificarEliminarCuenta from "../Pages/ModificarEliminarCuenta"
+
 
 
 const RouterPrincipal = () => {
@@ -96,6 +98,7 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'AgnadirTapete'} element={<AgnadirTapete/>}></Route>
                         <Route path={constants.root + 'EliminarTorneoAdmin'} element={<EliminarTorneoAdmin/>}></Route>
                         <Route path={constants.root + 'EliminarSalaAdmin'} element={<EliminarSalaAdmin/>}></Route>
+                        <Route path={constants.root + 'ModificarEliminarCuenta'} element={<ModificarEliminarCuenta/>}></Route>
 
 
 

@@ -78,7 +78,7 @@ const CrearSala = () => {
 
 
                 <MyForm
-                    typeForm="apuesta"
+                    typeForm="number"
                     placeholderForm="Enter the bet"
                     labelText="Bet"
                     className="form-element"
