@@ -1,5 +1,6 @@
 import  { useState, useEffect } from 'react';
 import "./MyLoading.css"
+import { MyNav } from './MyNav';
 
 const progressBarClasses = 'w-full bg-zinc-300 rounded-full h-4 dark:bg-zinc-700';
 const progressFillClasses = 'bg-zinc-600 h-4 rounded-full';
@@ -35,11 +36,12 @@ const ProgressBar = () => {
 
 const MyLoading = () => {
   return (
-    <div className='loading'>
+    <div>
+      <div className='loading'>
         <div className="flex items-center justify-center min-h-screen">
         <ProgressBar />
         </div>
-    </div>
+    </div></div>
   );
 };
 

@@ -64,3 +64,19 @@
   margin-right: 10px; /* Añadir margen derecho para separar del siguiente contenido */
   margin-left: -100px; /* Añadir margen izquierdo para mover el elemento a la izquierda */
 }
+
+
+.icon-pause {
+  color: white;
+  margin-left: 10px;
+  font-size: 35px;
+}
+
+
+
+.partida-icon {
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  margin-right: -100px !important;
+}

@@ -1,12 +1,83 @@
+.fondo-juego {
+    min-height: 100vh;
+    background-color: #539165 !important;
+    margin: 0;
+    padding: 0;
+  }
+
 .cartas {
     overflow-x: auto; /* Agrega una barra de desplazamiento horizontal si las imágenes no caben */
     white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
-    display: flex;
+}
+/* Estilos para el contenedor de las cartas pequeñas */
+.cartas-pequeñas-container {
+    overflow-x: auto; /* Permitir desplazamiento horizontal */
+    white-space: nowrap; /* Evitar el ajuste automático de líneas */
+}
+/* Estilos para las cartas pequeñas */
+.cartas-pequeñas {
+    display: flex; /* Mostrar las cartas horizontalmente */
 }
 
+/* Estilos para las imágenes de las cartas */
+.carta-peq {
+    width: 6%; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
+.carta-gran {
+    width: 11%; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
+
+.cartas-banca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+}
+.cartas-banca-resul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+    margin-left: 800px;
+}
+
+.cartas-banca p {
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;
+}
+
+.cartas-jugador {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alinear al final */
+    margin-top: 5%; /* Si lo prefieres en porcentaje */
+}
+
+.cartas-jugador-resul {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alinear al final */
+    margin-top: 5%; /* Si lo prefieres en porcentaje */
+    margin-left: 800px;
+}
+
+.cards-enemys {
+    display: flex;
+    margin-top: -34% !important;
+    margin-left: 5% !important;
+}
+
+
 .carta {
-    width: 100px; /* Establece el ancho deseado para las imágenes */
+    width: 140px !important; /* Establece el ancho deseado para las imágenes */
     margin-right: 10px; /* Espacio entre cada imagen */
+    
 }
 
 .rest-cards-not-playing {
@@ -49,6 +120,57 @@
     margin-top: 60px;
 
 }
+
+
+.button-game {
+    background-color: #3F497F !important;
+    color: white !important;
+    width: 120px !important;
+    height:70px !important;
+    margin-right: 20px !important;
+    border-radius: 25px !important;
+    font-size: 50px !important;
+    margin-top: 8%;
+  }
+  
+.actions-container {
+    display: flex;
+    justify-content: space-around; /* Para distribuir los elementos de manera equitativa */
+    align-items: center; /* Para alinear verticalmente los elementos */
+}
+
+.action-game {
+    text-align: center; /* Alinea el texto al centro dentro del div */
+    margin: 0 10px; /* Espacio entre los elementos */
+    flex-direction: column !important; /* Para apilar los elementos uno encima del otro */
+    align-items: center !important; /* Para centrar horizontalmente los elementos dentro de action-game */
+    justify-content: center !important;
+}
+
+.button-game {
+    margin-bottom: 5px; /* Espacio entre el botón y el texto */
+    margin-top: 20px;
+}
+
+.action-game p {
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;
+}
+
+.texto{
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;    
+}
+
+/*******************
+    CHAT
+*******************/
+
+
 
 
 /*******************************************************************************
@@ -120,33 +242,101 @@
 /*******************************************************************************
 ** Chat partida 
 *******************************************************************************/
-.message {
-    background-color: #8b0000;
-    font-weight: bold;
-    color: white;
+.cuadrado-derecha {
+    margin-top: 65px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px; /* ajusta el ancho según sea necesario */
+    height: 93.5%; /* ajusta la altura según sea necesario */
+    background-color: #ccc; /* color de fondo del cuadrado */
+    border: 2px solid black; /* añade bordes de color negro con 2px de grosor */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 }
 
-.emitter {
-    background-color:#3F497FFF;
-    font-weight: bold;
-    color: white;
+.lista-mensajesa {
+    justify-content: center;
+    word-wrap: break-word; /* Permite que el texto se ajuste automáticamente al ancho del contenedor */
+    margin-bottom: 20px; /* Añade margen inferior para dejar espacio para el formulario */
+    flex-direction: row;
+    width: 85%;
+    overflow-y: scroll; /* Habilita el scroll horizontal */
 }
 
-.msg-txt {
+.messagea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos al principio */
+    margin-top: 10px;
+    width: 95%;
+}
+
+.msg-contenta {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos en columna */
+    align-items: flex-start; /* Alinea los elementos al principio */
     background-color: #8b0000;
-    font-weight: bold;
+    border-radius: 20px !important;
+    padding: 10px;
+    width: 100%;
+}
+
+.msg-avatara {
+    flex-shrink: 0;
+    margin-bottom: 10px; /* Ajusta el espacio entre el avatar y el mensaje */
+}
+
+
+.msg-texta {
     color: white;
+    font-weight: bold;
+}
+
+
+.formulario-mensaje {
+    display: flex; /* Usa flexbox para los elementos internos */
+    align-items: center; /* Centra verticalmente los elementos */
+    justify-content: center; /* Centra horizontalmente los elementos */
+    margin-top: auto;
+    margin-bottom: 10px;
+    
 }
 
 .input-text {
-    border-color: black;
-    border-width: 2px;
+    flex: 1; /* Hace que el campo de entrada ocupe el espacio disponible */
+    padding: 8px;
+    border: 2px solid #8b0000;
     border-radius: 10px;
+    margin-right: 5px;
 }
 
-.enviar {
-    background-color: #3F497FFF;
-    border-radius: 10px;
-    font-weight: bold;
+.icono-enviar {
+    background-color: #8b0000;
     color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px;
+    cursor: pointer;
 }
+
+/* errores */
+  
+.error-login{
+    background-color: black;
+    color: white;
+    padding: 40px; 
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    font-size: 30px; 
+    font-weight: bolder;
+}
+

@@ -4,7 +4,7 @@ import constants from "../../constants"
 
 export const hand0 = 0      // Primera mano
 export const hand1 = 1     // Segunda mano
-export const timeOut = 30  // Tiempo cada play hand
+export const timeOut = 20  // Tiempo cada play hand
 
 /********************* Funciones logica juego **********************************/
 
