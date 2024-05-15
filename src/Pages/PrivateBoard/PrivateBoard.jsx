@@ -355,8 +355,7 @@ const PrivateBoard = () => {
             // Por ejemplo, puedes hacer algo como:
             console.log("Han pasado 40 segundos con loading activado. Realizando acción X.");
             // Realiza la acción que necesitas aquí
-            setError("Ha ocurrido un error al iniciar la partida");
-            {(e) => leave(e, boardId, navigate)}; 
+            setError("Ha ocurrido un error al iniciar la partida"); 
             timeoutId = setTimeout(() => {
                 navigate(constants.root + "PageDashboard")
             }, 2000); // 40 segundos en milisegundos
