@@ -19,14 +19,15 @@
     display: flex; /* Mostrar las cartas horizontalmente */
 }
 
-/* Estilos para las imágenes de las cartas */
-.carta-peq {
-    width: 6%; /* Reducir el tamaño de las imágenes al 60% */
+
+
+.carta-peque {
+    width: 95px !important; /* Reducir el tamaño de las imágenes al 60% */
     margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
 }
 
-.carta-gran {
-    width: 11%; /* Reducir el tamaño de las imágenes al 60% */
+.carta-grande {
+    width: 130px ; /* Reducir el tamaño de las imágenes al 60% */
     margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
 }
 
@@ -35,8 +36,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+    margin-top: 100px !important; /* Puedes ajustar este valor según necesites */
 }
+
 .cartas-banca-resul {
     display: flex;
     flex-direction: column;
@@ -63,31 +65,31 @@
     display: flex;
     justify-content: center;
     align-items: flex-end; /* Alinear al final */
-    margin-top: 5%; /* Si lo prefieres en porcentaje */
     margin-left: 800px;
 }
 
-.cards-enemys {
+.cards-enemysa {
     display: flex;
-    margin-top: -34% !important;
+    margin-top: -36% !important;
     margin-left: 5% !important;
 }
 
 
 .carta {
-    width: 140px !important; /* Establece el ancho deseado para las imágenes */
+    width: 120px !important; /* Establece el ancho deseado para las imágenes */
     margin-right: 10px; /* Espacio entre cada imagen */
     
 }
 
 .rest-cards-not-playing {
-    filter: grayscale(100%)
+    filter: grayscale(100%);
 }
 
 /* Main.css */
 .page-publica {
     min-height: 100vh;
-    background-color: #539165;
+    /* background-color: #539165; */
+    overflow: hidden;
     margin: 0;
     padding: 0;
 }

@@ -69,6 +69,7 @@ const PublicBoard = () => {
         hand: {...hand}
     }
     
+    const [tapete, setTapete] = useState(null)   // Mano de la banca
     const [primero, setPrimero] = useState(0)   // Mano de la banca
     const [primera, setPrimera] = useState(0)   // Mano de la banca
     const [listo, setListo] = useState(false)   // Mano de la banca
@@ -172,6 +173,13 @@ const PublicBoard = () => {
 
         // Esperar api nos conteste para empezar partida
         socket.on("starting public board", async (boardId) => {
+            try {
+                const response = await axios.get('/rug/currentRug');
+                console.log(response.data)
+                setTapete(response.data.rug.imageFileName);
+            } catch (error) {
+                console.error('Failed to load cards:', error);
+            }
             setError("");
             setBoardId(boardId)
 
@@ -255,6 +263,7 @@ const PublicBoard = () => {
         // expulsado. En tal caso, se abandonará la partida y se volverá al
         // menú principal
         socket.on("players deleted", (playersToDelete) => {
+            setShowResults(false)
 
             if (playersToDelete.includes(user._id)) {
                 if(currentCoins < bet){
@@ -265,7 +274,7 @@ const PublicBoard = () => {
                 }
                 setTimeout(() => {
                     navigate(constants.root + "PageDashboard")
-                }, 5000)
+                }, 2000)
             } else {
                 eliminatePlayers(playersToDelete, restPlayers)
             }
@@ -304,10 +313,12 @@ const PublicBoard = () => {
 
         // Api comunica que h terminado la partida
         socket.on("finish board", () => {
+            setShowResults(false)
+
             setError("Se termino la partida")
             setTimeout(() => {
                 navigate(constants.root + "PageDashboard");
-            }, 5000)
+            }, 1000)
         })
         
         // Llega un mensaje al chat
@@ -328,7 +339,7 @@ const PublicBoard = () => {
         })
         
 
-    }, [user, bank, player, restPlayers,primera, currentCoins, bet, navigate, partidaPausada, messages])
+    }, [user, bank, player, restPlayers,primera, bet, navigate, partidaPausada, messages])
     
     // por si la pantalla de cargando dura mucho rato
     useEffect(() => {
@@ -351,17 +362,17 @@ const PublicBoard = () => {
             // Si loading se desactiva antes de que pasen los 40 segundos, limpiamos el temporizador
             clearTimeout(timeoutId);
         };
-    }, [navigate, listo]);
+    }, [listo]);
 
     return (
-        <div>
+    <div>
         {listo && 
             <div className="page-publica">
                 <MyLoading/>
             </div>
         }
-        { !listo && page == 0 ? (
-            <div className='page-publica'>
+        { !listo && page == 0 &&
+            <div className="page-publica">
                 <div key={pageKey}>
                     <MyNav isLoggedIn={false} isDashboard={false} isBoard={false} coinsCurrent={currentCoins} /> 
                 </div>
@@ -408,17 +419,34 @@ const PublicBoard = () => {
                     ) : (
                         <p>No se encontraron tipos de partidas públicas.</p>
                     )}
-                    </div>
                 </div>
-                ) : (
-                // para el juego en si mismo (no se sale de aqui)
-                <div className="fondo-juego">
-                    <div key={pageKey}>
-                        <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={currentCoins} 
-                        pausa={(e) => pause(e, boardId, navigate)}
-                        salir={(e) => leave(e, boardId, navigate)}/> 
-                    </div>
-                    {!showResults && <div className="cartas-banca">  {/* Mostrar mano BANCA */}
+            </div>
+            }
+            {!listo && <>
+                <div key={pageKey}>
+                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={currentCoins} 
+                    pausa={(e) => pause(e, boardId, navigate)}
+                    salir={(e) => leave(e, boardId, navigate)}/> 
+                </div>
+                <div className="fondo-juego" 
+                    style={showResults ? { backgroundImage: `url(${constants.dirApi}/${constants.uploadsFolder}/${tapete})`, 
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain', // Ajusta la propiedad backgroundSize para cambiar el tamaño de la imagen
+                    width: '100%',
+                    height: '90%',    overflow: 'hidden',
+                    position: 'absolute' } 
+                    : { backgroundImage: `url(${constants.dirApi}/${constants.uploadsFolder}/${tapete})`,backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    width: '84%',
+                    height: '84%',
+                    position: 'absolute',
+                    overflow: "hidden"
+                }}>                   
+                    
+                    {!showResults && 
+                    <div className="cartas-banca">  {/* Mostrar mano BANCA */}
                         <p>Banca: {bank.hand.total}</p>
                         <div key={'Bank'}> {/*cartas banco*/}
                             {bank.hand.active && (
@@ -439,9 +467,7 @@ const PublicBoard = () => {
                         <div className="seconds">
                             {seconds}
                         </div>
-                    </div>
-                    
-                    }
+                    </div>}
                     {showResults && <div className="cartas-banca-resul">  {/* Mostrar mano BANCA */}
                         <p className="texto">Banca: {bank.hand.total}</p>
                         <div key={'Bank'}> {/*cartas banco*/}
@@ -501,14 +527,15 @@ const PublicBoard = () => {
                                                         <FaHandPaper className="emote-game" />
                                                     </Button>
                                                     <p>Plantar</p>
-                                                    </div>
+                                                </div>
 
+                                                {!player.hands[numHand].stick && 
                                                 <div className="action-game">
                                                     <Button onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
                                                         <RxCross2 className="emote-game" />
                                                     </Button>
                                                     <p>Doblar</p>
-                                                </div>
+                                                </div>}
 
                                                 {player.hands[hand0].active && 
                                                     !player.hands[hand1].active &&
@@ -561,7 +588,7 @@ const PublicBoard = () => {
                     </div>}
 
                     {/* Mostrar resto JUGADORES */}
-                    <div className="cards-enemys">
+                    <div className="cards-enemysa">
                         {/* Iterar sobre los jugadores */}
                         {restPlayers.map(player => {
                             const playerHands = []; // Array para almacenar las manos activas del jugador
@@ -574,7 +601,7 @@ const PublicBoard = () => {
                                     <div className={restPlayerClassName} key={`${player.playerId}-${hand0}`}>
                                         {/* Mostrar resultados si showResults es verdadero */}
                                         {showResults && (
-                                            <div>
+                                            <div className="">
                                                 <AvatarId user={player.playerId}/>
                                                 <p className="texto">CoinsEarned: {player.hands[hand0].coinsEarned + player.hands[hand1].coinsEarned}</p>
                                             </div>
@@ -584,7 +611,8 @@ const PublicBoard = () => {
                                                 {/* Renderizar las cartas de la mano0 */} 
                                                 {player.hands[hand0].cards.map((card, cardIndex) => (
                                                     <img
-                                                        className={player.hands[hand1].cards.length > 0 ? "carta-peq" : "carta-gran"}                                                        key={`${hand0}-${cardIndex}-${player.playerId}-${card.value}-${card.suit}`}
+                                                        className={player.hands[hand1].cards.length > 0 ? "carta-peque" : "carta-grande"}                                                        
+                                                        key={`${hand0}-${cardIndex}-${player.playerId}-${card.value}-${card.suit}`}
                                                         src={player.hands[hand0].show 
                                                             ? `${constants.root}Imagenes/cards/${card.value}-${card.suit}.png` 
                                                             : reverseCardUrl}
@@ -594,7 +622,7 @@ const PublicBoard = () => {
                                                 {/* Renderizar las cartas de la mano1 */}
                                                 {player.hands[hand1].cards.map((card, cardIndex) => (
                                                     <img
-                                                        className="carta-peq"
+                                                        className="carta-peque"
                                                         key={`${hand1}-${cardIndex}-${player.playerId}-${card.value}-${card.suit}`}
                                                         src={player.hands[hand1].show 
                                                             ? `${constants.root}Imagenes/cards/${card.value}-${card.suit}.png` 
@@ -609,45 +637,43 @@ const PublicBoard = () => {
                             }
                         return playerHands;
                         })} 
-                    </div>  
-          
-                    { !listo && !showResults && <div className="cuadrado-derecha">
-                        <div className="lista-mensajesa">
-                            {messages.map((message, index) => (
-                            <div className="messagea" key={index}>
-                                <div className="msg-contenta">
-                                    <div className="msg-avatara">
-                                        <AvatarId user={message.userId}/>
-                                    </div>
-                                    <div className="msg-texta">
-                                        <p>{message.message}</p>
-                                    </div>
+                    </div> 
+                </div>
+            
+                { !listo && primero !== 0 && !showResults && 
+                <div className="cuadrado-derecha">
+                    <div className="lista-mensajesa">
+                        {messages.map((message, index) => (
+                        <div className="messagea" key={index}>
+                            <div className="msg-contenta">
+                                <div className="msg-avatara">
+                                    <AvatarId user={message.userId}/>
+                                </div>
+                                <div className="msg-texta">
+                                    <p>{message.message}</p>
                                 </div>
                             </div>
-                        ))}
                         </div>
-                        <form className="formulario-mensaje" onSubmit={(e) => sendMessage(e)}>
-                            <input
-                                type="text"
-                                value={newMessage}
-                                className="input-text"
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                placeholder="Escribe tu mensaje aquí"
-                            />
-                            <button type="submit" className="icono-enviar"><FaRegPaperPlane/></button>
-                        </form>
-                    </div>}
-                {/*IMPORTANTE QUITARLO*/}
-                {/* <p>Time remaining: {seconds} seconds</p>  */}
-            </div>
-            )}
-        {error &&  
-        <div className="error-login">
-            {error}
-        </div>}
-        </div>
+                    ))}
+                </div>
+                <form className="formulario-mensaje" onSubmit={(e) => sendMessage(e)}>
+                    <input
+                        type="text"
+                        value={newMessage}
+                        className="input-text"
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        placeholder="Escribe tu mensaje aquí"
+                    />
+                    <button type="submit" className="icono-enviar"><FaRegPaperPlane/></button>
+                </form>
+                </div>}
+            </>}
+            {error &&  
+            <div className="error-login">
+                {error}
+            </div>}
         
-       
+    </div>  
     )
 }
 
