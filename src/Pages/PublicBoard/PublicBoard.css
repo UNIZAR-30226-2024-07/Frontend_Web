@@ -92,34 +92,7 @@
     padding: 0;
 }
 
-.lista {
-    display: flex;
-    overflow-x: auto;
-    padding: 10px;
-    flex-wrap: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
-    white-space: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
-    margin: auto; /* Centra horizontalmente el contenedor */
-    margin-top: 170px;
-    position: relative; /* Establecer la posición relativa para el contenedor */
-    width: 90%;
-}
 
-.titulo {
-    background-color: #3F497FFF;
-    color: white;
-    font-weight: bold;
-    font-size: 50px;
-    margin-left: 50px; /* Margen izquierdo */
-    width: 500px; /* Ancho del cuadrado */
-    height: 100px; /* Altura del cuadrado */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px; /* Radio de los bordes */
-    margin-left: 650px; /* Mueve el cuadrado hacia la derecha */
-    margin-top: 60px;
-
-}
 
 
 .button-game {
@@ -176,10 +149,40 @@
 /*******************************************************************************
 ** Listado de mesas públicas 
 *******************************************************************************/
+.lista-partida-publica {
+    display: flex;
+    overflow: auto !important;
 
-.container {
+    padding: 10px;
+    flex-wrap: nowrap !important; /* Evita que los elementos se envuelvan a la siguiente línea */
+    white-space: nowrap !important; /* Evita que los elementos se envuelvan a la siguiente línea */
+    margin: auto; /* Centra horizontalmente el contenedor */
+    margin-top: 170px;
+    position: relative; /* Establecer la posición relativa para el contenedor */
+    width: 90%;
+}
+
+.titulo {
+    background-color: #3F497FFF;
+    color: white;
+    font-weight: bold;
+    font-size: 50px;
+    margin-left: 50px; /* Margen izquierdo */
+    width: 500px; /* Ancho del cuadrado */
+    height: 100px; /* Altura del cuadrado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* Radio de los bordes */
+    margin-left: 650px; /* Mueve el cuadrado hacia la derecha */
+    margin-top: 60px;
+
+}
+
+.container-a {
     display: inline-block; /* Para que el contenedor se ajuste al contenido */
     align-items: center;
+
     justify-content: center;
 }
 
@@ -189,11 +192,12 @@
     right: 0;
 }
 
-.containerr {
+.containerr-a {
     padding: 16px;
+    background-color: #8b0000 !important;
+
     width: 420px;
     height: 320px;
-    background-color: #8b0000 !important;
     color: white;
     text-align: center;
     border-radius: 10px; /* Añade bordes redondeados */
@@ -203,7 +207,7 @@
     grid-template-rows: 35% auto;
 }
 
-.primero {
+.primero-a {
     grid-area: primero;
     font-weight: bold;
     font-size: 40px;
@@ -211,7 +215,7 @@
     align-items: center;
 }
 
-.description {
+.description-a {
     grid-area: "description";
     display: grid;
     grid-template-areas: "dif-bet" "jugar";

@@ -368,42 +368,42 @@ const PublicBoard = () => {
                 <div className='titulo'>
                     Partidas publicas
                 </div>
-                <div className="lista">
-                {Array.isArray(partidasPublicas) && partidasPublicas.length > 0 ? (
-                partidasPublicas
-                    .slice() // Hacemos una copia para no modificar el array original
-                    .sort((a, b) => {
-                        // Objeto de mapeo de dificultad a valor numérico
-                        const dificultadMap = {
-                            "beginner": 1,
-                            "medium": 2,
-                            "expert": 3
-                        };
+                <div className="lista-partida-publica">
+                    {Array.isArray(partidasPublicas) && partidasPublicas.length > 0 ? (
+                    partidasPublicas
+                        .slice() // Hacemos una copia para no modificar el array original
+                        .sort((a, b) => {
+                            // Objeto de mapeo de dificultad a valor numérico
+                            const dificultadMap = {
+                                "beginner": 1,
+                                "medium": 2,
+                                "expert": 3
+                            };
 
-                        // Comparamos las dificultades usando el mapeo
-                        return dificultadMap[a.bankLevel] - dificultadMap[b.bankLevel];
-                    })
-                    .map((tipoPartida) => (
-                        <div key={tipoPartida._id}>
-                            <div className="container">
-                                <div className="containerr">
-                                    <div className='primero'>{tipoPartida.name} <hr/> </div>
-                                    <div className="description">
-                                        <div className="dif-bet">
-                                            <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
-                                            <p> Apuesta por mano: {tipoPartida.bet} coins</p>
+                            // Comparamos las dificultades usando el mapeo
+                            return dificultadMap[a.bankLevel] - dificultadMap[b.bankLevel];
+                        })
+                        .map((tipoPartida) => (
+                            <div key={tipoPartida._id}>
+                                <div className="container-a">
+                                    <div className="containerr-a">
+                                        <div className='primero-a'>{tipoPartida.name} <hr/> </div>
+                                        <div className="description-a">
+                                            <div className="dif-bet">
+                                                <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
+                                                <p> Apuesta por mano: {tipoPartida.bet} coins</p>
+                                            </div>
+                                            <MyButton 
+                                                className="jugar" 
+                                                color="midnightblue" 
+                                                size="xxl" 
+                                                onClick={() => partidaPublica(tipoPartida)}>
+                                                    Jugar
+                                            </MyButton>
                                         </div>
-                                        <MyButton 
-                                            className="jugar" 
-                                            color="midnightblue" 
-                                            size="xxl" 
-                                            onClick={() => partidaPublica(tipoPartida)}>
-                                                Jugar
-                                        </MyButton>
                                     </div>
-                                </div>
-                            </div>                    
-                        </div>
+                                </div>                    
+                            </div>
                     ))
                     ) : (
                         <p>No se encontraron tipos de partidas públicas.</p>

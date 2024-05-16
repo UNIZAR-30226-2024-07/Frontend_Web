@@ -17,6 +17,7 @@ function EstadisticasUser() {
   const [avatares, setAvatares] = useState(-1);
   const [tapetes, setTapetes] = useState(-1);
   const [cartas, setCartas] = useState(-1);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     console.log("Entrando a useEffect");
@@ -69,6 +70,7 @@ function EstadisticasUser() {
         console.log("terminado");
       } catch (error) {
         console.error('Error al obtener las estadísticas:', error.message);
+        setError("No se pueden obtener las estadisticas correctamente")
       }
     };
   
@@ -87,7 +89,14 @@ function EstadisticasUser() {
     cartas, tapetes]);
 
   if (loading) {
-    return <div><MyLoading /></div>;
+    return <div>
+      <MyNav isLoggedIn={false} isDashboard={false} />
+      <MyLoading />
+      {error && ( 
+      <div className="error-login">
+        {error}
+      </div>
+    )}</div>;
   }
     
   return (
@@ -136,7 +145,13 @@ function EstadisticasUser() {
         </div>
       </div>
     </div>
+    {error && ( 
+    <div className="error-login">
+      {error}
+    </div>
+  )}
   </div>
+  
   );
 }
 
