@@ -35,9 +35,56 @@ const EliminarSalaAdmin = () => {
     }
 
     return (
-        <><MyNavAdmin></MyNavAdmin>
-        <div className="EliminarSala">
+        <><MyNavAdmin></MyNavAdmin><div className="EliminarSala">
             <div className="lista">
+                {Array.isArray(salas) && salas.length > 0 ? (
+                    salas
+                        .slice() // Hacemos una copia para no modificar el array original
+                        .sort((a, b) => {
+                            // Objeto de mapeo de dificultad a valor numérico
+                            const dificultadMap = {
+                                "beginner": 1,
+                                "medium": 2,
+                                "expert": 3
+                            };
+
+                            // Comparamos las dificultades usando el mapeo
+                            return dificultadMap[a.bankLevel] - dificultadMap[b.bankLevel];
+                        })
+                        .map((sala) => (
+                            <div key={sala._id}>
+                                <div className="container">
+                                    <div className="containerr">
+                                        <div className='primero'>{sala.name} <hr /> </div>
+                                        <div className="description">
+                                            <div className="dif-bet">
+                                                <p className="dificultad">Dificultad: <span className={sala.bankLevel}>{sala.bankLevel}</span></p>
+                                                <p> Apuesta por mano: {sala.bet} coins</p>
+                                            </div>
+                                            <MyButton
+                                                className="jugar"
+                                                color="midnightblue"
+                                                size="xxl"
+                                                onClick={() => handleEliminateSala(sala)}>
+                                                Eliminar
+                                            </MyButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                ) : (
+                    <p>No se encontraron tipos de partidas públicas.</p>
+                )}
+            </div>
+        </div></>
+        
+    );
+}
+
+export default EliminarSalaAdmin;
+
+{/* <div className="lista">
                 {Array.isArray(salas) && salas.length > 0 ? (
                     salas.map((sala) => (
                         <div key={sala._id}>
@@ -65,9 +112,4 @@ const EliminarSalaAdmin = () => {
                 ) : (
                     <p>No se encontraron salas.</p>
                 )}
-            </div>
-        </div></>
-    );
-}
-
-export default EliminarSalaAdmin;
+            </div> */}
