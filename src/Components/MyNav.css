@@ -80,3 +80,12 @@
   align-items: center; /* Centrar verticalmente */
   margin-right: -100px !important;
 }
+
+
+
+.heart {
+  color:white;
+  font-size: 40px;
+  margin-left: 5px;
+  margin-right: 5px;
+}

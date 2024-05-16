@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef  } from 'react';
 import { getUserStats } from "../Context/stats";
 import { returnUsers } from "../Context/UserContext";
+import { returnFriendsAvatar } from '../Context/FriendContext';
+import { GetMyAvatar } from "../Context/AvatarContext";
+import { returnMyName } from "../Context/AuthContext";
 import { MyNav } from "../Components/MyNav";
+import { Button } from "@nextui-org/react";
+import { MyRanking } from "../Components/MyRanking";
+import MyLoading from '../Components/MyLoading';
+import { Link } from "react-router-dom";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { GoTrophy } from "react-icons/go";
-import { Link } from "react-router-dom";
-import { Button } from "@nextui-org/react";
 import constants from '../constants';
-import { MyRanking } from "../Components/MyRanking";
-import { returnFriendsAvatar } from '../Context/FriendContext';
-import MyLoading from '../Components/MyLoading';
 
 import "./PageTrophyRanking.css";
 
@@ -18,16 +20,52 @@ export function PageTrophyRanking() {
     const [userRanking, setUserRanking] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [avatarData, setAvatarData] = useState(null);
+    const [userName, setUserName] = useState(null);
+
+    const isFirstEffectComplete = useRef(false);
 
     useEffect(() => {
         async function fetchData() {
             try {
+                // Obtener avatar
+                const avatar = await GetMyAvatar();
+                console.log("EL NOMBRE ESSSSSS", avatar.data);
+                setAvatarData(avatar.data);
+
+                // Obtener nombre de usuario
+                const nameResponse = await returnMyName();
+                if (nameResponse.status === "success") {
+                    console.log("Mi nombre essssssssssssssssSSSSS: ", nameResponse.data.name);
+                    setUserName(nameResponse.data);
+                } else {
+                    throw new Error(nameResponse.message || 'No se pudo obtener el nombre del usuario');
+                }
+
+                // Indicar que el primer useEffect ha terminado
+                isFirstEffectComplete.current = true;
+            } catch (error) {
+                console.error('Error al cargar datos:', error);
+            }
+        }
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                // Verificar si el primer useEffect ha terminado de ejecutarse
+                if (!isFirstEffectComplete.current) {
+                    return; // Salir si el primer useEffect no ha terminado
+                }
+                console.log("MI NOOMBREE EESSS",userName );
                 console.log('Cargando lista de usuarios...');
                 const usersResponse = await returnUsers();
                 console.log('Respuesta de returnUsers:', usersResponse);
                 if (usersResponse.status === 'success') {
                     console.log('Lista de usuarios cargada exitosamente:', usersResponse.data);
-                    
+
                     // Filtrar usuarios con rol "admin"
                     const filteredUsers = usersResponse.data.filter(user => user.rol !== 'admin');
 
@@ -36,11 +74,16 @@ export function PageTrophyRanking() {
                     console.log('Respuesta de returnUsersAvatar:', avatarsResponse);
                     if (avatarsResponse.status === 'success') {
                         console.log('Avatares cargados exitosamente:', avatarsResponse.data);
+
                         const usersWithAvatars = avatarsResponse.data.map((user, index) => {
-                            return { ...filteredUsers[index], avatar: user.avatar };
+                            return { ...filteredUsers[index], avatar: user.avatar};
                         });
 
-                        console.log('Lista de usuarios con avatares:', usersWithAvatars);
+                        usersWithAvatars.push({ ...userName, avatar: avatarData });
+
+                        console.log('Usuarios con avatares:', usersWithAvatars);
+
+                        console.log("LA VARIBLE CONTIENE",  usersWithAvatars);
 
                         const updatedRanking = await Promise.all(usersWithAvatars.map(async (user) => {
                             const statsResponse = await getUserStats(user._id, "Torneos ganados");
@@ -77,7 +120,10 @@ export function PageTrophyRanking() {
         }
 
         fetchData();
-    }, []);
+    }, [ isFirstEffectComplete.current]);
+
+
+    console.log("Usuarios con avatares y nombres:", userRanking);
 
     return (
         <div className='ranking-trophy-page'>

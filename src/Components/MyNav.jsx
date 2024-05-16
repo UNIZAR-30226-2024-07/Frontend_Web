@@ -9,25 +9,25 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import constants from '../constants';
 import { useAuth } from "../Context/AuthContext";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useNavigate } from "react-router-dom";
 import { FaPause } from "react-icons/fa6";
-import { MdChat } from "react-icons/md";
 import { RxExit } from "react-icons/rx";
+import { FaHeart } from "react-icons/fa6";
+import { CiHeart } from "react-icons/ci";
 
-export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent, pausa, salir}) {
+export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent, pausa, salir,isBoardWithLives, lives}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { logout } = useAuth(); // Obtiene la función logout del contexto de autenticación
-  const navigate = useNavigate(); // Obtiene la función navigate de react-router-dom
-  const destino = isLoggedIn ? constants.root  : constants.root + "PageDashboard" ;
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const destino = isLoggedIn ? constants.root : constants.root + "PageDashboard";
 
   const menuItems = [
     { text: "Amigos", path: constants.root + "PageFriendList" },
     { text: "Ranking", path: constants.root + "Ranking" },
     { text: "Skins", path: constants.root + "SelectAvatar" },
-    { text: "Log out", onClick: handleLogout }, // Asigna la función handleLogout al botón "Log out"
+    { text: "Log out", onClick: handleLogout },
     { text: "Partidas pausadas", path: constants.root + "PartidasPausadas" }
   ];
-
 
   const [coins, setCoins] = useState(0);
 
@@ -35,30 +35,29 @@ export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent,
     const saberMonedas = async () => {
       try {
         const response = await axios.get('/user/verify');
-        // console.log("hola");
         setCoins(response.data.user.coins);
       } catch (error) {
         console.error('Failed to load cards:', error);
       }
     };
     saberMonedas();
-   }, []);
+  }, []);
 
-  // Función para manejar el logout
   function handleLogout() {
-    logout(); // Llama a la función logout del contexto de autenticación
-    navigate(constants.root); // Redirige a la página de inicio después de cerrar sesión
+    logout();
+    navigate(constants.root);
   }
   
   return (
     <Navbar isBordered onMenuOpenChange={setIsMenuOpen} className="custom-navbar" maxWidth="2xl">
       <NavbarContent justify="start" className="navbar-start">
         <div className="icon-container">
-        {!isBoard && <Link to={destino}>
-            <MyIcon />
-          </Link>}
-          {isBoard && 
-            <MyIcon />}
+          {!isBoard && (
+            <Link to={destino}>
+              <MyIcon />
+            </Link>
+          )}
+          {isBoard && <MyIcon />}
         </div>
       </NavbarContent>
       <NavbarContent justify="end">
@@ -79,12 +78,12 @@ export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent,
         {isDashboard && (
           <>
             <NavbarContent justify="center">
-            <div className='div-inicia'>
-              <div className='moned'>
-                <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
-                {coins}
+              <div className='div-inicia'>
+                <div className='moned'>
+                  <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
+                  {coins}
+                </div>
               </div>
-            </div>
             </NavbarContent>
 
             <NavbarContent justify="end">
@@ -98,41 +97,116 @@ export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent,
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               />
             
-            <NavbarMenu className="nav-menu">
-              {menuItems.map((item, index) => (
-                <NavbarMenuItem key={`${item.text}-${index}`} onClick={item.onClick}>
-                  <Link to={item.path} size="">{item.text}</Link>  
-                </NavbarMenuItem>
-              ))}
-            </NavbarMenu>
+              <NavbarMenu className="nav-menu">
+                {menuItems.map((item, index) => (
+                  <NavbarMenuItem key={`${item.text}-${index}`} onClick={item.onClick}>
+                    <Link to={item.path} size="">{item.text}</Link>  
+                  </NavbarMenuItem>
+                ))}
+              </NavbarMenu>
             </NavbarContent>
           </>
         )}
         {monedas && (
           <>
             <NavbarContent justify="center">
-            <div className='div-inicia'>
-              <div className='moned'>
-                <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
-                {coins}
+              <div className='div-inicia'>
+                <div className='moned'>
+                  <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
+                  {coins}
+                </div>
               </div>
-            </div>
             </NavbarContent>
           </>
         )}
         {isBoard && (
           <>
             <NavbarContent justify="end">
-            <div className='partida-icon'>
-              {coinsCurrent !==0 &&
-              <div className='moned'>
-                <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
-                {coinsCurrent}
-              </div>}
-              {pausa !== 0 && <FaPause className="icon-pause" onClick={pausa}/>}
-              <RxExit className="icon-pause" onClick={salir}/>
-              
-            </div>
+              <div className='partida-icon'>
+                {coinsCurrent !==0 && (
+                  <div className='moned'>
+                    <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
+                    {coinsCurrent}
+                  </div>
+                )}
+                {pausa !== 0 && <FaPause className="icon-pause" onClick={pausa}/>}
+                <RxExit className="icon-pause" onClick={salir}/>
+              </div>
+            </NavbarContent>
+          </>
+        )}
+        {isBoardWithLives && (
+          <>
+            <NavbarContent justify="end">
+              <div className='partida-icon'>
+                { lives === 5 ? (
+                  <>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  </>
+                ) : lives === 4.5 ? (
+                  <>
+                  <CiHeart  className="heart"></CiHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  </>
+                ) : lives === 4 ? (
+                  <>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  </>
+                ) : lives === 3.5 ? (
+                  <>
+                  <CiHeart  className="heart"></CiHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  </>
+                ) : lives === 3 ? (
+                  <>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  </>
+                ) : lives === 2.5 ? (
+                  <>
+                  <CiHeart  className="heart"></CiHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  </>
+                ) : lives === 2 ? (
+                  <>
+                  <FaHeart className="heart"></FaHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  </>
+                ) : lives === 1.5 ? (
+                  <>
+                  <CiHeart  className="heart"></CiHeart>
+                  <FaHeart className="heart"></FaHeart>
+                  </>
+                ) : lives === 1 ? (
+                  <FaHeart  className="heart"></FaHeart>
+                ) : lives === 0.5 ? (
+                  <CiHeart  className="heart"></CiHeart>
+                ) : (
+                  <p>Renderizar contenido cuando lives no es igual a ningún valor específico</p>
+                )}
+                {coinsCurrent !==0 && (
+                  <div className='moned'>
+                    <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
+                    {coinsCurrent}
+                  </div>
+                )}
+                {pausa !== 0 && <FaPause className="icon-pause" onClick={pausa}/>}
+                <RxExit className="icon-pause" onClick={salir}/>
+              </div>
             </NavbarContent>
           </>
         )}
