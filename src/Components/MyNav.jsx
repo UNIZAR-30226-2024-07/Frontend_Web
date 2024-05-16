@@ -54,9 +54,11 @@ export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent,
     <Navbar isBordered onMenuOpenChange={setIsMenuOpen} className="custom-navbar" maxWidth="2xl">
       <NavbarContent justify="start" className="navbar-start">
         <div className="icon-container">
-          <Link to={destino}>
+        {!isBoard && <Link to={destino}>
             <MyIcon />
-          </Link>
+          </Link>}
+          {isBoard && 
+            <MyIcon />}
         </div>
       </NavbarContent>
       <NavbarContent justify="end">

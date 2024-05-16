@@ -10,10 +10,10 @@ import { hand0, hand1,
          getInitCards, getResults
         } from './SingleBoardFunctions'
 import { MyNav } from "../../Components/MyNav"
-import { GoTrophy } from "react-icons/go";
+import { MdCallSplit } from "react-icons/md";
 
 import { RxCross2 } from "react-icons/rx";
-import { MdExposurePlus1, MdSecurityUpdateGood } from "react-icons/md";
+import { MdExposurePlus1 } from "react-icons/md";
 import { FaHandPaper } from "react-icons/fa";
 import { Button } from "@nextui-org/react";
 import MyLoading from "../../Components/MyLoading"
@@ -227,7 +227,7 @@ const SingleBoard = () => {
                                                     player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
                                                         <div className="action-game">
                                                             <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
-                                                                <GoTrophy className="emote-game" />
+                                                                <MdCallSplit className="emote-game" />
                                                             </Button>
                                                             <p>Split</p>
                                                         </div>

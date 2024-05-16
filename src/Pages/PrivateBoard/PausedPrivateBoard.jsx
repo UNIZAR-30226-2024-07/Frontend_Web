@@ -9,6 +9,8 @@ import constants from '../../constants'
 import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
 import "./PrivateBoard.css"
+import { MdCallSplit } from "react-icons/md";
+
 import { hand0, hand1, timeOut,
          drawCard, split, double, stick, pause, leave,
          eliminatePlayers,
@@ -104,7 +106,6 @@ const PausedPrivateBoard = () => {
         console.log("Partida pausada id: ", id)
         console.log("UserId", user._id)
         socket.emit("resume private board", ({ body: { boardId: id, userId: user._id }}))
-        setPage(1);
         setHecho(0);  
     }
 
@@ -128,13 +129,7 @@ const PausedPrivateBoard = () => {
             };
             saberMonedas(); 
         }
-        if(primero === 0 && hecho === 0 ) { 
-            setHecho(1);
-            if(primera === 0){
-                setListo(true);
-                setPrimera(1);
-            }
-        }
+
         
     }, [hecho, currentCoins, user, primero, primera]);
     useEffect(() => {
@@ -143,6 +138,10 @@ const PausedPrivateBoard = () => {
         socket.on("connect", (socket) => {
             console.log("hey")
             reanudarPartida()
+            if(primero==0){
+                setError("Se esperara a la siguiente ronda para unirse");
+                setPrimero(1);
+            }
         })
 
         // Recibir play hand (se pueden hacer jugadas)
@@ -152,6 +151,12 @@ const PausedPrivateBoard = () => {
             if(primera === 0){
                 setListo(false);
             }
+
+            console.log("page = ", page)
+            if (page != 1) {
+                setPage(1)
+            } 
+
             setError("");
             // Inicializar contador
             setSeconds(timeOut)
@@ -204,6 +209,7 @@ const PausedPrivateBoard = () => {
 
         // Recibir hand results (visionar resultados)
         socket.on("hand results", (results) => {
+            setError("");
 
             // Visionar resultados
             setShowResults(true)
@@ -292,10 +298,7 @@ const PausedPrivateBoard = () => {
         }
         { !listo && page == 0 ? (
             <div className='page-publica'>
-            <MyNav isLoggedIn={false} isDashboard={false} monedas={true}/>
-            <div className='mensaje-esperando'>
-                <p> Será readmitido en la partida cuando la ronda actual finalice </p>
-            </div>
+                <MyNav isLoggedIn={false} isDashboard={false} monedas={true}/>
             </div>
         ) : (
            // para el juego en si mismo (no se sale de aqui)
@@ -405,7 +408,7 @@ const PausedPrivateBoard = () => {
                                            player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
                                                <div className="action-game">
                                                    <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
-                                                       <GoTrophy className="emote-game" />
+                                                       <MdCallSplit className="emote-game" />
                                                    </Button>
                                                    <p>Split</p>
                                                </div>

@@ -7,7 +7,6 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import constants from '../../constants'
 import io from "socket.io-client"
-import { GoTrophy } from "react-icons/go";
 import {AvatarId} from "../../Components/AvatarId"
 import { FaRegPaperPlane } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
@@ -15,6 +14,7 @@ import { MdExposurePlus1 } from "react-icons/md";
 import { FaHandPaper } from "react-icons/fa";
 import { Button } from "@nextui-org/react";
 import { useAuth } from "../../Context/AuthContext"
+import { MdCallSplit } from "react-icons/md";
 import "./PublicBoard.css"
 import { hand0, hand1, timeOut,
          drawCard, split, double, stick, pause, leave,
@@ -68,6 +68,7 @@ const PublicBoard = () => {
         playerId: 'Bank',
         hand: {...hand}
     }
+    
     const [primero, setPrimero] = useState(0)   // Mano de la banca
     const [primera, setPrimera] = useState(0)   // Mano de la banca
     const [listo, setListo] = useState(false)   // Mano de la banca
@@ -272,10 +273,8 @@ const PublicBoard = () => {
 
         // Recibir hand results (visionar resultados)
         socket.on("hand results", (results) => {
-
             // Visionar resultados
             setShowResults(true)
-
             // Guardar resultados
             getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers, setCurrentCoins)
         })
@@ -325,7 +324,7 @@ const PublicBoard = () => {
                     ...prevMessages,
                     { message, name, userId }
                 ])
-            }, 3000)
+            }, 1000)
         })
         
 
@@ -364,38 +363,51 @@ const PublicBoard = () => {
         { !listo && page == 0 ? (
             <div className='page-publica'>
                 <div key={pageKey}>
-                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={currentCoins} /> 
+                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={false} coinsCurrent={currentCoins} /> 
                 </div>
                 <div className='titulo'>
                     Partidas publicas
                 </div>
                 <div className="lista">
                 {Array.isArray(partidasPublicas) && partidasPublicas.length > 0 ? (
-                    partidasPublicas.map((tipoPartida) => (
-                    <div key={tipoPartida._id}>
-                        <div className="container">
-                            <div className="containerr">
-                                <div className='primero'>{tipoPartida.name} <hr/> </div>
+                partidasPublicas
+                    .slice() // Hacemos una copia para no modificar el array original
+                    .sort((a, b) => {
+                        // Objeto de mapeo de dificultad a valor numérico
+                        const dificultadMap = {
+                            "beginner": 1,
+                            "medium": 2,
+                            "expert": 3
+                        };
+
+                        // Comparamos las dificultades usando el mapeo
+                        return dificultadMap[a.bankLevel] - dificultadMap[b.bankLevel];
+                    })
+                    .map((tipoPartida) => (
+                        <div key={tipoPartida._id}>
+                            <div className="container">
+                                <div className="containerr">
+                                    <div className='primero'>{tipoPartida.name} <hr/> </div>
                                     <div className="description">
                                         <div className="dif-bet">
                                             <p className="dificultad">Dificultad: <span className={tipoPartida.bankLevel}>{tipoPartida.bankLevel}</span></p>
                                             <p> Apuesta por mano: {tipoPartida.bet} coins</p>
                                         </div>
                                         <MyButton 
-                                        className="jugar" 
-                                        color="midnightblue" 
-                                        size="xxl" 
-                                        onClick={() => partidaPublica(tipoPartida)}>
-                                            Jugar
+                                            className="jugar" 
+                                            color="midnightblue" 
+                                            size="xxl" 
+                                            onClick={() => partidaPublica(tipoPartida)}>
+                                                Jugar
                                         </MyButton>
                                     </div>
                                 </div>
                             </div>                    
                         </div>
-                        ))
-                        ) : (
-                            <p>No se encontraron tipos de partidas públicas.</p>
-                        )}
+                    ))
+                    ) : (
+                        <p>No se encontraron tipos de partidas públicas.</p>
+                    )}
                     </div>
                 </div>
                 ) : (
@@ -424,7 +436,12 @@ const PublicBoard = () => {
                                 </div>
                             )}
                         </div>
-                    </div>}
+                        <div className="seconds">
+                            {seconds}
+                        </div>
+                    </div>
+                    
+                    }
                     {showResults && <div className="cartas-banca-resul">  {/* Mostrar mano BANCA */}
                         <p className="texto">Banca: {bank.hand.total}</p>
                         <div key={'Bank'}> {/*cartas banco*/}
@@ -452,11 +469,6 @@ const PublicBoard = () => {
                                 { player && player.hands[numHand].active && (
                                     <div>
                                         <p className="texto">Total: {player.hands[numHand].total}</p>
-                                        {showResults && (
-                                            <div className="texto" key={numHand + 'player'}>
-                                                <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
-                                            </div>
-                                        )}
                                         {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
                                         <div className="cartas">
                                             {/* Renderizar las cartas */}
@@ -489,15 +501,13 @@ const PublicBoard = () => {
                                                         <FaHandPaper className="emote-game" />
                                                     </Button>
                                                     <p>Plantar</p>
-                                                </div>
+                                                    </div>
 
                                                 <div className="action-game">
-                                                    <Button  onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                                    <Button onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
                                                         <RxCross2 className="emote-game" />
                                                     </Button>
-                                                    <p>
-                                                    Doblar
-                                                    </p>
+                                                    <p>Doblar</p>
                                                 </div>
 
                                                 {player.hands[hand0].active && 
@@ -506,7 +516,7 @@ const PublicBoard = () => {
                                                     player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
                                                         <div className="action-game">
                                                             <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
-                                                                <GoTrophy className="emote-game" />
+                                                                <MdCallSplit className="emote-game" />
                                                             </Button>
                                                             <p>Split</p>
                                                         </div>
@@ -521,18 +531,16 @@ const PublicBoard = () => {
                             </div>
                         ))}
                     </div>}
-
+                    {/*Para mostrar resultados del jugador*/}
                     {showResults && <div className="cartas-jugador-resul">
                         {[hand0, hand1].map(numHand => (
                             <div key={numHand}>
                                 { player && player.hands[numHand].active && (
                                     <div>
                                         <p className="texto">Total: {player.hands[numHand].total}</p>
-                                        {showResults && (
-                                            <div className="texto" key={numHand + 'player'}>
-                                                <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
-                                            </div>
-                                        )}
+                                        <div className="texto" key={numHand + 'player'}>
+                                            <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
+                                        </div>
                                         {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
                                         <div className="cartas">
                                             {/* Renderizar las cartas */}
@@ -546,52 +554,6 @@ const PublicBoard = () => {
                                                 />
                                             ))}
                                         </div>
-                                        <div style={{ width: '30px' }}></div> {/* Espacio entre manos */}
-
-                                        {!player.hands[numHand].defeat && 
-                                        !player.hands[numHand].blackJack &&
-                                        !player.hands[numHand].stick && 
-                                                
-                                            <div className="actions-container">
-                                                <div className="action-game">
-                                                    <Button onClick={(e) => drawCard(e, numHand, player, setPlayer, boardId)} className="button-game">
-                                                        <MdExposurePlus1 className="emote-game" />
-                                                    </Button>
-                                                    <p>Otra carta</p>
-                                                </div> 
-
-                                                <div className="action-game">
-                                                    <Button onClick={(e) => stick(e, numHand, player, setPlayer, boardId)} className="button-game">
-                                                        <FaHandPaper className="emote-game" />
-                                                    </Button>
-                                                    <p>Plantar</p>
-                                                </div>
-
-                                                <div className="action-game">
-                                                    <Button  onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
-                                                        <RxCross2 className="emote-game" />
-                                                    </Button>
-                                                    <p>
-                                                    Doblar
-                                                    </p>
-                                                </div>
-
-                                                {player.hands[hand0].active && 
-                                                    !player.hands[hand1].active &&
-                                                    player.hands[hand0].cards.length === 2 &&
-                                                    player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
-                                                        <div className="action-game">
-                                                            <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
-                                                                <GoTrophy className="emote-game" />
-                                                            </Button>
-                                                            <p>Split</p>
-                                                        </div>
-                                                    )
-                                                }
-                                        
-                                            </div>
-                                        }
-                                    
                                     </div>
                                 )}
                             </div>

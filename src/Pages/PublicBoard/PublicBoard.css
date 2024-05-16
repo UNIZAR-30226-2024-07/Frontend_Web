@@ -183,6 +183,12 @@
     justify-content: center;
 }
 
+.seconds {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .containerr {
     padding: 16px;
     width: 420px;

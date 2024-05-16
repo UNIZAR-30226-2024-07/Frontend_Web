@@ -22,6 +22,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { MyButton } from "../../Components/MyButton";
 import { FaUserFriends } from "react-icons/fa";
 import { FaCoins } from "react-icons/fa"; 
+import { MdCallSplit } from "react-icons/md";
 
 import { GoTrophy } from "react-icons/go";
 import {AvatarId} from "../../Components/AvatarId"
@@ -655,7 +656,7 @@ const PrivateBoard = () => {
                                                 !showResults &&        
                                                 <div className="action-game">
                                                         <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
-                                                            <GoTrophy className="emote-game" />
+                                                            <MdCallSplit className="emote-game" />
                                                         </Button>
                                                         <p>Split</p>
                                                     </div>

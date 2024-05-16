@@ -8,8 +8,8 @@ import constants from '../../constants'
 import io from "socket.io-client"
 import { useAuth } from "../../Context/AuthContext"
 import "./PublicBoard.css"
+import { MdCallSplit } from "react-icons/md";
 
-import { GoTrophy } from "react-icons/go";
 import {AvatarId} from "../../Components/AvatarId"
 import { FaRegPaperPlane } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
@@ -19,9 +19,8 @@ import { Button } from "@nextui-org/react";
 import "./PublicBoard.css"
 import { hand0, hand1, timeOut,
          drawCard, split, double, stick, pause, leave,
-         getPartidasPublicas, eliminatePlayers,
-         initPlayers, getInitCards, getResults,
-         getPartidaPausada
+         eliminatePlayers,
+         initPlayers, getInitCards, getResults
         } from './PublicBoardFunctions'
 import MyLoading from "../../Components/MyLoading"
 
@@ -202,7 +201,7 @@ const PausedPublicBoard = () => {
         socket.on("players deleted", (playersToDelete) => {
 
             if (playersToDelete.includes(user._id)) {
-                setError("Adios")
+                setError("Has sido expulsado por dos o mas veces sin jugar")
                 setTimeout(() => {
                     navigate(constants.root + "PageDashboard")
                 }, 3000)
@@ -312,7 +311,7 @@ const PausedPublicBoard = () => {
                         pausa={(e) => pause(e, boardId, navigate)}
                         salir={(e) => leave(e, boardId, navigate)}/> 
                     </div>
-                    <div className="cartas-banca">  {/* Mostrar mano BANCA */}
+                    {!showResults && <div className="cartas-banca">  {/* Mostrar mano BANCA */}
                         <p>Banca: {bank.hand.total}</p>
                         <div key={'Bank'}> {/*cartas banco*/}
                             {bank.hand.active && (
@@ -330,20 +329,39 @@ const PausedPublicBoard = () => {
                                 </div>
                             )}
                         </div>
+                        <div className="seconds">
+                            {seconds}
+                        </div>
                     </div>
+                    
+                    }
+                    {showResults && <div className="cartas-banca-resul">  {/* Mostrar mano BANCA */}
+                        <p className="texto">Banca: {bank.hand.total}</p>
+                        <div key={'Bank'}> {/*cartas banco*/}
+                            {bank.hand.active && (
+                                <div className="cartas">
+                                    {/* Renderizar las cartas */}
+                                    {bank.hand.cards.map((card, cardIndex) => (
+                                        <img
+                                            className="carta"
+                                            key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
+                                            src={bank.hand.show 
+                                                ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                : reverseCardUrl}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>}
 
                     {/* Mostrar manos JUGADOR */}
-                    <div className="cartas-jugador">
+                    {!showResults && <div className="cartas-jugador">
                         {[hand0, hand1].map(numHand => (
                             <div key={numHand}>
                                 { player && player.hands[numHand].active && (
                                     <div>
                                         <p className="texto">Total: {player.hands[numHand].total}</p>
-                                        {showResults && (
-                                            <div className="texto" key={numHand + 'player'}>
-                                                <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
-                                            </div>
-                                        )}
                                         {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
                                         <div className="cartas">
                                             {/* Renderizar las cartas */}
@@ -356,7 +374,9 @@ const PausedPublicBoard = () => {
                                                         : reverseCardUrl}
                                                 />
                                             ))}
-                                        </div> 
+                                        </div>
+                                        <div style={{ width: '30px' }}></div> {/* Espacio entre manos */}
+
                                         {!player.hands[numHand].defeat && 
                                         !player.hands[numHand].blackJack &&
                                         !player.hands[numHand].stick && 
@@ -374,15 +394,13 @@ const PausedPublicBoard = () => {
                                                         <FaHandPaper className="emote-game" />
                                                     </Button>
                                                     <p>Plantar</p>
-                                                </div>
+                                                    </div>
 
                                                 <div className="action-game">
-                                                    <Button  onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
+                                                    <Button onClick={(e) => double(e, numHand, player, setPlayer, boardId)} className="button-game">
                                                         <RxCross2 className="emote-game" />
                                                     </Button>
-                                                    <p>
-                                                    Doblar
-                                                    </p>
+                                                    <p>Doblar</p>
                                                 </div>
 
                                                 {player.hands[hand0].active && 
@@ -391,7 +409,7 @@ const PausedPublicBoard = () => {
                                                     player.hands[hand0].cards[0].value == player.hands[hand0].cards[1].value && (
                                                         <div className="action-game">
                                                             <Button onClick={(e) => split(e, player, setPlayer, boardId)} className="button-game">
-                                                                <GoTrophy className="emote-game" />
+                                                                <MdCallSplit className="emote-game" />
                                                             </Button>
                                                             <p>Split</p>
                                                         </div>
@@ -405,7 +423,35 @@ const PausedPublicBoard = () => {
                                 )}
                             </div>
                         ))}
-                    </div>
+                    </div>}
+                    {/*Para mostrar resultados del jugador*/}
+                    {showResults && <div className="cartas-jugador-resul">
+                        {[hand0, hand1].map(numHand => (
+                            <div key={numHand}>
+                                { player && player.hands[numHand].active && (
+                                    <div>
+                                        <p className="texto">Total: {player.hands[numHand].total}</p>
+                                        <div className="texto" key={numHand + 'player'}>
+                                            <p>CoinsEarned: {player.hands[numHand].coinsEarned}</p>
+                                        </div>
+                                        {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
+                                        <div className="cartas">
+                                            {/* Renderizar las cartas */}
+                                            {player.hands[numHand].cards.map((card, cardIndex) => (
+                                                <img
+                                                    className="carta"
+                                                    key={numHand + '-' + cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
+                                                    src={player.hands[numHand].show 
+                                                        ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                        : reverseCardUrl}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>}
 
                     {/* Mostrar resto JUGADORES */}
                     <div className="cards-enemys">
@@ -421,15 +467,17 @@ const PausedPublicBoard = () => {
                                     <div className={restPlayerClassName} key={`${player.playerId}-${hand0}`}>
                                         {/* Mostrar resultados si showResults es verdadero */}
                                         {showResults && (
-                                            <p className="texto">CoinsEarned: {player.hands[hand0].coinsEarned + player.hands[hand1].coinsEarned}</p>
+                                            <div>
+                                                <AvatarId user={player.playerId}/>
+                                                <p className="texto">CoinsEarned: {player.hands[hand0].coinsEarned + player.hands[hand1].coinsEarned}</p>
+                                            </div>
                                         )}
                                         <div className="cartas-pequeñas-container">
                                             <div className="cartas-pequeñas">
                                                 {/* Renderizar las cartas de la mano0 */} 
                                                 {player.hands[hand0].cards.map((card, cardIndex) => (
                                                     <img
-                                                        className={player.hands[hand1].cards.length > 0 ? "carta-peq" : "carta-gran"}
-                                                        key={`${hand0}-${cardIndex}-${player.playerId}-${card.value}-${card.suit}`}
+                                                        className={player.hands[hand1].cards.length > 0 ? "carta-peq" : "carta-gran"}                                                        key={`${hand0}-${cardIndex}-${player.playerId}-${card.value}-${card.suit}`}
                                                         src={player.hands[hand0].show 
                                                             ? `${constants.root}Imagenes/cards/${card.value}-${card.suit}.png` 
                                                             : reverseCardUrl}
@@ -456,7 +504,7 @@ const PausedPublicBoard = () => {
                         })} 
                     </div>  
           
-                    { !listo && <div className="cuadrado-derecha">
+                    { !listo && !showResults && <div className="cuadrado-derecha">
                         <div className="lista-mensajesa">
                             {messages.map((message, index) => (
                             <div className="messagea" key={index}>
