@@ -8,7 +8,7 @@ import "./EliminarSalaAdmin.css"
 import { getPartidasPublicas } from './PublicBoard/PublicBoardFunctions'
 
 
-function EliminarSalaAdmin() {
+const EliminarSalaAdmin = () => {
 
     const navigate = useNavigate();
     const [salas, setSalas] = useState([]) ;
