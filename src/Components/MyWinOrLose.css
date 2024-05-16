@@ -7,6 +7,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #539165;
   }
   
   .icon {
@@ -18,9 +19,9 @@ body {
   }
   
   .red-box {
-    position: absolute;
-    top: 5%;
-    right: -5%;
+    position: fixed;
+    right: 100px;
+    margin: 1%  !important;
     display: flex;
     width: 190px;
     height: 60px;
@@ -42,6 +43,11 @@ body {
     background-color: #8b0000 !important;
     color: white !important;
     font-size: 2em;
+  }
+
+  .small-image {
+    width: 30%; /* o el valor que desees, como px, em, etc. */
+    height: auto; /* Para mantener la proporción de la imagen */
   }
   
   .red-box .plus-icon {
@@ -69,13 +75,6 @@ body {
     /* Puedes ajustar este valor según tus preferencias */
   }
   
-  
-  .small-image {
-    width: 5vw;
-    height: auto;
-    margin: 0 2vw;
-  }
-  
   .text-and-image {
     display: flex;
     flex-direction: column;
@@ -93,17 +92,14 @@ body {
   }
 
 
-  .small-image {
-    width: 350px;
-    height: 350px;
-    border-radius:17px;
 
-  }
   
   .message {
     margin-top: 10px;
     font-size:45px;
     height:50px;
+    background-color: #539165;
+
   }
   
   .red-button {

@@ -30,7 +30,7 @@ export function PageMoneyRanking() {
                     
                     // Filtrar usuarios con rol "admin"
                     const filteredUsers = usersResponse.data.filter(user => user.rol !== 'admin');
-
+    
                     console.log("Comenzando la carga de avatares...");
                     const avatarsResponse = await returnFriendsAvatar(filteredUsers);
                     console.log('Respuesta de returnUsersAvatar:', avatarsResponse);
@@ -39,27 +39,35 @@ export function PageMoneyRanking() {
                         const usersWithAvatars = avatarsResponse.data.map((user, index) => {
                             return { ...filteredUsers[index], avatar: user.avatar };
                         });
-
+    
                         console.log('Lista de usuarios con avatares:', usersWithAvatars);
-
+    
                         const updatedRanking = await Promise.all(usersWithAvatars.map(async (user) => {
-                            const statsResponse = await getUserStats(user._id, "Monedas ganadas en partida");
-                            console.log(`Respuesta de getUserStats para ${user.name}:`, statsResponse.data.stat.value);
-                            if (statsResponse.status === 'success') {
-                                console.log(`Estadísticas obtenidas exitosamente para ${user.name}:`, statsResponse.data);
-                                return { ...user, statValue: statsResponse.data.stat.value };
-                            } else {
-                                const errorMessage = `Error al obtener estadísticas para ${user.name}: ${statsResponse.message}`;
+                            try {
+                                const statsResponse = await getUserStats(user._id, "Monedas ganadas en partida");
+                                console.log(`Respuesta de getUserStats para ${user.name}:`, statsResponse.data.stat.value);
+                                if (statsResponse.status === 'success') {
+                                    console.log(`Estadísticas obtenidas exitosamente para ${user.name}:`, statsResponse.data);
+                                    return { ...user, statValue: statsResponse.data.stat.value };
+                                } else {
+                                    const errorMessage = `Error al obtener estadísticas para ${user.name}: ${statsResponse.message}`;
+                                    console.error(errorMessage);
+                                    return null;
+                                }
+                            } catch (error) {
+                                const errorMessage = `Error al obtener estadísticas para ${user.name}: ${error.message}`;
                                 console.error(errorMessage);
-                                setError(errorMessage);
                                 return null;
                             }
                         }));
-
+    
+                        // Filtrar usuarios nulos
+                        const validUsers = updatedRanking.filter(user => user !== null);
+    
                         // Ordenar la lista de usuarios según los valores de las estadísticas
-                        updatedRanking.sort((a, b) => b.statValue - a.statValue);
-
-                        setUserRanking(updatedRanking.filter(user => user !== null));
+                        validUsers.sort((a, b) => b.statValue - a.statValue);
+    
+                        setUserRanking(validUsers);
                         setLoading(false);
                     } else {
                         setError(avatarsResponse.message);
@@ -75,10 +83,10 @@ export function PageMoneyRanking() {
                 setLoading(false);
             }
         }
-
+    
         fetchData();
     }, []);
-
+    
     return (
         <div className='ranking-trophy-page'>
             {loading && <MyLoading />}

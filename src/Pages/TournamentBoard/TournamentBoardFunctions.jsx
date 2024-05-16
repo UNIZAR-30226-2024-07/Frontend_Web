@@ -323,6 +323,7 @@ export const isInTournament = async (torneoId, setPage, setMensajeEnter, setTour
                 console.log("Fallo: ", resRound);
                 throw new Error('Error', resRound);
             } else {
+                console.log("LA RONDA ES LA:", resRound.data.round);
                 setRound(resRound.data.round)
             }
         } else {

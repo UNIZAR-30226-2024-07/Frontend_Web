@@ -1,0 +1,66 @@
+.found-rival {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+}
+
+
+.contenedor {
+    display: flex;
+    flex-direction: column; /* Cambia la dirección del contenedor a columna */
+    justify-content: center;
+    align-items: center;
+    background-color: #3F497F;
+    padding: 10px !important;
+    width: 480px;
+    height: 100px;
+    margin: auto; /* Centra horizontalmente el contenedor */
+    margin-top:1%; 
+    position: sticky;
+    border-radius: 10px;
+}
+
+.my-rival-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente el contenedor */
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+
+.texto-rival {
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+}
+
+  
+
+.rival-avatar-image {
+    width: 150px; 
+    height: 150px;
+    border-radius: 50%;
+}
+-
+
+.rival-avatar-description {
+    color: white;
+    font-size: 25px;
+    margin-top: 20px;
+  
+  }
+
+
+  .contenedor-abajo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3F497F;
+    padding: 10px !important;
+    width: 480px;
+    margin: auto;
+    margin-top: 20px; /* Ajusta según sea necesario */
+    border-radius: 10px;
+  }
+  

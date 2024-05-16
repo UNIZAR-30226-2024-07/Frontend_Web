@@ -50,6 +50,10 @@
 
 }
 
+.flecha {
+    font-size: 20em; /* Ajusta el tamaño de la flecha */
+}
+
 /*******************************************************************************
 ** Mensaje enter 
 *******************************************************************************/
@@ -191,4 +195,12 @@
     border-radius: 10px;
     font-weight: bold;
     color: white;
+}
+
+
+.rival-encontrado {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
 }

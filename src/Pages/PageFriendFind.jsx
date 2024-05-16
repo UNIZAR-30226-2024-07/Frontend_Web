@@ -60,7 +60,7 @@ export function PageFriendFind() {
     useEffect(() => {
         // Filtrar usuarios basados en el término de búsqueda
         const filtered = searchTerm === '' ? [] : users.filter(user =>
-            user.name.includes(searchTerm) // No convertir a minúsculas el nombre del usuario
+            user.name.startsWith(searchTerm) // Cambio aquí
         );
         setFilteredUsers(filtered);
     }, [searchTerm, users]);
