@@ -8,9 +8,10 @@ import { FaUserFriends } from "react-icons/fa";
 import { MdPersonAddAlt1 } from "react-icons/md";
 import "./PageFriendList.css"
 import constants from '../constants';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function PageFriendList() {
+    const navigate = useNavigate()
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
     const [avatarsFetched, setAvatarsFetched] = useState(false);
@@ -82,7 +83,7 @@ export function PageFriendList() {
                 <div className="friend">
                     <ul className="friend-list">
                         {users.map(user => (
-                            <li className="friend-list-item" key={user._id}>
+                            <li className="friend-list-item" key={user._id} onClick={() => navigate(constants.root + "PageStatsFriend/" + user._id)}>
                                 <MyFriend user={user} isFriendList={true} isRequestList={false} isFriendFind={false}  setReloadParent={handleReloadPage}  />
                             </li>
                         ))}

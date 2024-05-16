@@ -1,0 +1,40 @@
+
+
+.estadisticas-user {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+}
+
+.container-stats {
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    margin-top: 90px;
+}
+
+.rectangulo-rojo {
+    background-color: #8b0000;
+    width: 600px;
+    text-align: left;
+    color: white;
+    font-size: 25px; /* Aumenta el tamaño del texto del h2 */
+    font-weight:bold ;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+  
+
+.avatarFriendStat {
+    align-self: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    margin-left: 875px;
+    margin-top: 20px; /* Ajusta el valor según sea necesario para alinear el avatar correctamente */
+}
+

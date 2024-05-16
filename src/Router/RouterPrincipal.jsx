@@ -48,6 +48,7 @@ import ModificarEliminarBarajas from "../Pages/ModificarEliminarBarajas"
 import ModificarBaraja from "../Pages/ModificarBaraja"
 import ModificarEliminarTapetes from "../Pages/ModificarEliminarTapetes"
 import ModificarTapete from "../Pages/ModificarTapete"
+import PageStatsFriend from "../Pages/PageStatsFriend"
 
 
 
@@ -72,6 +73,7 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'PausedPrivateBoard/:id'} element={<PausedPrivateBoard/>}></Route>
                         <Route path={constants.root + 'PartidasPausadas'} element={<PartidasPausadas/>}></Route>
 
+                        <Route path={constants.root + 'PageStatsFriend/:id'} element={<PageStatsFriend/>}></Route>
                         <Route path={constants.root + 'PageFriendFind'} element={<PageFriendFind/>}></Route>
                         <Route path={constants.root + 'PageFriendList'} element={<PageFriendList/>}></Route>
                         <Route path={constants.root + 'Ranking'} element={<PageTrophyRanking/>}></Route>
