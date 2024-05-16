@@ -44,7 +44,7 @@ const AgnadirAvatar = () => {
     if(newAvatar.imageFileName ==null || newAvatar.price =='' || newAvatar.image ==''){
       setError('Todos los campos deben de estar completados')
       return;
-  }
+    }
 
     try {
         const response = await axios.post('/avatar/add', formData)
@@ -58,7 +58,7 @@ const AgnadirAvatar = () => {
         console.log('Respuesta:', response.data);
     } catch (error) {
         console.error('Error:', error);
-        setError('El image que estás intentando utilizar ya está en uso')
+        setError('El nombre de avatar que estás intentando utilizar ya está en uso')
     }
   }
 

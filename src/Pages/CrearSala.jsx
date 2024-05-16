@@ -18,6 +18,8 @@ const CrearSala = () => {
     const [nivel, setNivel] = useState('');
     const [jugadores, setJugadores] = useState('');
 
+    const [error, setError] = useState(null);
+
     // Manejador para el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -28,6 +30,11 @@ const CrearSala = () => {
             numPlayers: jugadores
 
         };
+
+        if(formData.name =='' || formData.bankLevel =='' || formData.bet =='' || formData.numPlayers ==''){
+            setError('Todos los campos deben de estar completados')
+            return;
+          }
 
         try {
             const response = await axios.post('/publicBoardType/add', formData)
@@ -42,6 +49,7 @@ const CrearSala = () => {
             console.log('Respuesta:', response.data);
         } catch (error) {
             console.error('Error:', error);
+            setError('El nombre de sala que estás intentando utilizar ya está en uso')
         }
         // Limpiar los campos después de enviar el formulario
         setNombre('');
@@ -101,6 +109,7 @@ const CrearSala = () => {
                 <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
                 
             </form>
+            {error && <div className="error-login">{error}</div>}
         </div>
     );
 }

@@ -9,6 +9,7 @@ import { MyNavAdmin } from '../Components/MyNavAdmin'
 const AgnadirBaraja = () => {
 
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   const [newCard, setNewCard] = useState(
     {
@@ -39,6 +40,10 @@ const AgnadirBaraja = () => {
     formData.append('imageFileName', newCard.imageFileName) 
     formData.append('price', newCard.price) 
     formData.append('image', newCard.image) 
+    if(newCard.imageFileName ==null || newCard.price =='' || newCard.image ==''){
+      setError('Todos los campos deben de estar completados')
+      return;
+    }
 
     try {
         const response = await axios.post('/card/add', formData)
@@ -52,6 +57,7 @@ const AgnadirBaraja = () => {
         console.log('Respuesta:', response.data);
     } catch (error) {
         console.error('Error:', error);
+        setError('El nombre de baraja que estás intentando utilizar ya está en uso')
     }
   }
 
@@ -106,12 +112,8 @@ const AgnadirBaraja = () => {
           />
 
           <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
-          {/* <input 
-              className="submit-button"
-              type="submit"  
-          /> */}
-
       </form>
+      {error && <div className="error-login">{error}</div>}
       </div>
   );
 }

@@ -12,6 +12,8 @@ const AgnadirTorneo = () => {
 
     //const { signup } = useAuth();
     const navigate = useNavigate();
+    const [error, setError] = useState(null);
+
     // Estados para los campos de entrada
     const [nombre, setNombre] = useState('');
     const [precio, setPrecio] = useState('');
@@ -26,6 +28,11 @@ const AgnadirTorneo = () => {
             bankLevel: nivel
         };
 
+        if(formData.name =='' || formData.price =='' || formData.bankLevel ==''){
+            setError('Todos los campos deben de estar completados')
+            return;
+          }
+
         try {
             const response = await axios.post('/tournament/add',formData)
             if (response.status == 200) {
@@ -38,6 +45,7 @@ const AgnadirTorneo = () => {
             console.log('Respuesta:', response.data);
         } catch (error) {
             console.error('Error:', error);
+            setError('El nombre de torneo que estás intentando utilizar ya está en uso')
         }
         // Limpiar los campos después de enviar el formulario
         setNombre('');
@@ -83,6 +91,7 @@ const AgnadirTorneo = () => {
                 <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
                 
             </form>
+            {error && <div className="error-login">{error}</div>}
         </div>
     );
 }

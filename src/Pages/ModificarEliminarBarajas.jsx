@@ -5,7 +5,7 @@ import './ModificarEliminarBarajas.css'
 import { MyBarajaAdmin } from "../Components/MyBarajaAdmin";
 
 
-function ModificarEliminarBarajas() {
+const ModificarEliminarBarajas = () => {
 
     const [barajas, setBarajas] = useState([]) ;
     

@@ -5,7 +5,7 @@ import './ModificarEliminarAvatares.css'
 import { MyAvatarAdmin } from "../Components/MyAvatarAdmin";
 
 
-function ModificarEliminarAvatares() {
+const ModificarEliminarAvatares = () => {
 
     const [avatars, setAvatars] = useState([]) ;
     

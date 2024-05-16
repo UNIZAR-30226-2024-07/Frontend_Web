@@ -9,6 +9,7 @@ import { MyNavAdmin } from '../Components/MyNavAdmin'
 const AgnadirTapete = () => {
 
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   const [newRug, setNewRug] = useState(
     {
@@ -40,6 +41,10 @@ const AgnadirTapete = () => {
     formData.append('price', newRug.price) 
     formData.append('image', newRug.image) 
 
+    if(newRug.imageFileName ==null || newRug.price =='' || newRug.image ==''){
+      setError('Todos los campos deben de estar completados')
+      return;
+    }
     try {
         const response = await axios.post('/rug/add', formData)
         if (response.status !== 200) {
@@ -52,6 +57,7 @@ const AgnadirTapete = () => {
         console.log('Respuesta:', response.data);
     } catch (error) {
         console.error('Error:', error);
+        setError('El nombre de tapete que estás intentando utilizar ya está en uso')
     }
   }
 
@@ -112,6 +118,7 @@ const AgnadirTapete = () => {
           /> */}
 
       </form>
+      {error && <div className="error-login">{error}</div>}
       </div>
   );
 }

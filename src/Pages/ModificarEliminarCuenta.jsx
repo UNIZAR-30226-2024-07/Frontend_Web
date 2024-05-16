@@ -6,7 +6,7 @@ import { MyNavAdmin } from "../Components/MyNavAdmin";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import "./ModificarEliminarCuenta.css";
 
-function ModificarEliminarCuenta() {
+const ModificarEliminarCuenta = () => {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [error, setError] = useState(null);

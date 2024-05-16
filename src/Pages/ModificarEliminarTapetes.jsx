@@ -5,7 +5,7 @@ import './ModificarEliminarTapetes.css'
 import { MyTapeteAdmin } from "../Components/MyTapeteAdmin";
 
 
-function ModificarEliminarTapetes() {
+const ModificarEliminarTapetes = () => {
 
     const [tapetes, setTapetes] = useState([]) ;
     

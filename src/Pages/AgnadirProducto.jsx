@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import constants from '../constants';
 import { MyNavAdmin } from '../Components/MyNavAdmin'
 
-function AgnadirProducto() {
+const AgnadirProducto = () => {
   return (
     <div className="AgnadirProducto">
       <MyNavAdmin></MyNavAdmin>

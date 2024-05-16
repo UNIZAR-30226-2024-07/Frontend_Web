@@ -8,7 +8,7 @@ import "./EliminarTorneoAdmin.css"
 import { getTorneos } from './TournamentBoard/TournamentBoardFunctions'
 
 
-function EliminarTorneoAdmin() {
+const EliminarTorneoAdmin = () => {
 
     const navigate = useNavigate();
     const [torneos, setTorneos] = useState([]) ;
