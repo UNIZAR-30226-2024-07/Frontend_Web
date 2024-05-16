@@ -10,7 +10,7 @@ const ModificarTapete = () => {
 
   const navigate = useNavigate();
   const {id} = useParams()
-
+  const [error, setError] = useState(null);
 
 
   const [newTapete, setNewTapete] = useState(
@@ -67,6 +67,11 @@ const ModificarTapete = () => {
     formData.append('price', newTapete.price) 
     formData.append('image', newTapete.image) 
 
+    if(newTapete.price =='' || newTapete.image ==''){
+      setError('Todos los campos deben de estar completados')
+      return;
+    }
+
     try {
         const response = await axios.put('/rug/update/' + id, formData)
         if (response.status !== 200) {
@@ -79,6 +84,7 @@ const ModificarTapete = () => {
         console.log('Respuesta:', response.data);
     } catch (error) {
         console.error('Error:', error);
+        setError('El nombre de tapete que estás intentando utilizar ya está en uso')
     }
   }
 
@@ -114,10 +120,12 @@ const ModificarTapete = () => {
               <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
 
           </form>
+          
         ) : (
           <CircularProgress aria-label="Loading..." />
         )}
       </div>
+      {error && <div className="error-login">{error}</div>}
     </div>
   );
 }

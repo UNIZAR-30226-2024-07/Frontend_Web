@@ -5,12 +5,12 @@ import './ModificarAvatar.css';
 import constants from '../constants';
 import { Input, CircularProgress } from "@nextui-org/react";
 import { MyNavAdmin } from '../Components/MyNavAdmin';
-import React from "react";
 
 const ModificarAvatar = () => {
 
   const navigate = useNavigate();
   const {id} = useParams()
+  const [error, setError] = useState(null);
 
 
 
@@ -68,6 +68,11 @@ const ModificarAvatar = () => {
     formData.append('price', newAvatar.price) 
     formData.append('image', newAvatar.image) 
 
+    if(newAvatar.price =='' || newAvatar.image ==''){
+      setError('Todos los campos deben de estar completados')
+      return;
+    }
+
     try {
         const response = await axios.put('/avatar/update/' + id, formData)
         if (response.status !== 200) {
@@ -80,6 +85,7 @@ const ModificarAvatar = () => {
         console.log('Respuesta:', response.data);
     } catch (error) {
         console.error('Error:', error);
+        setError('El nombre de avatar que estás intentando utilizar ya está en uso')
     }
   }
 
@@ -119,6 +125,7 @@ const ModificarAvatar = () => {
           <CircularProgress aria-label="Loading..." />
         )}
       </div>
+      {error && <div className="error-login">{error}</div>}
     </div>
   );
 }

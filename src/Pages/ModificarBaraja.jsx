@@ -5,13 +5,12 @@ import './ModificarBaraja.css';
 import constants from '../constants';
 import { Input, CircularProgress } from "@nextui-org/react";
 import { MyNavAdmin } from '../Components/MyNavAdmin';
-import React from "react";
 
 const ModificarBaraja = () => {
 
   const navigate = useNavigate();
   const {id} = useParams()
-
+  const [error, setError] = useState(null);
 
 
   const [newBaraja, setNewBaraja] = useState(
@@ -68,6 +67,11 @@ const ModificarBaraja = () => {
     formData.append('price', newBaraja.price) 
     formData.append('image', newBaraja.image) 
 
+    if( newBaraja.price =='' || newBaraja.image ==''){
+      setError('Todos los campos deben de estar completados')
+      return;
+    }
+
     try {
         const response = await axios.put('/card/update/' + id, formData)
         if (response.status !== 200) {
@@ -80,6 +84,7 @@ const ModificarBaraja = () => {
         console.log('Respuesta:', response.data);
     } catch (error) {
         console.error('Error:', error);
+        setError('El nombre de baraja que estás intentando utilizar ya está en uso')
     }
   }
 
@@ -115,10 +120,12 @@ const ModificarBaraja = () => {
               <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
 
           </form>
+          
         ) : (
           <CircularProgress aria-label="Loading..." />
         )}
       </div>
+      {error && <div className="error-login">{error}</div>}
     </div>
   );
 }
