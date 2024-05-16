@@ -3,7 +3,6 @@
 import { MyButton } from "../../Components/MyButton";
 import { MyNav } from '../../Components/MyNav';
 import MySearchRival from '../../Components/MySearchRival';
-import MyFoundRival from '../../Components/MyFoundRival';
 import axios from "../../api/axios"
 import { useEffect, useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
