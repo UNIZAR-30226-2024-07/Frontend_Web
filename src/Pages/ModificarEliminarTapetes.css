@@ -1,0 +1,44 @@
+
+.modificar-eliminar-tapetes {
+    min-height: 100vh;
+    background-color: #820300;
+    margin: 0;
+    padding: 0;
+}
+
+.lista{
+    display:block;
+    background-color: #820300;
+    margin-top: 78px;
+}
+.lista-contenedor {
+    margin-top: 0;
+}
+.glass {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    color: black;
+    transform: translateY(-50%);
+    width: 50px !important;
+    height: 100px !important;
+}
+
+.tapete-list-item {
+    margin-top: 20px;
+}
+
+.tapete {
+    margin-top: 3%;
+}
+
+.tapete-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.tapete-container {
+    display: block;
+    margin-bottom: 10px;
+}

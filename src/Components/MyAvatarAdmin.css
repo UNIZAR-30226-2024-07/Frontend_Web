@@ -1,0 +1,48 @@
+.circular-photo {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  color: black;
+  padding: 5px; /* Reducir el espacio alrededor del componente */
+  margin-right: 3%;
+  margin-left: 3%;
+  border: solid 20% white;
+  border-radius: 40px;
+  position:relative;
+}
+
+.photo {
+  width: 100px; /* Ajusta el tamaño de la imagen según sea necesario */
+  height: 100px; /* Ajusta el tamaño de la imagen según sea necesario */
+  border-radius: 50%; /* Hace que la imagen sea circular */
+  margin-right: 10px; /* Espacio entre la imagen y el nombre */
+  margin-left:10px;
+}
+
+.name {
+  font-size: 30px; /* Tamaño de la fuente más grande */
+  font-weight: bold; /* Texto en negrita */
+  margin-left:10px;
+  /* Puedes agregar estilos adicionales al nombre según sea necesario */
+}
+
+.eliminar {
+  position: absolute; /* Establecemos la posición absoluta para poder colocar el botón en una ubicación específica dentro del contenedor */
+  top: 0; /* Lo colocamos en la parte superior del contenedor */
+  /* right: 0; Lo colocamos en el extremo derecho del contenedor */
+  margin-right: 15px;
+}
+
+.modificar{
+  position: absolute; /* Establecemos la posición absoluta para poder colocar el botón en una ubicación específica dentro del contenedor */
+  top: 0; /* Lo colocamos en la parte superior del contenedor */
+  /* right: 0; Lo colocamos en el extremo derecho del contenedor */
+  margin-left: 15px;
+}
+
+
+.button-container {
+  display:flex;
+}
+
+

@@ -27,7 +27,7 @@ const AgnadirTorneo = () => {
         };
 
         try {
-            const response = await axios.post('/tournament/add', { data: formData })
+            const response = await axios.post('/tournament/add',formData)
             if (response.status == 200) {
                 navigate(constants.root + 'HomeAdmin');
             }

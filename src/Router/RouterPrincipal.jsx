@@ -41,6 +41,13 @@ import PausedTournamentBoard from "../Pages/TournamentBoard/PausedTournamentBoar
 import EliminarTorneoAdmin from "../Pages/EliminarTorneoAdmin"
 import EliminarSalaAdmin from "../Pages/EliminarSalaAdmin"
 import ModificarEliminarCuenta from "../Pages/ModificarEliminarCuenta"
+import ModificarEliminarProducto from "../Pages/ModificarEliminarProducto"
+import ModificarEliminarAvatares from "../Pages/ModificarEliminarAvatares"
+import ModificarAvatar from "../Pages/ModificarAvatar"
+import ModificarEliminarBarajas from "../Pages/ModificarEliminarBarajas"
+import ModificarBaraja from "../Pages/ModificarBaraja"
+import ModificarEliminarTapetes from "../Pages/ModificarEliminarTapetes"
+import ModificarTapete from "../Pages/ModificarTapete"
 
 
 
@@ -99,6 +106,13 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'EliminarTorneoAdmin'} element={<EliminarTorneoAdmin/>}></Route>
                         <Route path={constants.root + 'EliminarSalaAdmin'} element={<EliminarSalaAdmin/>}></Route>
                         <Route path={constants.root + 'ModificarEliminarCuenta'} element={<ModificarEliminarCuenta/>}></Route>
+                        <Route path={constants.root + 'ModificarEliminarProducto'} element={<ModificarEliminarProducto/>}></Route>
+                        <Route path={constants.root + 'ModificarEliminarAvatares'} element={<ModificarEliminarAvatares/>}></Route>
+                        <Route path={constants.root + 'ModificarAvatar/:id'} element={<ModificarAvatar/>}></Route>
+                        <Route path={constants.root + 'ModificarEliminarBarajas'} element={<ModificarEliminarBarajas/>}></Route>
+                        <Route path={constants.root + 'ModificarBaraja/:id'} element={<ModificarBaraja/>}></Route>
+                        <Route path={constants.root + 'ModificarEliminarTapetes'} element={<ModificarEliminarTapetes/>}></Route>
+                        <Route path={constants.root + 'ModificarTapete/:id'} element={<ModificarTapete/>}></Route>
 
 
 

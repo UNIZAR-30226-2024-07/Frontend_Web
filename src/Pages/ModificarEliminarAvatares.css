@@ -1,0 +1,44 @@
+
+.modificar-eliminar-avatares {
+    min-height: 100vh;
+    background-color: #820300;
+    margin: 0;
+    padding: 0;
+}
+
+.lista{
+    display:block;
+    background-color: #820300;
+    margin-top: 80px;
+}
+.lista-contenedor {
+    margin-top: 0;
+}
+.glass {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    color: black;
+    transform: translateY(-50%);
+    width: 50px !important;
+    height: 100px !important;
+}
+
+.avatar-list-item {
+    margin-top: 20px;
+}
+
+.avatar {
+    margin-top: 3%;
+}
+
+.avatar-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.avatar-container {
+    display: block;
+    margin-bottom: 10px;
+}

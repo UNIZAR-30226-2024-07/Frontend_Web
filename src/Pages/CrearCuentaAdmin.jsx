@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import axios from '../api/axios'
 
@@ -33,21 +33,27 @@ const CrearCuentaAdmin = () => {
             rol: 'admin'
         };
 
-        // Validar que la contraseña cumpla con los requisitos
-    const regexUpperCase = /[A-Z]/; // al menos una mayúscula
-    const regexLowerCase = /[a-z]/; // al menos una minúscula
-    const regexNumber = /[0-9]/; // al menos un número
-    const regexLength = /.{6,}/; // al menos 6 caracteres
-  
-    if (
-      !regexUpperCase.test(contrasena) ||
-      !regexLowerCase.test(contrasena) ||
-      !regexNumber.test(contrasena) ||
-      !regexLength.test(contrasena)
-    ) {
-      setError('La contraseña debe contener al menos una mayúscula, una minúscula, un número y tener al menos 6 caracteres');
-      return;
+        if(formData.nick =='' || formData.name =='' || formData.surname =='' || formData.email =='' || formData.password ==''){
+            setError('Todos los campos deben de estar completados')
+            return;
         }
+
+        // Validar que la contraseña cumpla con los requisitos
+        const regexUpperCase = /[A-Z]/; // al menos una mayúscula
+        const regexLowerCase = /[a-z]/; // al menos una minúscula
+        const regexNumber = /[0-9]/; // al menos un número
+        const regexLength = /.{6,}/; // al menos 6 caracteres
+    
+        if (
+        !regexUpperCase.test(contrasena) ||
+        !regexLowerCase.test(contrasena) ||
+        !regexNumber.test(contrasena) ||
+        !regexLength.test(contrasena)
+        ) {
+            setError('La contraseña debe contener al menos una mayúscula, una minúscula, un número y tener al menos 6 caracteres');
+            return;
+        }
+        
 
         try {
             const response = await axios.post('/user/add', formData)
@@ -59,9 +65,9 @@ const CrearCuentaAdmin = () => {
                 console.log("Fallo al añadir el usuario: ", response.data);
                 throw new Error('Error al añadir usuario');
             }
-            console.log('Respuesta:', response.data);
-        } catch (error) {
-            console.error('Error:', error);
+            //console.log('Respuesta:', response.data);
+        } catch (e) {
+            setError("El nick o el email ya están en uso")
         }
         // Limpiar los campos después de enviar el formulario
         setNick('');
@@ -116,7 +122,7 @@ const CrearCuentaAdmin = () => {
                     onChange={(e) => setContrasena(e.target.value)}
                 />
 
-                <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
+                <button type="submit" onClick={handleSubmit} className="submit-button">Confirmar</button>
                 
             </form>
             {error && <div className="error-login">{error}</div>}
