@@ -24,9 +24,6 @@ import { FaArrowRightLong } from "react-icons/fa6";
 // Variable que se usará para la gestión de la conexión
 let socket
 
-
-
-
 const TournamentBoard = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
