@@ -1,0 +1,98 @@
+.rounds-tournament {
+    min-height: 100vh;
+    background-color: #539165;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* O ajusta la altura según sea necesario */
+  }
+  
+  .image-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribuye uniformemente el espacio entre las imágenes */
+  }
+  
+
+  .arrow-icon {
+    font-size: 100px !important; /* Ajusta el tamaño del ícono de flecha según sea necesario */
+  }
+  
+  
+  .image-with-text {
+    position: relative;
+    text-align: center;
+  }
+  
+  .tournament-image {
+    width: 280px; /* Ajusta el ancho de la imagen */
+    height: auto; /* Altura automática para mantener la proporción */
+    margin: 0 40px; /* Ajusta el margen entre las imágenes según sea necesario */
+    border-radius: 30px;
+  }
+  
+  .text-overlay {
+    position: absolute;
+    top: -60px !important; /* Ajusta la posición verticalmente */
+    left: 50%; /* Ajusta la posición horizontalmente */
+    transform: translateX(-50%); /* Centra horizontalmente */
+    color: white !important; /* Color del texto */
+    font-size: 30px !important; /* Tamaño del texto */
+    font-weight: bold; /* Peso del texto */
+  }
+  
+
+  .border-blue {
+    width: 350px;
+    border: 4px solid blue; /* Ajusta el grosor del borde aquí */
+}
+
+.border-green {
+  border: 4px solid #00FF00; /* Cambia el valor hexadecimal por el verde que desees */
+}
+
+
+
+.superada {
+  width: 46px !important;
+  height: auto; /* Altura automática para mantener la proporción */
+  position: absolute;
+  top: 0;
+  z-index: 1; /* Para asegurar que la segunda imagen esté encima de la primera */
+  margin-left:75%;
+  border-radius: 7px;
+  margin-top:1.35%;
+
+}
+
+
+.red-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #8b0000;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  margin-right: 3%;
+  margin-bottom: 3%;
+  width: 90px;
+  height: 90px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Añadido para centrar verticalmente el ícono */
+}
+
+
+.red-button svg {
+  font-size: 2em; /* Ajusta el tamaño de la flecha */
+  color: white; /* Cambia el color a blanco */
+}
