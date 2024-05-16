@@ -9,6 +9,8 @@ import { MyNavAdmin } from '../Components/MyNavAdmin'
 const AgnadirAvatar = () => {
 
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
 
   const [newAvatar, setNewAvatar] = useState(
     {
@@ -39,6 +41,10 @@ const AgnadirAvatar = () => {
     formData.append('imageFileName', newAvatar.imageFileName) 
     formData.append('price', newAvatar.price) 
     formData.append('image', newAvatar.image) 
+    if(newAvatar.imageFileName ==null || newAvatar.price =='' || newAvatar.image ==''){
+      setError('Todos los campos deben de estar completados')
+      return;
+  }
 
     try {
         const response = await axios.post('/avatar/add', formData)
@@ -52,6 +58,7 @@ const AgnadirAvatar = () => {
         console.log('Respuesta:', response.data);
     } catch (error) {
         console.error('Error:', error);
+        setError('El image que estás intentando utilizar ya está en uso')
     }
   }
 
@@ -109,6 +116,7 @@ const AgnadirAvatar = () => {
           <Link to={constants.root} onClick={handleSubmit} className="submit-button">Confirmar</Link>
 
       </form>
+      {error && <div className="error-login">{error}</div>}
       </div>
   );
 }

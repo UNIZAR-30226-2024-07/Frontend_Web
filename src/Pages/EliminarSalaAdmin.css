@@ -1,9 +1,8 @@
 .EliminarSala {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #820300;
+    margin: 0;
+    padding: 0;
 }
 
 .lista {
@@ -15,7 +14,8 @@
     margin: auto; /* Centra horizontalmente el contenedor */
     margin-top: 170px;
     position: relative; /* Establecer la posición relativa para el contenedor */
-    width: 90%;
+    width: 100%;
+    background-color: #820300;
 }
 
 .titulo {
@@ -49,7 +49,7 @@
     padding: 16px;
     width: 420px;
     height: 320px;
-    background-color: #539165;
+    background-color: #539165 !important;
     color: white;
     text-align: center;
     border-radius: 10px; /* Añade bordes redondeados */

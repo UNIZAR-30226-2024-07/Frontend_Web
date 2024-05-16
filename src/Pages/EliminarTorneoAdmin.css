@@ -54,7 +54,7 @@
     padding: 16px;
     width: 420px;
     height: 320px;
-    background-color: #539165;
+    background-color: #539165 !important;
     color: white;
     text-align: center;
     border-radius: 10px; /* Añade bordes redondeados */
