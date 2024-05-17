@@ -343,10 +343,11 @@ export const isInTournament = async (torneoId, setPage, setMensajeEnter, setTour
     }
 }
 
-export const enterTournament = async (torneo, setPage) => {
+export const enterTournament = async (torneo, setPage, setError) => {
     try {
         const response = await axios.put('/tournament/enterTournament/' + torneo._id)
         if (response.status !== 200) {
+            setError("No se puede entrar al torneo: no tienes suficientes monedas")
             console.log("Fallo: ", response);
             throw new Error('Error', response);
         } else {

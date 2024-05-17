@@ -313,14 +313,14 @@ const TournamentBoard = () => {
         setVidas(player.lives)
         console.log("Vidas de torneo", vidas)
     }, [prevContador])
-    const funcion = (tournament, setPage) => {  // Tipo partida debe ser tournamentId
-        enterTournament(tournament, setPage)
+    const funcion = async (tournament, setPage) => {  // Tipo partida debe ser tournamentId
+        await enterTournament(tournament, setPage, setError)
         setTimeout(() => {
             
         }, 3000)
-        if(page === 0){
-            setError("No tienes suficiente dinero");
-        }
+        // if(page === 0){
+        //     setError("No tienes suficiente dinero");
+        // }
     }
     return (
         <div>
