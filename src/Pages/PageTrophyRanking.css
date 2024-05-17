@@ -4,3 +4,9 @@
     margin: 0;
     padding: 0;
 }
+
+
+.friend-list {
+    max-height: 900px; /* Puedes ajustar este valor según tus necesidades */
+    overflow-y: auto;
+}

@@ -48,7 +48,7 @@ import ModificarEliminarBarajas from "../Pages/ModificarEliminarBarajas"
 import ModificarBaraja from "../Pages/ModificarBaraja"
 import ModificarEliminarTapetes from "../Pages/ModificarEliminarTapetes"
 import ModificarTapete from "../Pages/ModificarTapete"
-import PageStatsFriend from "../Pages/PageStatsFriend"
+import {PageStatsFriend} from "../Pages/PageStatsFriend"
 import PageWin from "../Pages/PageWin"
 import PageLose from "../Pages/PageLose"
 
