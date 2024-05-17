@@ -12,7 +12,8 @@
     margin-top: 78px;
 }
 .lista-contenedor {
-    margin-top: 0;
+    height:900px;
+    overflow-y: auto;
 }
 .glass {
     position: absolute;
