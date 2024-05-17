@@ -486,7 +486,6 @@ const TournamentBoard = () => {
                                         <div>
                                             <p className="texto">Total: {player.hand.total}</p>
                                             <div key={'player'}>
-                                            <p>CurrentLives: {player.lives}</p>
                                         </div>{/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
                                             <div className="cartas">
                                                 {/* Renderizar las cartas */}
@@ -533,9 +532,6 @@ const TournamentBoard = () => {
                                     { player && player.hand.active && (
                                         <div>
                                             <p className="texto">Total: {player.hand.total}</p>
-                                            <div className="texto">
-                                                <p>CoinsEarned: {player.hand.coinsEarned}</p>
-                                            </div>
                                             {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
                                             <div className="cartas">
                                                 {/* Renderizar las cartas */}
@@ -569,7 +565,7 @@ const TournamentBoard = () => {
                                         {showResults && (
                                             <div className="">
                                                 <AvatarId user={player.playerId}/>
-                                                <p>CurrentLives: {restPlayers[0].lives}</p>
+                                                <p>CurrentLives: {player.hand.lives}</p>
                                             </div>
                                         )}
                                         <div className="cartas-pequeñas-container">

@@ -303,9 +303,7 @@ const PausedTournamentBoard = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="seconds">
-                            {seconds}
-                        </div>
+                        
                     </div>}
                     {showResults && <div className="cartas-banca-resul">  {/* Mostrar mano BANCA */}
                         <p className="texto">Banca: {bank.hand.total}</p>
@@ -336,7 +334,6 @@ const PausedTournamentBoard = () => {
                                     <div>
                                         <p className="texto">Total: {player.hand.total}</p>
                                         <div key={'player'}>
-                                        <p>CurrentLives: {player.lives}</p>
                                     </div>{/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
                                         <div className="cartas">
                                             {/* Renderizar las cartas */}
@@ -383,9 +380,6 @@ const PausedTournamentBoard = () => {
                                 { player && player.hand.active && (
                                     <div>
                                         <p className="texto">Total: {player.hand.total}</p>
-                                        <div className="texto">
-                                            <p>CoinsEarned: {player.hand.coinsEarned}</p>
-                                        </div>
                                         {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
                                         <div className="cartas">
                                             {/* Renderizar las cartas */}
