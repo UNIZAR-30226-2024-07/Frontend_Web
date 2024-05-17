@@ -3,15 +3,12 @@ import "./MyWinOrLose.css"
 import { BsChatLeftTextFill } from "react-icons/bs";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { FiPlus } from "react-icons/fi";
-import { FaArrowRightLong } from "react-icons/fa6";
 
 const MyWinOrLose = ({ imageUrl, text, leftRightImageUrl, message, moneyValue }) => {
   return (
     <div className="wrapper">
       <BsChatLeftTextFill className="icon"></BsChatLeftTextFill>
-      <div className="red-box">
-        <MdOutlineAttachMoney /> <FiPlus className="plus-icon"/>  <span className="money-value">{moneyValue}</span>
-      </div>
+      
       <div className="container">
         <div className="content">
           <img src={leftRightImageUrl} alt="Left" className="small-image" />
@@ -23,7 +20,6 @@ const MyWinOrLose = ({ imageUrl, text, leftRightImageUrl, message, moneyValue })
           <img src={leftRightImageUrl} alt="Right" className="small-image" />
         </div>
       </div>
-      <button className="red-button"><FaArrowRightLong></FaArrowRightLong></button> {/* Botón rojo */}
     </div>
   );
 };

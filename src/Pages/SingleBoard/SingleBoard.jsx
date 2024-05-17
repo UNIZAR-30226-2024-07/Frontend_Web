@@ -139,6 +139,7 @@ const SingleBoard = () => {
                 <div className="fondo-juego">
                     <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={0} pausa={0}
                         salir={(e) => leave(e, boardId, navigate)}/>                     
+                    
                     <div className="cartas-banca">
                         <p>Banca: {bank.hand.total}</p>
                         <div key={'Bank'}> 

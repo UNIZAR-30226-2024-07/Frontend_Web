@@ -75,6 +75,8 @@ const TournamentBoard = () => {
     }
 
     // Información todos los jugadores
+    const [a, setA] = useState(false)   // Mano de la banca
+    const [b, setB] = useState(false)   // Mano de la banca
     const [bank, setBank] = useState(objBank)   // Mano de la banca
     const [player, setPlayer] = useState(objPlayer);   // Mano del jugador
     const [restPlayers, setRestPlayers] = useState([]);   // Mnos resto jugadores
@@ -118,6 +120,8 @@ const TournamentBoard = () => {
     const partidaTorneo = (torneo) => {  // Tipo partida debe ser tournamentId
         socket.emit("enter tournament board", { body: { tournamentId: torneo._id, userId: user._id }})
         setPage(2);
+        setError("");
+
     }
 
     // Enviar mensaje
@@ -176,7 +180,6 @@ const TournamentBoard = () => {
         // Recibir play hand (se pueden hacer jugadas)
             socket.on("play hand", (initCards) => {
             setPageKey((pageKey) => pageKey+1)
-
             console.log("Momento 3", player.lives)
             setPage(3);
             setError("");
@@ -240,7 +243,6 @@ const TournamentBoard = () => {
             console.log(results)
             // Guardar resultados
             getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers);
-            console.log("Momento 2", player.lives)
 
 
         })
@@ -271,10 +273,11 @@ const TournamentBoard = () => {
         // Api comunica que h terminado la partida
         socket.on("finish board", () => {
             setShowResults(false)
-            if(vidas == 0){
+            if(vidas -1 <= 0){
                 navigate(constants.root + "PageLose")
             }
             else {
+                console.log("Vidas",vidas);
                 navigate(constants.root + "PageWin")
             }
 
@@ -306,9 +309,19 @@ const TournamentBoard = () => {
     }, [showResults]);
     
     useEffect(() => {
+       
         setVidas(player.lives)
+        console.log("Vidas de torneo", vidas)
     }, [prevContador])
-
+    const funcion = (tournament, setPage) => {  // Tipo partida debe ser tournamentId
+        enterTournament(tournament, setPage)
+        setTimeout(() => {
+            
+        }, 3000)
+        if(page === 0){
+            setError("No tienes suficiente dinero");
+        }
+    }
     return (
         <div>
             { page == 0 ? (
@@ -325,7 +338,7 @@ const TournamentBoard = () => {
                                 <button className="cancelar" onClick={() => {setMensajeEnter(false); setTournament("");}}>
                                     Cancelar
                                 </button>
-                                <button className="aceptar" onClick={() => enterTournament(tournament, setPage)}>
+                                <button className="aceptar" onClick={() => funcion(tournament, setPage)}>
                                     Aceptar
                                 </button>
                             </div>
@@ -401,9 +414,9 @@ const TournamentBoard = () => {
                         pausa={(e) => pause(e, boardId, navigate)}
                         salir={(e) => leave(e, boardId, navigate)}/> 
                     </div>
-                    {/* {!showResults && <div className="timer-box">
+                    {!showResults && <div className="timer-box">
                         <p>Segundos: {seconds}</p>
-                    </div>} */}
+                    </div>}
                     <div className="fondo-juego" 
                         style={showResults ? { backgroundImage: `url(${constants.dirApi}/${constants.uploadsFolder}/${tapete})`, 
                         backgroundRepeat: 'no-repeat',

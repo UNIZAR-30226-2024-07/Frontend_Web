@@ -14,7 +14,11 @@ import { startLives, timeOut,
          eliminatePlayers,
          initPlayers, getInitCards, getResults,
         } from './TournamentBoardFunctions'
-
+    import {AvatarId} from "../../Components/AvatarId"
+    import { FaRegPaperPlane } from "react-icons/fa";
+    import { MdExposurePlus1 } from "react-icons/md";
+    import { FaHandPaper } from "react-icons/fa";
+    import { Button } from "@nextui-org/react";
 // Variable que se usará para la gestión de la conexión
 let socket
 
@@ -25,8 +29,6 @@ const PausedTournamentBoard = () => {
     const [boardId, setBoardId] = useState("") // BoardId
 
     const [page, setPage] = useState(0)
-    const [mensajeExpulsion, setMensajeExpulsion] = useState(false)
-    const [mensajeFin, setMensajeFin] = useState(false)
 
     // Tiempo para ejecutar una partida o no
     const [seconds, setSeconds] = useState(timeOut);  
@@ -37,7 +39,11 @@ const PausedTournamentBoard = () => {
     const [messages, setMessages] = useState([]) 
     // Mensaje a enviar
     const [newMessage, setNewMessage] = useState("") 
-
+    const [tapete, setTapete] = useState(null)   // Mano de la banca
+    const [error, setError] = useState(null)   // Mano de la banca
+    const [pageKey, setPageKey] = useState(false); // Estado para forzar la actualización del MyNav
+    const [prevContador, setContador] = useState(false); // Estado para forzar la actualización del MyNav
+    const [vidas, setVidas] = useState(4);
     // Objetos para inicializar la información de banca y jugadores
     // Mano de un jugador
     const hand = {
@@ -105,19 +111,27 @@ const PausedTournamentBoard = () => {
     useEffect(() => {
         socket = io(constants.dirApi)
 
-        socket.on("connect", (socket) => {
+        socket.on("connect", async (socket) => {
             console.log("hey")
             reanudarPartida()
+            try {
+                const response = await axios.get('/rug/currentRug');
+                console.log(response.data)
+                setTapete(response.data.rug.imageFileName);
+            } catch (error) {
+                console.error('Failed to load cards:', error);
+            }
+            setError("Se unira en la siguiente ronda")
         })
 
         // Recibir play hand (se pueden hacer jugadas)
         socket.on("play hand", (initCards) => {
             console.log("page = ", page)
-            if (page != 1) {
-                console.log("Hey2")
-                setPage(1)
-            } 
+            setPageKey((pageKey) => pageKey+1)
 
+            console.log("Momento 3", player.lives)
+            setPage(3);
+            setError("");
             // Inicializar contador
             setSeconds(timeOut)
 
@@ -155,7 +169,9 @@ const PausedTournamentBoard = () => {
         socket.on("players deleted", (playersToDelete) => {
 
             if (playersToDelete.includes(user._id)) {
-                setMensajeExpulsion(true)
+                if(vidas == 0){
+                    navigate(constants.root + "PageLose")
+                }
                 setTimeout(() => {
                     navigate(constants.root + "PageDashboard")
                 }, 3000)
@@ -166,7 +182,7 @@ const PausedTournamentBoard = () => {
 
         // Recibir hand results (visionar resultados)
         socket.on("hand results", (results) => {
-
+            setError("")
             // Visionar resultados
             setShowResults(true)
             console.log(results)
@@ -200,7 +216,13 @@ const PausedTournamentBoard = () => {
 
         // Api comunica que h terminado la partida
         socket.on("finish board", () => {
-            setMensajeFin(true)
+            setShowResults(false)
+            if(vidas <= 0){
+                navigate(constants.root + "PageLose")
+            }
+            else {
+                navigate(constants.root + "PageWin")
+            }            
             setTimeout(() => {
                 navigate(constants.root + "PageDashboard")
             }, 3000)
@@ -220,173 +242,245 @@ const PausedTournamentBoard = () => {
             ])
         })
     }, [user, bank, player, restPlayers, navigate, id])
-
+    useEffect(() => {
+        if (showResults) {
+            setContador(prevContador => prevContador + 1);
+        }
+    }, [showResults]);
+    
+    useEffect(() => {
+        setVidas(player.lives)
+    }, [prevContador])
     return (
         <div>
         { page == 0 ? (
             <div className='page-publica'>
             <MyNav isLoggedIn={false} isDashboard={false} monedas={true}/>
-            <div className='mensaje-esperando'>
-                <p> Será readmitido en la partida cuando la ronda actual finalice </p>
             </div>
-            </div>
-        ) : (
+        ): (
             <div>
-            {/* Mensaje en caso de ser expulsado de la partida */}
-            { mensajeExpulsion &&
-                <div className="mensaje-expulsion">
-                    <p className="titulo-mensaje-expulsion"> Expulsado por inactividad </p>
-                    <p className="cuerpo-mensaje-expulsion"> Has sido expulsado de la partida por inactividad durante dos jugadas </p>
+                <div key={pageKey}>
+                    <MyNav isLoggedIn={false} isDashboard={false} isBoard={false} isBoardWithLives={true} lives={vidas} 
+                    pausa={(e) => pause(e, boardId, navigate)}
+                    salir={(e) => leave(e, boardId, navigate)}/> 
                 </div>
-            }
-            { mensajeFin &&
-                <div className="mensaje-fin">
-                    <p className="titulo-mensaje-fin"> FIN </p>
-                    <p className="cuerpo-mensaje-fin"> La partida finalizó. Cargando...</p>
-                </div>
-            }
-
-            <hr/>     {/* Linea separación */}
-
-            {/* Mostrar mano BANCA */}
-            <div style={{ backgroundColor: 'white'}}>
-                <p>Banca / Total: {bank.hand.total}</p>
-                <div key={'Bank'} style={{ backgroundColor: 'yellow' }}>
-                    {bank.hand.active && (
-                        <div className="cartas">
-                            {/* Renderizar las cartas */}
-                            {bank.hand.cards.map((card, cardIndex) => (
-                                <img
-                                    className="carta"
-                                    key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
-                                    src={bank.hand.show 
-                                        ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
-                                        : reverseCardUrl}
-                                />
-                            ))}
+                {/* {!showResults && <div className="timer-box">
+                    <p>Segundos: {seconds}</p>
+                </div>} */}
+                <div className="fondo-juego" 
+                    style={showResults ? { backgroundImage: `url(${constants.dirApi}/${constants.uploadsFolder}/${tapete})`, 
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain', // Ajusta la propiedad backgroundSize para cambiar el tamaño de la imagen
+                    width: '100%',
+                    height: '90%',    overflow: 'hidden',
+                    position: 'absolute' } 
+                    : { backgroundImage: `url(${constants.dirApi}/${constants.uploadsFolder}/${tapete})`,backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    width: '84%',
+                    height: '84%',
+                    position: 'absolute',
+                    overflow: "hidden"
+                }}>                   
+                    
+                    {!showResults && 
+                    <div className="cartas-banca">  {/* Mostrar mano BANCA */}
+                        <p>Banca: {bank.hand.total}</p>
+                        <div key={'Bank'}> {/*cartas banco*/}
+                            {bank.hand.active && (
+                                <div className="cartas">
+                                    {/* Renderizar las cartas */}
+                                    {bank.hand.cards.map((card, cardIndex) => (
+                                        <img
+                                            className="carta"
+                                            key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
+                                            src={bank.hand.show 
+                                                ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                : reverseCardUrl}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            </div>
+                        <div className="seconds">
+                            {seconds}
+                        </div>
+                    </div>}
+                    {showResults && <div className="cartas-banca-resul">  {/* Mostrar mano BANCA */}
+                        <p className="texto">Banca: {bank.hand.total}</p>
 
-            <hr/>     {/* Linea separación */}
+                        <div key={'Bank'}> {/*cartas banco*/}
+                            {bank.hand.active && (
+                                <div className="cartas">
 
-            {/* Mostrar manos JUGADOR */}
-            <div style={{ backgroundColor: 'white'}}>
-                <p>Jugador</p>
-                <button style={{ marginRight: '10px' }} onClick={(e) => pause(e, boardId, navigate)}> Pause </button>
-                <button style={{ marginRight: '10px' }} onClick={(e) => leave(e, boardId, navigate)}> Leave </button>
-               
-                <div key={"handTournament"} style={{ backgroundColor: 'brown' }}>
-                    { player && player.hand.active && (
-                        <div>
-                            <p>Total: {player.hand.total}</p>
-                            {showResults && (
-                                <div key={'player'}>
-                                    <p>CurrentLives: {player.lives}</p>
+                                    {/* Renderizar las cartas */}
+                                        {bank.hand.cards.map((card, cardIndex) => (
+                                        <img
+                                            className="carta"
+                                            key={'-' + cardIndex + '-' + "Bank" + '-' + card.value + '-' + card.suit}
+                                            src={bank.hand.show 
+                                                ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                : reverseCardUrl}
+                                        />
+                                    ))}
                                 </div>
                             )}
-                            {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
-                            {   !player.hand.defeat && 
-                                !player.hand.blackJack &&
-                                !player.hand.stick ? (
-                                <div>
-                                    <button style={{ marginRight: '10px' }} onClick={(e) => drawCard(e, player, setPlayer, boardId)}> DrawCard </button>
-                                    <button style={{ marginRight: '10px' }} onClick={(e) => stick(e, player, setPlayer, boardId)}> Stick </button>
-                                </div>
-                            ) : (
-                                <div>
-                                    <p>No puede realizar más jugadas. Se ha plantado.</p>
-                                </div>
-                            )}
-                            <div className="cartas">
-                                {/* Renderizar las cartas */}
-                                {player.hand.cards.map((card, cardIndex) => (
-                                    <img
-                                        className="carta"
-                                        key={cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
-                                        src={player.hand.show 
-                                            ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
-                                            : reverseCardUrl}
-                                    />
-                                ))}
+                        </div>
+                    </div>}
+                    {/* Mostrar manos JUGADOR */}
+                    {!showResults && <div className="cartas-jugador">
+                        
+                            <div>
+                                { player && player.hand.active && (
+                                    <div>
+                                        <p className="texto">Total: {player.hand.total}</p>
+                                        <div key={'player'}>
+                                        <p>CurrentLives: {player.lives}</p>
+                                    </div>{/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
+                                        <div className="cartas">
+                                            {/* Renderizar las cartas */}
+                                            {player.hand.cards.map((card, cardIndex) => (
+                                                <img
+                                                    className="carta"
+                                                    key={cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
+                                                    src={player.hand.show 
+                                                        ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                        : reverseCardUrl}
+                                                />
+                                            ))}
+                                        </div>
+                                        <div style={{ width: '30px' }}></div> {/* Espacio entre manos */}
+
+                                        {!player.hand.defeat && 
+                                        !player.hand.blackJack &&
+                                        !player.hand.stick && 
+                                                
+                                            <div className="actions-container">
+                                                <div className="action-game">
+                                                    <Button onClick={(e) => drawCard(e, player, setPlayer, boardId)} className="button-game">
+                                                        <MdExposurePlus1 className="emote-game" />
+                                                    </Button>
+                                                    <p>Otra carta</p>
+                                                </div> 
+
+                                                <div className="action-game">
+                                                    <Button onClick={(e) => stick(e, player, setPlayer, boardId)} className="button-game">
+                                                        <FaHandPaper className="emote-game" />
+                                                    </Button>
+                                                    <p>Plantar</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            <hr/>     {/* Linea separación */}
-
-            {/* Mostrar resto JUGADORES */}
-
-            <div style={{ backgroundColor: 'blue' }}>
-                {/* Iterar sobre los jugadores */}
-                <p>Resto jugadores:</p>
-                {(() => {
-                    const jsxArray = [];
-                    for (let index = 0; index < restPlayers.length; index++) {
-                        const playerHands = [];
-                        if ( restPlayers[index] && restPlayers[index].hand.active) {
-                            const restPlayerClassName = restPlayers[index].playing ? "rest-cards-playing" : "rest-cards-not-playing"
+                        
+                    </div>}
+                    {/*Para mostrar resultados del jugador*/}
+                    {showResults && <div className="cartas-jugador-resul">
+                            <div>
+                                { player && player.hand.active && (
+                                    <div>
+                                        <p className="texto">Total: {player.hand.total}</p>
+                                        <div className="texto">
+                                            <p>CoinsEarned: {player.hand.coinsEarned}</p>
+                                        </div>
+                                        {/* Mostrar botones interactuar solo si sus cartas no están confirmadas */}
+                                        <div className="cartas">
+                                            {/* Renderizar las cartas */}
+                                            {player.hand.cards.map((card, cardIndex) => (
+                                                <img
+                                                    className="carta"
+                                                    key={cardIndex + '-' + player.playerId + '-' + card.value + '-' + card.suit}
+                                                    src={player.hand.show 
+                                                        ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
+                                                        : reverseCardUrl}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                    </div>}
+                     {/* Mostrar resto JUGADORES */}
+                <div className="cards-enemysa">
+                    {/* Iterar sobre los jugadores */}
+                    {restPlayers.map(player => {
+                        const playerHands = []; // Array para almacenar las manos activas del jugador
+                        // Iterar sobre las manos del jugador
+                        //Verificar si la mano está activa
+                        if (player.hand.active) {
+                            const restPlayerClassName = player.playing ? "rest-cards-playing" : "rest-cards-not-playing";
+                            // JSX para la mano
                             const handJSX = (
-                                <div className={restPlayerClassName} key={restPlayers[index].playerId}>
+                                <div className={restPlayerClassName}>
+                                    {/* Mostrar resultados si showResults es verdadero */}
                                     {showResults && (
-                                        <div key={'restPlayer'}>
-                                            <p>Total: {restPlayers[index].hand.total}</p>
-                                            <p>CurrentLives: {restPlayers[index].lives}</p>
+                                        <div className="">
+                                            <AvatarId user={player.playerId}/>
+                                            <p>CurrentLives: {restPlayers[0].lives}</p>
                                         </div>
                                     )}
-                                    <div className="cartas" 
-                                            key={restPlayers[index].playerId + "-"} 
-                                            style={{ backgroundColor: 'green' }}
-                                    >  
-                                        {/* Renderizar las cartas */}
-                                        {restPlayers[index].hand.cards.map((card, cardIndex) => (
-                                            <img
-                                                className="carta"
-                                                key={'-' + cardIndex + '-' + restPlayers[index].playerId + '-' + card.value + '-' + card.suit}
-                                                src={restPlayers[index].hand.show 
-                                                    ? constants.root + "Imagenes/cards/" + card.value + '-' + card.suit + ".png" 
-                                                    : reverseCardUrl}
-                                            />
-                                        ))}
+                                    <div className="cartas-pequeñas-container">
+                                        <div className="cartas-pequeñas">
+                                            {/* Renderizar las cartas de la mano0 */} 
+                                            {player.hand.cards.map((card, cardIndex) => (
+                                                <img
+                                                    className="carta-grande"                                                  
+                                                    key={`${cardIndex}-${player.playerId}-${card.value}-${card.suit}`}
+                                                    src={player.hand.show 
+                                                        ? `${constants.root}Imagenes/cards/${card.value}-${card.suit}.png` 
+                                                        : reverseCardUrl}
+                                                />
+                                            ))}
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             );
                             playerHands.push(handJSX);
                         }
-                        jsxArray.push(playerHands);
-                    }
-                    return jsxArray;
-                })()}
-            </div>  
+                    return playerHands;
+                    })} 
+                </div> 
+            </div>
 
-            <p>Time remaining: {seconds} seconds</p>
-            <div>
-                <div>
-                    {/* Renderizar cada mensaje */}
-                    {messages.map((message, index) => (
-                        <div className="message" key={index}>
-                            <p className="emitter">{message.userId === user._id ? 'Yo' : message.name }</p>
-                            <p className="msg-text">{message.message}</p>
+            
+                { !showResults && 
+                <div className="cuadrado-derecha">
+                    <div className="lista-mensajesa">
+                        {messages.map((message, index) => (
+                        <div className="messagea" key={index}>
+                            <div className="msg-contenta">
+                                <div className="msg-avatara">
+                                    <AvatarId user={message.userId}/>
+                                </div>
+                                <div className="msg-texta">
+                                    <p>{message.message}</p>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
-                
-                <form>
+                <form className="formulario-mensaje" onSubmit={(e) => sendMessage(e)}>
                     <input
                         type="text"
                         value={newMessage}
                         className="input-text"
                         onChange={(e) => setNewMessage(e.target.value)}
+                        placeholder="Escribe tu mensaje aquí"
                     />
-                    <button className="enviar" onClick={(e) => sendMessage(e)}> Enviar </button>
+                    <button type="submit" className="icono-enviar"><FaRegPaperPlane/></button>
                 </form>
+                </div>}
             </div>
-        </div>
-
         )}
+        
+        {error &&  
+        <div className="error-login">
+            {error}
+        </div>}
         </div>
        
     )

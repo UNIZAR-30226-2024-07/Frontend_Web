@@ -196,9 +196,9 @@ export function MyNav({ isLoggedIn, isDashboard, monedas, isBoard, coinsCurrent,
                 ) : lives === 0.5 ? (
                   <CiHeart  className="heart"></CiHeart>
                 ) : (
-                  <p>Renderizar contenido cuando lives no es igual a ningún valor específico</p>
+                  <p></p>
                 )}
-                {coinsCurrent !==0 && (
+                {coinsCurrent !==0 && !isBoardWithLives && (
                   <div className='moned'>
                     <img src="./../../Frontend_Web/Imagenes/moneda.png" className="moneda-icono" />
                     {coinsCurrent}

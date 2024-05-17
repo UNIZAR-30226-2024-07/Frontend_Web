@@ -49,6 +49,8 @@ import ModificarBaraja from "../Pages/ModificarBaraja"
 import ModificarEliminarTapetes from "../Pages/ModificarEliminarTapetes"
 import ModificarTapete from "../Pages/ModificarTapete"
 import PageStatsFriend from "../Pages/PageStatsFriend"
+import PageWin from "../Pages/PageWin"
+import PageLose from "../Pages/PageLose"
 
 
 
@@ -90,6 +92,8 @@ const RouterPrincipal = () => {
                         <Route path={constants.root + 'PageMoneyRanking'} element={<PageMoneyRanking/>}></Route>  
                         <Route path={constants.root + 'PartidaPublica'} element={<PartidaPublica/>}></Route>  
                         <Route path={constants.root + 'PartidaPrivada'} element={<PartidaPrivada/>}></Route>  
+                        <Route path={constants.root + 'PageLose'} element={<PageLose/>}></Route>  
+                        <Route path={constants.root + 'PageWin'} element={<PageWin/>}></Route>  
 
                     </Route>
 
