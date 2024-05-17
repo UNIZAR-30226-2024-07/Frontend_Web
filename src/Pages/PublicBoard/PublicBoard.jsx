@@ -284,6 +284,7 @@ const PublicBoard = () => {
         socket.on("hand results", (results) => {
             // Visionar resultados
             setShowResults(true)
+            
             // Guardar resultados
             getResults(user._id, results, bank, setBank, player, setPlayer, restPlayers, setCurrentCoins)
         })
@@ -422,12 +423,15 @@ const PublicBoard = () => {
                 </div>
             </div>
             }
-            {!listo && <>
+            {!listo && page!= 0 && <>
                 <div key={pageKey}>
                     <MyNav isLoggedIn={false} isDashboard={false} isBoard={true} coinsCurrent={currentCoins} 
                     pausa={(e) => pause(e, boardId, navigate)}
                     salir={(e) => leave(e, boardId, navigate)}/> 
                 </div>
+                {!showResults && <div className="timer-box">
+                    <p>Segundos: {seconds}</p>
+                </div>}
                 <div className="fondo-juego" 
                     style={showResults ? { backgroundImage: `url(${constants.dirApi}/${constants.uploadsFolder}/${tapete})`, 
                     backgroundRepeat: 'no-repeat',

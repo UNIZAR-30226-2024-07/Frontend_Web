@@ -501,7 +501,9 @@ const PrivateBoard = () => {
                     position: 'absolute',
                     overflow: "hidden"
                 }}>                   
-                    
+                    {!showResults && <div className="timer-box">
+                        <p>Segundos: {seconds}</p>
+                    </div>}
                     {!showResults && 
                     <div className="cartas-banca">  {/* Mostrar mano BANCA */}
                         <p>Banca: {bank.hand.total}</p>

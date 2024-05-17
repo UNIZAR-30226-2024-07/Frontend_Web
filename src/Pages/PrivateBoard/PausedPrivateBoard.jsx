@@ -314,6 +314,9 @@ const PausedPrivateBoard = () => {
                 pausa={(e) => pause(e, boardId, navigate)}
                 salir={(e) => leave(e, boardId, navigate)}/> 
             </div>
+            {!showResults && <div className="timer-box">
+                <p>Segundos: {seconds}</p>
+            </div>}
             <div className="fondo-juego" 
                 style={showResults ? { backgroundImage: `url(${constants.dirApi}/${constants.uploadsFolder}/${tapete})`, 
                 backgroundRepeat: 'no-repeat',

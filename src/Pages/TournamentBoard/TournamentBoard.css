@@ -16,21 +16,84 @@
 /* Main.css */
 .page-publica {
     min-height: 100vh;
-    background-color: #539165;
+    /* background-color: #539165; */
     margin: 0;
     padding: 0;
 }
 
-.lista {
+.lista-partida-publica {
     display: flex;
-    overflow-x: auto;
+    overflow: auto !important;
+
     padding: 10px;
-    flex-wrap: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
-    white-space: nowrap; /* Evita que los elementos se envuelvan a la siguiente línea */
+    flex-wrap: nowrap !important; /* Evita que los elementos se envuelvan a la siguiente línea */
+    white-space: nowrap !important; /* Evita que los elementos se envuelvan a la siguiente línea */
     margin: auto; /* Centra horizontalmente el contenedor */
     margin-top: 170px;
     position: relative; /* Establecer la posición relativa para el contenedor */
     width: 90%;
+}
+
+
+.container-a {
+    display: inline-block; /* Para que el contenedor se ajuste al contenido */
+    align-items: center;
+
+    justify-content: center;
+}
+
+.seconds {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.containerr-a {
+    padding: 16px;
+    background-color: #8b0000 !important;
+
+    width: 420px;
+    height: 320px;
+    color: white;
+    text-align: center;
+    border-radius: 10px; /* Añade bordes redondeados */
+    margin-left: 15px; /* Espacio entre elementos */
+    display: grid;
+    grid-template-areas: "primero" "description";
+    grid-template-rows: 35% auto;
+}
+
+.primero-a {
+    grid-area: primero;
+    font-weight: bold;
+    font-size: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.description-a {
+    grid-area: "description";
+    display: grid;
+    grid-template-areas: "dif-bet" "jugar";
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-box {
+    position: absolute;  /* Asegura que el elemento esté posicionado de forma absoluta */
+    top: 100px;           /* Ajusta la posición superior según sea necesario */
+    right: 600px;         /* Ajusta la posición derecha según sea necesario */
+    background-color: white; /* Fondo blanco */
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+
+    border-radius: 30px !important;
+    border: 1px solid black;  /* Borde negro */
+    padding: 10px;      /* Espaciado interno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Sombra */
+    background-color: #8b0000;
+    z-index: 9999;  /* Asegura que este elemento esté en el nivel superior */
 }
 
 .titulo {
@@ -191,4 +254,134 @@
     border-radius: 10px;
     font-weight: bold;
     color: white;
+}
+
+
+
+
+/* Estilos para las imágenes de las cartas */
+.carta-peq {
+    width: 95px !important; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
+.carta-grande {
+    width: 130px ; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+.carta-bien {
+    width: 20%; /* Reducir el tamaño de las imágenes al 60% */
+    margin-right: 10px; /* Agregar un margen derecho para separar las cartas */
+}
+
+.cartas {
+    overflow-x: auto; /* Agrega una barra de desplazamiento horizontal si las imágenes no caben */
+    white-space: nowrap; /* Evita que las imágenes se envuelvan a la siguiente línea */
+    display: flex;
+}
+
+.carta {
+    width: 100px; /* Establece el ancho deseado para las imágenes */
+    margin-right: 10px; /* Espacio entre cada imagen */
+}
+.actions-container {
+    display: flex;
+    justify-content: space-around; /* Para distribuir los elementos de manera equitativa */
+    align-items: center; /* Para alinear verticalmente los elementos */
+}
+
+.action-game {
+    text-align: center; /* Alinea el texto al centro dentro del div */
+    margin: 0 10px; /* Espacio entre los elementos */
+    flex-direction: column !important; /* Para apilar los elementos uno encima del otro */
+    align-items: center !important; /* Para centrar horizontalmente los elementos dentro de action-game */
+    justify-content: center !important;
+}
+
+.action-game p {
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;
+}
+
+.button-game {
+    margin-bottom: 5px; /* Espacio entre el botón y el texto */
+    margin-top: 20px;
+}
+
+.fondo-juego {
+    min-height: 100vh;
+    background-color: #539165 !important;
+    margin: 0;
+    padding: 0;
+  }
+
+.espacio {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.cartas-banca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+}
+
+.cartas-banca p {
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;
+}
+
+.cartas-jugador {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alinear al final */
+    margin-top: 8%; /* Si lo prefieres en porcentaje */
+}
+
+.cartas-banca-resul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* Puedes ajustar este valor según necesites */
+    margin-left: 800px;
+}
+
+
+.cartas-jugador-resul {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alinear al final */
+    margin-top: 5%; /* Si lo prefieres en porcentaje */
+    margin-left: 800px;
+}
+
+
+.cards-enemysa {
+    display: flex;
+    margin-top: -34% !important;
+    margin-left: 5% !important;
+}
+
+
+.cartas-pequeñas-container {
+    overflow-x: auto; /* Permitir desplazamiento horizontal */
+    white-space: nowrap; /* Evitar el ajuste automático de líneas */
+    width: 100%;
+}
+
+/* Estilos para las cartas pequeñas */
+.cartas-pequeñas {
+    display: flex; /* Mostrar las cartas horizontalmente */
+}
+
+
+.texto{
+    margin-right: 17px;
+    color: white;
+    font-size:20px;
+    font-weight: bold;    
 }

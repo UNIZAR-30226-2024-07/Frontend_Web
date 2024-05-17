@@ -359,3 +359,20 @@
     margin-top: -34% !important;
     margin-left: 5% !important;
 }
+
+.timer-box {
+    position: absolute;  /* Asegura que el elemento esté posicionado de forma absoluta */
+    top: 100px;           /* Ajusta la posición superior según sea necesario */
+    right: 600px;         /* Ajusta la posición derecha según sea necesario */
+    background-color: white; /* Fondo blanco */
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+
+    border-radius: 30px !important;
+    border: 1px solid black;  /* Borde negro */
+    padding: 10px;      /* Espaciado interno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Sombra */
+    background-color: #8b0000;
+    z-index: 9999;  /* Asegura que este elemento esté en el nivel superior */
+}
